@@ -55,10 +55,15 @@ export interface AuditPageResult {
   issues: AuditIssue[];
   timestamp: number;
   lighthouseScores?: LighthouseScores;
+  scores?: LighthouseScores;
   lighthousePerformanceIssues?: LighthousePerformanceIssue[];
+  performanceIssues?: LighthousePerformanceIssue[];
   lighthouseAccessibilityIssues?: LighthouseAccessibilityIssue[];
+  accessibilityIssues?: LighthouseAccessibilityIssue[];
   lighthouseBestPracticesIssues?: LighthouseBestPracticesIssue[];
+  bestPracticesIssues?: LighthouseBestPracticesIssue[];
   lighthouseSEOIssues?: LighthouseSEOIssue[];
+  seoIssues?: LighthouseSEOIssue[];
 }
 
 export interface AuditRun {

@@ -105,7 +105,7 @@ export async function POST(request: NextRequest) {
         accessibilityIssues.push({
           title: audit.title,
           description: audit.description,
-          impact: audit.score === 0 ? 'critical' : audit.score < 0.5 ? 'serious' : 'moderate',
+          impact: (audit.score === 0 ? 'critical' : audit.score < 0.5 ? 'serious' : 'moderate') as 'critical' | 'serious' | 'moderate' | 'minor',
           nodes,
           recommendation: audit.description,
         });
