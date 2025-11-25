@@ -8,13 +8,21 @@ import { ChevronDown, ChevronUp, AlertCircle } from 'lucide-react';
 
 interface Props {
   onSelectSites: (sites: Site[], pageCount: number) => void;
+  onRealScan: (sites: Site[], pageCount: number) => void;
+  isRealScanRunning?: boolean;
+  realScanMessage?: string;
 }
 
 interface SelectedPages {
   [siteId: string]: Set<string>;
 }
 
-export default function SiteSelector({ onSelectSites }: Props) {
+export default function SiteSelector({ 
+  onSelectSites, 
+  onRealScan,
+  isRealScanRunning = false,
+  realScanMessage = ''
+}: Props) {
   const [sites, setSites] = useState<Site[]>([]);
   const [selectedPages, setSelectedPages] = useState<SelectedPages>({});
   const [expandedSite, setExpandedSite] = useState<string | null>(null);
@@ -128,6 +136,32 @@ export default function SiteSelector({ onSelectSites }: Props) {
     });
 
     onSelectSites(selectedSitesWithPages, totalPages);
+  }
+
+  function handleRealScan() {
+    if (totalPages === 0) {
+      alert('Please select at least one page');
+      return;
+    }
+
+    // Build selected sites with only selected pages
+    const selectedSitesWithPages: Site[] = [];
+    
+    Object.entries(selectedPages).forEach(([siteId, pageUrls]) => {
+      const site = sites.find(s => s.id === siteId);
+      if (site) {
+        const selectedPagesList = Array.from(pageUrls).map(url => 
+          site.pages.find(p => p.url === url)
+        ).filter(Boolean) as typeof site.pages;
+        
+        selectedSitesWithPages.push({
+          ...site,
+          pages: selectedPagesList
+        });
+      }
+    });
+
+    onRealScan(selectedSitesWithPages, totalPages);
   }
 
   const filteredSites = sites.filter(site =>
@@ -312,18 +346,62 @@ export default function SiteSelector({ onSelectSites }: Props) {
         )}
       </div>
 
-      {/* Run Button */}
-      <button
-        onClick={handleRunAudit}
-        disabled={totalPages === 0}
-        className={`w-full py-3 px-4 rounded-lg font-semibold text-white transition text-lg ${
-          totalPages === 0
-            ? 'bg-gray-400 cursor-not-allowed'
-            : 'bg-blue-600 hover:bg-blue-700 active:bg-blue-800 shadow-md'
-        }`}
-      >
-        🚀 Run Audit on {totalPages} Page{totalPages !== 1 ? 's' : ''}
-      </button>
+      {/* ===== DUAL BUTTON SETUP ===== */}
+      <div className="grid grid-cols-2 gap-3 mb-4">
+        {/* Mock Audit Button */}
+        <button
+          onClick={handleRunAudit}
+          disabled={totalPages === 0 || isRealScanRunning}
+          className={`py-3 px-4 rounded-lg font-semibold text-white transition text-lg ${
+            totalPages === 0 || isRealScanRunning
+              ? 'bg-gray-400 cursor-not-allowed'
+              : 'bg-blue-600 hover:bg-blue-700 active:bg-blue-800 shadow-md'
+          }`}
+        >
+          🔍 Mock Audit
+          <div className="text-xs font-normal mt-1 opacity-90">Instant results</div>
+        </button>
+
+        {/* Real Scan Button */}
+        <button
+          onClick={handleRealScan}
+          disabled={totalPages === 0 || isRealScanRunning}
+          className={`py-3 px-4 rounded-lg font-semibold text-white transition text-lg ${
+            totalPages === 0 || isRealScanRunning
+              ? 'bg-gray-400 cursor-not-allowed'
+              : 'bg-green-600 hover:bg-green-700 active:bg-green-800 shadow-md'
+          }`}
+        >
+          {isRealScanRunning ? '⏳ Scanning...' : '🚀 Real Scan'}
+          <div className="text-xs font-normal mt-1 opacity-90">
+            {isRealScanRunning ? 'Please wait...' : 'via n8n + axe-core'}
+          </div>
+        </button>
+      </div>
+
+      {/* Real Scan Status Message */}
+      {realScanMessage && (
+        <div className="mb-4 p-4 bg-blue-50 border-l-4 border-blue-500 rounded">
+          <p className="text-blue-900 font-semibold">{realScanMessage}</p>
+          {isRealScanRunning && (
+            <div className="mt-2">
+              <div className="w-full bg-blue-200 rounded-full h-2 overflow-hidden">
+                <div className="bg-blue-600 h-2 rounded-full animate-pulse"></div>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Help Text */}
+      <div className="p-3 bg-gray-50 rounded text-sm text-gray-600 border border-gray-200">
+        <p className="mb-1">
+          <strong className="text-blue-600">Mock Audit:</strong> Instant results with sample data (for UI testing)
+        </p>
+        <p>
+          <strong className="text-green-600">Real Scan:</strong> Scans actual pages with Playwright + axe-core (30-60 sec/page)
+        </p>
+      </div>
     </div>
   );
 }
