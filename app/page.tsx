@@ -7,6 +7,8 @@ import StatusCheckPage from './components/StatusCheckPage';
 import { Site, triggerGitHubAction, fetchSites } from './components/DataService';
 import { AuditPageResult, auditManager, AuditRun } from './components/AuditService';
 import { CheckCircle, AlertCircle, History } from 'lucide-react';
+import { loadAccessibilityReport, convertAxeIssuesToDashboardFormat } from './components/RealAccessibilityService';
+import { triggerN8nScan, estimateScanTime } from './components/N8nTriggerService';
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<'audit' | 'status'>('audit');
@@ -19,6 +21,8 @@ export default function Home() {
   const [showResults, setShowResults] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
   const [auditHistory, setAuditHistory] = useState<AuditRun[]>([]);
+  const [isRealScanRunning, setIsRealScanRunning] = useState(false);
+  const [realScanMessage, setRealScanMessage] = useState('');
 
   const previousRun = auditManager.getPreviousRun();
 
@@ -61,7 +65,7 @@ export default function Home() {
 
       const results: AuditPageResult[] = [];
 
-      // Array of realistic accessibility issues (YOUR ORIGINAL)
+      // Array of realistic accessibility issues (FALLBACK MOCK DATA)
       const accessibilityIssues = [
         {
           message: 'Image missing alt text',
@@ -153,22 +157,52 @@ export default function Home() {
         for (const page of site.pages) {
           setStatusMessage(`Auditing ${page.title}... (${completedPages + 1}/${totalPages})`);
           
-          // Generate your existing accessibility issues (ORIGINAL CODE)
-          const hasIssues = Math.random() > 0.3;
-          const numIssues = hasIssues ? Math.floor(Math.random() * 5) + 1 : 0;
-          
-          const issues = [];
-          for (let i = 0; i < numIssues; i++) {
-            const issue = accessibilityIssues[Math.floor(Math.random() * accessibilityIssues.length)];
-            issues.push({
-              type: issue.type,
-              code: issue.code,
-              wcagPrinciple: issue.wcagPrinciple,
-              message: issue.message,
-              selector: `#element-${Math.floor(Math.random() * 1000)} > div > span:nth-child(${Math.floor(Math.random() * 5)})`,
-              codeSnippet: issue.codeSnippet,
-              recommendation: issue.recommendation,
-            });
+          // ===== TRY TO LOAD REAL ACCESSIBILITY ISSUES FIRST =====
+          let issues = [];
+          try {
+            console.log(`🔍 Trying to load real accessibility report for: ${page.url}`);
+            const realReport = await loadAccessibilityReport(page.url);
+            
+            if (realReport && realReport.issues.length > 0) {
+              issues = convertAxeIssuesToDashboardFormat(realReport.issues);
+              console.log(`✅ Loaded ${issues.length} REAL issues from axe-core report`);
+            } else {
+              console.log(`⚠️ No real report found for ${page.url}, using mock data`);
+              // Fallback to mock
+              const hasIssues = Math.random() > 0.3;
+              const numIssues = hasIssues ? Math.floor(Math.random() * 5) + 1 : 0;
+              
+              for (let i = 0; i < numIssues; i++) {
+                const issue = accessibilityIssues[Math.floor(Math.random() * accessibilityIssues.length)];
+                issues.push({
+                  type: issue.type,
+                  code: issue.code,
+                  wcagPrinciple: issue.wcagPrinciple,
+                  message: issue.message,
+                  selector: `#element-${Math.floor(Math.random() * 1000)} > div > span:nth-child(${Math.floor(Math.random() * 5)})`,
+                  codeSnippet: issue.codeSnippet,
+                  recommendation: issue.recommendation,
+                });
+              }
+            }
+          } catch (error) {
+            console.error(`❌ Error loading real issues for ${page.url}:`, error);
+            // Fallback on error
+            const hasIssues = Math.random() > 0.3;
+            const numIssues = hasIssues ? Math.floor(Math.random() * 5) + 1 : 0;
+            
+            for (let i = 0; i < numIssues; i++) {
+              const issue = accessibilityIssues[Math.floor(Math.random() * accessibilityIssues.length)];
+              issues.push({
+                type: issue.type,
+                code: issue.code,
+                wcagPrinciple: issue.wcagPrinciple,
+                message: issue.message,
+                selector: `#element-${Math.floor(Math.random() * 1000)} > div > span:nth-child(${Math.floor(Math.random() * 5)})`,
+                codeSnippet: issue.codeSnippet,
+                recommendation: issue.recommendation,
+              });
+            }
           }
 
           // Try to get REAL Lighthouse scores (but don't fail if it doesn't work)
@@ -208,7 +242,7 @@ export default function Home() {
             url: page.url,
             title: page.title,
             status: 'success',
-            issues, // YOUR ORIGINAL ACCESSIBILITY ISSUES
+            issues, // REAL ISSUES if available, otherwise MOCK
             timestamp: Date.now(),
             lighthouseScores,
             lighthousePerformanceIssues,
@@ -244,6 +278,49 @@ export default function Home() {
     } catch (error) {
       setAuditStatus('error');
       setStatusMessage(`❌ Error: ${error instanceof Error ? error.message : 'Unknown error occurred'}`);
+    }
+  }
+
+  // ===== NEW FUNCTION: Handle Real Scan via n8n =====
+  async function handleRealScan(sites: Site[], pageCount: number) {
+    if (sites.length === 0) {
+      alert('Please select at least one site');
+      return;
+    }
+
+    setIsRealScanRunning(true);
+    setRealScanMessage(`⏳ Triggering n8n scan for ${pageCount} pages...`);
+
+    try {
+      // Collect all pages
+      const allPages: Array<{ url: string; title: string }> = [];
+      for (const site of sites) {
+        for (const page of site.pages) {
+          allPages.push({ url: page.url, title: page.title });
+        }
+      }
+
+      const estimatedTime = estimateScanTime(allPages.length);
+      setRealScanMessage(`⏳ Scanning ${allPages.length} pages... (est. ${estimatedTime})`);
+
+      // Trigger n8n
+      const result = await triggerN8nScan(allPages);
+
+      setRealScanMessage(`✅ ${result.message}`);
+      
+      setTimeout(() => {
+        alert(`Scan complete!\n\n${result.message}\n\nRefresh the page to see real issues in your dashboard.`);
+        setIsRealScanRunning(false);
+        setRealScanMessage('');
+      }, 3000);
+
+    } catch (error) {
+      console.error('Real scan failed:', error);
+      setRealScanMessage(`❌ Scan failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      setTimeout(() => {
+        setIsRealScanRunning(false);
+        setRealScanMessage('');
+      }, 5000);
     }
   }
 
@@ -345,7 +422,12 @@ export default function Home() {
                 </div>
               </div>
             )}
-            <SiteSelector onSelectSites={handleSelectSites} />
+            <SiteSelector 
+              onSelectSites={handleSelectSites}
+              onRealScan={handleRealScan}
+              isRealScanRunning={isRealScanRunning}
+              realScanMessage={realScanMessage}
+            />
           </>
         ) : (
           <StatusCheckPage sites={allSites} />
