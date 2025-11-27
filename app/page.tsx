@@ -21,6 +21,8 @@ export default function Home() {
   const [showResults, setShowResults] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
   const [auditHistory, setAuditHistory] = useState<AuditRun[]>([]);
+  
+  // Real Scan state variables
   const [isRealScanRunning, setIsRealScanRunning] = useState(false);
   const [realScanMessage, setRealScanMessage] = useState('');
 
@@ -281,7 +283,7 @@ export default function Home() {
     }
   }
 
-  // ===== NEW FUNCTION: Handle Real Scan via n8n =====
+  // ✅ UPDATED: Handle Real Scan via n8n - Opens in NEW WINDOW
   async function handleRealScan(sites: Site[], pageCount: number) {
     if (sites.length === 0) {
       alert('Please select at least one site');
@@ -293,12 +295,18 @@ export default function Home() {
 
     try {
       // Collect all pages
-      const allPages: Array<{ url: string; title: string }> = [];
+      const allPages: Array<{ url: string; title: string; site: string }> = [];
       for (const site of sites) {
         for (const page of site.pages) {
-          allPages.push({ url: page.url, title: page.title });
+          allPages.push({ 
+            url: page.url, 
+            title: page.title,
+            site: site.name 
+          });
         }
       }
+
+      console.log('🚀 Triggering n8n scan for', allPages.length, 'pages');
 
       const estimatedTime = estimateScanTime(allPages.length);
       setRealScanMessage(`⏳ Scanning ${allPages.length} pages... (est. ${estimatedTime})`);
@@ -306,21 +314,31 @@ export default function Home() {
       // Trigger n8n
       const result = await triggerN8nScan(allPages);
 
-      setRealScanMessage(`✅ ${result.message}`);
+      console.log('✅ n8n scan completed successfully!', result);
+      console.log('   - Scanned:', result.totalScanned, 'pages');
+      console.log('   - Found:', result.totalIssues, 'issues');
+      console.log('   - Critical:', result.criticalCount);
+
+      setRealScanMessage(`✅ ${result.message} - Opening results...`);
       
+      // ✅ NEW: Save results to localStorage and open in new window
+      localStorage.setItem('scanResults', JSON.stringify(result));
+      
+      // Open results in new window/tab
+      window.open('/scan-results', '_blank');
+
+      // Clear message after a delay
       setTimeout(() => {
-        alert(`Scan complete!\n\n${result.message}\n\nRefresh the page to see real issues in your dashboard.`);
-        setIsRealScanRunning(false);
         setRealScanMessage('');
       }, 3000);
 
+      return result;
+
     } catch (error) {
-      console.error('Real scan failed:', error);
+      console.error('❌ Real scan failed:', error);
       setRealScanMessage(`❌ Scan failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
-      setTimeout(() => {
-        setIsRealScanRunning(false);
-        setRealScanMessage('');
-      }, 5000);
+    } finally {
+      setIsRealScanRunning(false);
     }
   }
 

@@ -26,31 +26,68 @@ export async function triggerN8nScan(
   }
   
   console.log(`🚀 Triggering n8n scan for ${pages.length} pages...`);
+  console.log(`🔗 Webhook URL: ${webhookUrl}`);
   
   try {
+    const requestBody = {
+      urls: pages.map(page => ({
+        url: page.url,
+        title: page.title,
+        site: 'UF College of Education'
+      })),
+      timestamp: new Date().toISOString(),
+      source: 'uf-accessibility-dashboard'
+    };
+    
+    console.log(`📤 Sending request:`, requestBody);
+    
     const response = await fetch(webhookUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        urls: pages.map(page => ({
-          url: page.url,
-          title: page.title,
-          site: 'UF College of Education'
-        })),
-        timestamp: new Date().toISOString(),
-        source: 'uf-accessibility-dashboard'
-      })
+      body: JSON.stringify(requestBody)
     });
     
+    console.log(`📡 Response status: ${response.status} ${response.statusText}`);
+    console.log(`📡 Response headers:`, Object.fromEntries(response.headers.entries()));
+    
     if (!response.ok) {
-      throw new Error(`n8n webhook failed: ${response.status} ${response.statusText}`);
+      const errorText = await response.text();
+      console.error('❌ n8n error response:', errorText);
+      throw new Error(`n8n webhook returned ${response.status}: ${errorText.substring(0, 200)}`);
     }
     
-    const result: N8nScanResponse = await response.json();
+    // Get response as text first to see what we're dealing with
+    const responseText = await response.text();
+    console.log(`📄 Response body (${responseText.length} chars):`, responseText.substring(0, 500));
     
-    console.log(`✅ n8n scan completed:`, result);
+    // Check if response is empty
+    if (!responseText || responseText.trim() === '') {
+      console.error('❌ Empty response from n8n');
+      throw new Error('n8n returned empty response. Workflow may not have "Respond to Webhook" node configured correctly.');
+    }
+    
+    // Try to parse as JSON
+    let result: N8nScanResponse;
+    try {
+      result = JSON.parse(responseText);
+      console.log(`✅ Parsed JSON successfully:`, result);
+    } catch (parseError) {
+      console.error('❌ Failed to parse JSON response');
+      console.error('Response was:', responseText);
+      throw new Error(`n8n returned invalid JSON. Response: ${responseText.substring(0, 100)}...`);
+    }
+    
+    // Validate response structure
+    if (!result.success) {
+      throw new Error(`n8n scan failed: ${result.message || 'Unknown error'}`);
+    }
+    
+    console.log(`✅ n8n scan completed successfully!`);
+    console.log(`   - Scanned: ${result.totalScanned} pages`);
+    console.log(`   - Found: ${result.totalIssues} issues`);
+    console.log(`   - Critical: ${result.criticalCount}`);
     
     return result;
     
@@ -58,10 +95,11 @@ export async function triggerN8nScan(
     console.error('❌ Failed to trigger n8n scan:', error);
     
     if (error instanceof Error) {
-      throw new Error(`Failed to trigger n8n scan: ${error.message}`);
+      // Re-throw with more context
+      throw new Error(`n8n scan failed: ${error.message}`);
     }
     
-    throw new Error('Failed to trigger n8n scan: Unknown error');
+    throw new Error('n8n scan failed: Unknown error');
   }
 }
 

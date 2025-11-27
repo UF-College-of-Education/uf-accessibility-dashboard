@@ -8,7 +8,7 @@ import { ChevronDown, ChevronUp, AlertCircle } from 'lucide-react';
 
 interface Props {
   onSelectSites: (sites: Site[], pageCount: number) => void;
-  onRealScan: (sites: Site[], pageCount: number) => void;
+  onRealScan?: (sites: Site[], pageCount: number) => Promise<any>; // ✅ CHANGED: Returns Promise
   isRealScanRunning?: boolean;
   realScanMessage?: string;
 }
@@ -138,9 +138,15 @@ export default function SiteSelector({
     onSelectSites(selectedSitesWithPages, totalPages);
   }
 
-  function handleRealScan() {
+  // ✅ UPDATED: handleRealScan now returns the Promise
+  async function handleRealScan() {
     if (totalPages === 0) {
       alert('Please select at least one page');
+      return;
+    }
+
+    if (!onRealScan) {
+      alert('Real scan is not available');
       return;
     }
 
@@ -161,7 +167,14 @@ export default function SiteSelector({
       }
     });
 
-    onRealScan(selectedSitesWithPages, totalPages);
+    try {
+      // ✅ CHANGED: Call onRealScan and await the result
+      const result = await onRealScan(selectedSitesWithPages, totalPages);
+      return result;
+    } catch (error) {
+      console.error('Error in handleRealScan:', error);
+      throw error;
+    }
   }
 
   const filteredSites = sites.filter(site =>
