@@ -1,0 +1,75 @@
+{
+  "url": "https://education.ufl.edu/news/all-news/",
+  "timestamp": "2025-11-25T20:51:36.091Z",
+  "scannedBy": "n8n-test-scanner",
+  "pageTitle": "All News",
+  "issues": [
+    {
+      "id": "color-contrast",
+      "impact": "serious",
+      "description": "Elements must have sufficient color contrast",
+      "help": "Ensure contrast ratio meets WCAG AA (4.5:1)",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.4/color-contrast",
+      "tags": [
+        "wcag2aa",
+        "wcag143"
+      ],
+      "nodes": [
+        {
+          "html": "<a href=\"#\">Link text</a>",
+          "target": [
+            ".main-nav a"
+          ],
+          "failureSummary": "Fix any of: Element has insufficient color contrast of 3.2:1"
+        }
+      ]
+    },
+    {
+      "id": "image-alt",
+      "impact": "critical",
+      "description": "Images must have alternate text",
+      "help": "Images must have alt text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.4/image-alt",
+      "tags": [
+        "wcag2a",
+        "wcag111"
+      ],
+      "nodes": [
+        {
+          "html": "<img src=\"banner.jpg\">",
+          "target": [
+            "img.banner"
+          ],
+          "failureSummary": "Fix any of: Element does not have an alt attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Links must have discernible text",
+      "help": "Ensure links have text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.4/link-name",
+      "tags": [
+        "wcag2a",
+        "wcag412"
+      ],
+      "nodes": [
+        {
+          "html": "<a href=\"/page\"></a>",
+          "target": [
+            ".footer a"
+          ],
+          "failureSummary": "Fix any of: Element is in tab order and does not have accessible text"
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "critical": 1,
+    "serious": 2,
+    "moderate": 0,
+    "minor": 0
+  },
+  "success": true
+}
