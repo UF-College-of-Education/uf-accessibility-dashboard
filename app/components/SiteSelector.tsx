@@ -1,405 +1,466 @@
 // app/components/SiteSelector.tsx
+// Updated to add "View Latest Data" button while keeping existing interface
 
 'use client';
 
 import { useState, useEffect } from 'react';
-import { fetchSites, Site } from './DataService';
-import { ChevronDown, ChevronUp, AlertCircle, Gauge, Rocket } from 'lucide-react';
+import { Site, fetchSites } from './DataService';
+import { 
+  ChevronDown, 
+  ChevronUp, 
+  CheckSquare, 
+  Square, 
+  Gauge, 
+  Rocket,
+  Database,
+  AlertCircle,
+  Loader2,
+  Calendar
+} from 'lucide-react';
+import { hasScanData, getLastScanDate } from './LatestDataService';
+import LatestDataModal from './LatestDataModal';
 
 interface Props {
   onSelectSites: (sites: Site[], pageCount: number) => void;
-  onRealScan?: (sites: Site[], pageCount: number) => Promise<any>;
-  isRealScanRunning?: boolean;
-  realScanMessage?: string;
-}
-
-interface SelectedPages {
-  [siteId: string]: Set<string>;
+  onRealScan: (sites: Site[], pageCount: number) => void;
+  isRealScanRunning: boolean;
+  realScanMessage: string;
 }
 
 export default function SiteSelector({ 
   onSelectSites, 
   onRealScan,
-  isRealScanRunning = false,
-  realScanMessage = ''
+  isRealScanRunning,
+  realScanMessage
 }: Props) {
   const [sites, setSites] = useState<Site[]>([]);
-  const [selectedPages, setSelectedPages] = useState<SelectedPages>({});
-  const [expandedSite, setExpandedSite] = useState<string | null>(null);
+  const [expandedSites, setExpandedSites] = useState<Set<string>>(new Set());
+  const [selectedPages, setSelectedPages] = useState<Map<string, Set<string>>>(new Map());
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [totalPages, setTotalPages] = useState(0);
-  const [searchTerm, setSearchTerm] = useState('');
+  
+  // View Latest Data state
+  const [hasLatestData, setHasLatestData] = useState<boolean>(false);
+  const [lastScanDate, setLastScanDate] = useState<string | null>(null);
+  const [checkingData, setCheckingData] = useState<boolean>(true);
+  const [showLatestDataModal, setShowLatestDataModal] = useState(false);
 
   useEffect(() => {
-    loadSites();
-  }, []);
-
-  async function loadSites() {
-    try {
+    async function loadData() {
       setLoading(true);
-      setError(null);
-      const data = await fetchSites();
-      setSites(data);
-      if (data.length === 0) {
-        setError('No sites found. Please try again later.');
-      }
-    } catch (err) {
-      setError('Failed to load sites. Please check your connection.');
-      console.error(err);
-    } finally {
+      const fetchedSites = await fetchSites();
+      setSites(fetchedSites);
       setLoading(false);
     }
-  }
+    loadData();
+  }, []);
 
-  function togglePage(siteId: string, pageUrl: string) {
-    setSelectedPages(prev => {
-      const sitePagesSet = new Set(prev[siteId] || []);
-      if (sitePagesSet.has(pageUrl)) {
-        sitePagesSet.delete(pageUrl);
-      } else {
-        sitePagesSet.add(pageUrl);
+  // Check if scan data exists
+  useEffect(() => {
+    async function checkData() {
+      setCheckingData(true);
+      try {
+        const exists = await hasScanData();
+        setHasLatestData(exists);
+        
+        if (exists) {
+          const date = await getLastScanDate();
+          setLastScanDate(date);
+        }
+      } catch (error) {
+        console.error('Error checking scan data:', error);
+        setHasLatestData(false);
+      } finally {
+        setCheckingData(false);
       }
-      const updated = { ...prev };
-      if (sitePagesSet.size === 0) {
-        delete updated[siteId];
-      } else {
-        updated[siteId] = sitePagesSet;
-      }
-      updatePageCount(updated);
-      return updated;
-    });
-  }
+    }
+    
+    checkData();
+  }, []);
 
-  function toggleSitePages(siteId: string, allPages: string[]) {
-    setSelectedPages(prev => {
-      const sitePagesSet = new Set(prev[siteId] || []);
-      const allPageUrls = new Set(allPages);
-      const shouldSelectAll = sitePagesSet.size !== allPageUrls.size;
-      
-      const updated = { ...prev };
-      if (shouldSelectAll) {
-        updated[siteId] = new Set(allPages);
-      } else {
-        delete updated[siteId];
-      }
-      updatePageCount(updated);
-      return updated;
-    });
-  }
+  const toggleSite = (siteId: string) => {
+    const newExpanded = new Set(expandedSites);
+    if (newExpanded.has(siteId)) {
+      newExpanded.delete(siteId);
+    } else {
+      newExpanded.add(siteId);
+    }
+    setExpandedSites(newExpanded);
+  };
 
-  function updatePageCount(pages: SelectedPages) {
-    let count = 0;
-    Object.values(pages).forEach(pageSet => {
-      count += pageSet.size;
-    });
-    setTotalPages(count);
-  }
+  const togglePage = (siteId: string, pageUrl: string) => {
+    const newSelected = new Map(selectedPages);
+    const sitePages = newSelected.get(siteId) || new Set();
+    
+    if (sitePages.has(pageUrl)) {
+      sitePages.delete(pageUrl);
+    } else {
+      sitePages.add(pageUrl);
+    }
+    
+    newSelected.set(siteId, sitePages);
+    setSelectedPages(newSelected);
+  };
 
-  function handleSelectAllPages() {
-    const newSelection: SelectedPages = {};
+  const toggleAllPagesInSite = (site: Site) => {
+    const newSelected = new Map(selectedPages);
+    const sitePages = newSelected.get(site.id) || new Set();
+    
+    if (sitePages.size === site.pages.length) {
+      newSelected.set(site.id, new Set());
+    } else {
+      newSelected.set(site.id, new Set(site.pages.map(p => p.url)));
+    }
+    
+    setSelectedPages(newSelected);
+  };
+
+  const selectAll = () => {
+    const newSelected = new Map<string, Set<string>>();
     sites.forEach(site => {
-      newSelection[site.id] = new Set(site.pages.map(p => p.url));
+      newSelected.set(site.id, new Set(site.pages.map(p => p.url)));
     });
-    setSelectedPages(newSelection);
-    updatePageCount(newSelection);
-  }
+    setSelectedPages(newSelected);
+  };
 
-  function handleClearAll() {
-    setSelectedPages({});
-    setTotalPages(0);
-  }
+  const deselectAll = () => {
+    setSelectedPages(new Map());
+  };
 
-  function handleLighthouseScore() {
-    if (totalPages === 0) {
-      alert('Please select at least one page');
-      return;
-    }
+  const getSelectedCount = () => {
+    let count = 0;
+    selectedPages.forEach(pages => {
+      count += pages.size;
+    });
+    return count;
+  };
 
-    const selectedSitesWithPages: Site[] = [];
+  const getSelectedSites = (): Site[] => {
+    const result: Site[] = [];
     
-    Object.entries(selectedPages).forEach(([siteId, pageUrls]) => {
-      const site = sites.find(s => s.id === siteId);
-      if (site) {
-        const selectedPagesList = Array.from(pageUrls).map(url => 
-          site.pages.find(p => p.url === url)
-        ).filter(Boolean) as typeof site.pages;
-        
-        selectedSitesWithPages.push({
+    sites.forEach(site => {
+      const selectedPageUrls = selectedPages.get(site.id);
+      if (selectedPageUrls && selectedPageUrls.size > 0) {
+        const filteredSite: Site = {
           ...site,
-          pages: selectedPagesList
+          pages: site.pages.filter(p => selectedPageUrls.has(p.url))
+        };
+        result.push(filteredSite);
+      }
+    });
+    
+    return result;
+  };
+
+  const getSelectedDataWithDetails = () => {
+    const result: { siteId: string; siteBaseUrl: string; pages: { url: string; title: string }[] }[] = [];
+    
+    sites.forEach(site => {
+      const selectedPageUrls = selectedPages.get(site.id);
+      if (selectedPageUrls && selectedPageUrls.size > 0) {
+        const pages = site.pages
+          .filter(p => selectedPageUrls.has(p.url))
+          .map(p => ({ url: p.url, title: p.title }));
+        
+        result.push({ 
+          siteId: site.id, 
+          siteBaseUrl: site.baseUrl,
+          pages 
         });
       }
     });
-
-    onSelectSites(selectedSitesWithPages, totalPages);
-  }
-
-  async function handleRealScan() {
-    if (totalPages === 0) {
-      alert('Please select at least one page');
-      return;
-    }
-
-    if (!onRealScan) {
-      alert('Real scan is not available');
-      return;
-    }
-
-    const selectedSitesWithPages: Site[] = [];
     
-    Object.entries(selectedPages).forEach(([siteId, pageUrls]) => {
-      const site = sites.find(s => s.id === siteId);
-      if (site) {
-        const selectedPagesList = Array.from(pageUrls).map(url => 
-          site.pages.find(p => p.url === url)
-        ).filter(Boolean) as typeof site.pages;
-        
-        selectedSitesWithPages.push({
-          ...site,
-          pages: selectedPagesList
-        });
-      }
-    });
+    return result;
+  };
 
+  const handleRunLighthouse = () => {
+    const selectedSites = getSelectedSites();
+    const pageCount = getSelectedCount();
+    onSelectSites(selectedSites, pageCount);
+  };
+
+  const handleRunRealScan = () => {
+    const selectedSites = getSelectedSites();
+    const pageCount = getSelectedCount();
+    onRealScan(selectedSites, pageCount);
+  };
+
+  const handleViewLatestData = () => {
+    setShowLatestDataModal(true);
+  };
+
+  const selectedCount = getSelectedCount();
+  const totalPages = sites.reduce((sum, site) => sum + site.pages.length, 0);
+
+  const formatLastScan = (dateStr: string | null) => {
+    if (!dateStr) return 'Never';
     try {
-      const result = await onRealScan(selectedSitesWithPages, totalPages);
-      return result;
-    } catch (error) {
-      console.error('Error in handleRealScan:', error);
-      throw error;
+      const date = new Date(dateStr);
+      return date.toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+        hour: 'numeric',
+        minute: '2-digit',
+      });
+    } catch {
+      return 'Unknown';
     }
-  }
-
-  const filteredSites = sites.filter(site =>
-    site.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    site.baseUrl.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  };
 
   if (loading) {
     return (
-      <div className="p-8 bg-white rounded-lg shadow-lg text-center">
-        <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-        <p className="text-gray-600 mt-4">Loading sites...</p>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="p-6 bg-red-50 border border-red-200 rounded-lg">
-        <div className="flex items-center gap-3">
-          <AlertCircle className="text-red-600" size={24} />
-          <div>
-            <h3 className="font-semibold text-red-900">Error Loading Sites</h3>
-            <p className="text-red-700 text-sm">{error}</p>
-            <button
-              onClick={loadSites}
-              className="mt-2 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
-            >
-              Try Again
-            </button>
-          </div>
-        </div>
+      <div className="flex items-center justify-center py-12">
+        <Loader2 className="animate-spin text-blue-600" size={32} />
+        <span className="ml-3 text-gray-600">Loading sites...</span>
       </div>
     );
   }
 
   return (
-    <div className="p-6 bg-white rounded-lg shadow-lg">
-      <div className="mb-6">
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">Select Pages to Audit</h2>
-        <p className="text-gray-600 text-sm">Choose specific pages from each site for accessibility checks</p>
-      </div>
-
-      {/* Stats */}
-      <div className="grid grid-cols-3 gap-4 mb-6">
-        <div className="bg-blue-50 p-4 rounded border border-blue-200">
-          <div className="text-2xl font-bold text-blue-600">{sites.length}</div>
-          <div className="text-sm text-gray-600">Total Sites</div>
-        </div>
-        <div className="bg-green-50 p-4 rounded border border-green-200">
-          <div className="text-2xl font-bold text-green-600">{Object.keys(selectedPages).length}</div>
-          <div className="text-sm text-gray-600">Sites Selected</div>
-        </div>
-        <div className="bg-purple-50 p-4 rounded border border-purple-200">
-          <div className="text-2xl font-bold text-purple-600">{totalPages}</div>
-          <div className="text-sm text-gray-600">Pages Selected</div>
-        </div>
-      </div>
-
-      {/* Search */}
-      <div className="mb-6">
-        <input
-          type="text"
-          placeholder="Search sites by name or URL..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
-        />
-      </div>
-
-      {/* Quick Actions */}
-      <div className="flex gap-2 mb-6">
-        <button
-          onClick={handleSelectAllPages}
-          className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-lg font-semibold transition"
-        >
-          Select All Pages
-        </button>
-        <button
-          onClick={handleClearAll}
-          className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-lg font-semibold transition"
-        >
-          Clear All
-        </button>
-      </div>
-
-      {/* Warning */}
-      {totalPages > 50 && (
-        <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-          <p className="text-yellow-800 font-semibold">
-            ⚠️ Warning: You selected {totalPages} pages (max recommended: 50)
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex justify-between items-center">
+        <div>
+          <h2 className="text-2xl font-bold text-gray-900">Select Pages to Audit</h2>
+          <p className="text-gray-600">
+            {selectedCount} of {totalPages} pages selected
           </p>
-          <p className="text-yellow-700 text-sm mt-1">
-            Large audits may take 30+ minutes
+        </div>
+        <div className="flex gap-2">
+          <button
+            onClick={selectAll}
+            className="px-3 py-1.5 text-sm bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition"
+          >
+            Select All
+          </button>
+          <button
+            onClick={deselectAll}
+            className="px-3 py-1.5 text-sm bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition"
+          >
+            Deselect All
+          </button>
+        </div>
+      </div>
+
+      {/* Real Scan Status Message */}
+      {realScanMessage && (
+        <div className={`p-4 rounded-lg ${
+          realScanMessage.includes('❌') ? 'bg-red-50 border border-red-200' :
+          realScanMessage.includes('✅') ? 'bg-green-50 border border-green-200' :
+          'bg-blue-50 border border-blue-200'
+        }`}>
+          <p className={`font-medium ${
+            realScanMessage.includes('❌') ? 'text-red-800' :
+            realScanMessage.includes('✅') ? 'text-green-800' :
+            'text-blue-800'
+          }`}>
+            {realScanMessage}
           </p>
+        </div>
+      )}
+
+      {/* Last Scan Info */}
+      {!checkingData && hasLatestData && (
+        <div className="flex items-center gap-2 p-3 bg-green-50 border border-green-200 rounded-lg text-sm">
+          <Calendar size={16} className="text-green-600" />
+          <span className="text-green-800">
+            Latest scan data available from: <strong>{formatLastScan(lastScanDate)}</strong>
+          </span>
         </div>
       )}
 
       {/* Sites List */}
-      <div className="space-y-3 max-h-[500px] overflow-y-auto border rounded-lg p-4 bg-gray-50 mb-6">
-        {filteredSites.length === 0 ? (
-          <div className="text-center py-8 text-gray-500">
-            {searchTerm ? 'No sites match your search' : 'No sites available'}
-          </div>
-        ) : (
-          filteredSites.map(site => {
-            const sitePages = selectedPages[site.id] || new Set();
-            const isSiteExpanded = expandedSite === site.id;
-            const allPagesSelected = sitePages.size === site.pages.length;
+      <div className="space-y-3 max-h-[400px] overflow-y-auto pr-2">
+        {sites.map(site => {
+          const isExpanded = expandedSites.has(site.id);
+          const siteSelectedPages = selectedPages.get(site.id) || new Set();
+          const allSelected = siteSelectedPages.size === site.pages.length && site.pages.length > 0;
+          const someSelected = siteSelectedPages.size > 0 && !allSelected;
 
-            return (
-              <div key={site.id} className="border rounded-lg bg-white overflow-hidden hover:shadow-md transition">
-                <div
-                  className="flex items-center gap-3 p-4 hover:bg-blue-50 cursor-pointer transition"
-                  onClick={() => setExpandedSite(isSiteExpanded ? null : site.id)}
+          return (
+            <div key={site.id} className="border rounded-lg overflow-hidden bg-white">
+              <div className="flex items-center p-3 bg-gray-50 hover:bg-gray-100 transition">
+                <button
+                  onClick={() => toggleAllPagesInSite(site)}
+                  className="mr-3 text-blue-600 hover:text-blue-800"
                 >
-                  <div className="flex items-center gap-2 flex-1">
-                    <div className="text-sm font-semibold text-gray-600">
-                      {sitePages.size}/{site.pages.length}
+                  {allSelected ? (
+                    <CheckSquare size={20} />
+                  ) : someSelected ? (
+                    <div className="relative">
+                      <Square size={20} />
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="w-2 h-2 bg-blue-600 rounded-sm"></div>
+                      </div>
                     </div>
-                    <div className="flex-1">
-                      <div className="font-semibold text-gray-900">{site.title}</div>
-                      <div className="text-xs text-gray-600">{site.baseUrl}</div>
-                    </div>
+                  ) : (
+                    <Square size={20} />
+                  )}
+                </button>
+                
+                <div 
+                  className="flex-1 cursor-pointer"
+                  onClick={() => toggleSite(site.id)}
+                >
+                  <div className="font-medium text-gray-900">{site.title}</div>
+                  <div className="text-sm text-gray-600">
+                    {site.baseUrl} • {site.pages.length} pages
+                    {siteSelectedPages.size > 0 && (
+                      <span className="text-blue-600 ml-2">
+                        ({siteSelectedPages.size} selected)
+                      </span>
+                    )}
                   </div>
-                  {isSiteExpanded ? <ChevronUp size={24} className="text-gray-600" /> : <ChevronDown size={24} className="text-gray-600" />}
                 </div>
+                
+                <button
+                  onClick={() => toggleSite(site.id)}
+                  className="p-1 text-gray-500 hover:text-gray-700"
+                >
+                  {isExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                </button>
+              </div>
 
-                {isSiteExpanded && (
-                  <div className="border-t bg-gray-50 p-4">
-                    <div className="mb-3 flex gap-2">
-                      <button
-                        onClick={() => toggleSitePages(site.id, site.pages.map(p => p.url))}
-                        className={`px-3 py-1 rounded text-sm font-semibold transition ${
-                          allPagesSelected ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
+              {isExpanded && (
+                <div className="border-t divide-y max-h-[300px] overflow-y-auto">
+                  {site.pages.map((page, idx) => {
+                    const isSelected = siteSelectedPages.has(page.url);
+                    
+                    return (
+                      <div
+                        key={idx}
+                        onClick={() => togglePage(site.id, page.url)}
+                        className={`flex items-center p-3 cursor-pointer transition ${
+                          isSelected ? 'bg-blue-50' : 'hover:bg-gray-50'
                         }`}
                       >
-                        {allPagesSelected ? 'Deselect All' : 'Select All'}
-                      </button>
-                    </div>
-
-                    <div className="space-y-2 max-h-64 overflow-y-auto">
-                      {site.pages.map((page, idx) => {
-                        const isPageSelected = sitePages.has(page.url);
-                        return (
-                          <label
-                            key={idx}
-                            className="flex items-center gap-3 p-2 hover:bg-white rounded cursor-pointer transition"
-                          >
-                            <input
-                              type="checkbox"
-                              checked={isPageSelected}
-                              onChange={() => togglePage(site.id, page.url)}
-                              className="w-4 h-4 cursor-pointer accent-blue-600"
-                            />
-                            <div className="flex-1 min-w-0">
-                              <div className="text-sm text-gray-900 truncate">{page.title || page.path}</div>
-                              <div className="text-xs text-gray-500 truncate">{page.url}</div>
-                            </div>
-                          </label>
-                        );
-                      })}
-                    </div>
-                  </div>
-                )}
-              </div>
-            );
-          })
-        )}
-      </div>
-
-      {/* Buttons */}
-      <div className="grid grid-cols-2 gap-3 mb-4">
-        <button
-          onClick={handleLighthouseScore}
-          disabled={totalPages === 0 || isRealScanRunning}
-          className={`py-4 px-4 rounded-lg font-semibold text-white transition text-lg flex flex-col items-center justify-center gap-1 ${
-            totalPages === 0 || isRealScanRunning
-              ? 'bg-gray-400 cursor-not-allowed'
-              : 'bg-blue-600 hover:bg-blue-700 active:bg-blue-800 shadow-md'
-          }`}
-        >
-          <div className="flex items-center gap-2">
-            <Gauge size={24} />
-            <span>Lighthouse Score</span>
-          </div>
-          <div className="text-xs font-normal opacity-90">Performance metrics</div>
-        </button>
-
-        <button
-          onClick={handleRealScan}
-          disabled={totalPages === 0 || isRealScanRunning}
-          className={`py-4 px-4 rounded-lg font-semibold text-white transition text-lg flex flex-col items-center justify-center gap-1 ${
-            totalPages === 0 || isRealScanRunning
-              ? 'bg-gray-400 cursor-not-allowed'
-              : 'bg-green-600 hover:bg-green-700 active:bg-green-800 shadow-md'
-          }`}
-        >
-          <div className="flex items-center gap-2">
-            <Rocket size={24} />
-            <span>{isRealScanRunning ? 'Scanning...' : 'Real Scan'}</span>
-          </div>
-          <div className="text-xs font-normal opacity-90">
-            {isRealScanRunning ? 'Please wait...' : 'via n8n + axe-core'}
-          </div>
-        </button>
-      </div>
-
-      {/* Status Message */}
-      {realScanMessage && (
-        <div className="mb-4 p-4 bg-blue-50 border-l-4 border-blue-500 rounded">
-          <p className="text-blue-900 font-semibold">{realScanMessage}</p>
-          {isRealScanRunning && (
-            <div className="mt-2">
-              <div className="w-full bg-blue-200 rounded-full h-2 overflow-hidden">
-                <div className="bg-blue-600 h-2 rounded-full animate-pulse" style={{ width: '60%' }}></div>
-              </div>
+                        <span className="mr-3 text-blue-600">
+                          {isSelected ? <CheckSquare size={18} /> : <Square size={18} />}
+                        </span>
+                        <div className="flex-1 min-w-0">
+                          <div className="font-medium text-gray-800 truncate">{page.title}</div>
+                          <div className="text-xs text-gray-500 truncate">{page.url}</div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
             </div>
-          )}
+          );
+        })}
+      </div>
+
+      {/* Warning for large selection */}
+      {selectedCount > 50 && (
+        <div className="flex items-start gap-2 p-3 bg-yellow-50 border border-yellow-200 rounded-lg text-sm">
+          <AlertCircle size={18} className="text-yellow-600 flex-shrink-0 mt-0.5" />
+          <div className="text-yellow-800">
+            <strong>Large selection:</strong> You've selected {selectedCount} pages. 
+            Real Scan may take a long time. Consider using "View Latest Data" instead.
+          </div>
         </div>
       )}
 
-      {/* Help */}
-      <div className="p-3 bg-gray-50 rounded text-sm text-gray-600 border border-gray-200">
-        <p className="mb-1">
-          <strong className="text-blue-600">Lighthouse Score:</strong> Get performance, SEO, and best practices scores
-        </p>
-        <p>
-          <strong className="text-green-600">Real Scan:</strong> Full accessibility scan with Playwright + axe-core (30-60 sec/page)
-        </p>
+      {/* Action Buttons */}
+      <div className="flex flex-col gap-4">
+        <div className="flex flex-wrap gap-3">
+          {/* Lighthouse Score */}
+          <button
+            onClick={handleRunLighthouse}
+            disabled={selectedCount === 0 || isRealScanRunning}
+            className={`flex-1 min-w-[200px] flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-medium transition ${
+              selectedCount === 0 || isRealScanRunning
+                ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
+                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+            }`}
+          >
+            <Gauge size={20} />
+            <div className="text-left">
+              <div>Lighthouse Score</div>
+              <div className="text-xs font-normal opacity-75">Performance metrics</div>
+            </div>
+          </button>
+
+          {/* Real Scan */}
+          <button
+            onClick={handleRunRealScan}
+            disabled={selectedCount === 0 || isRealScanRunning}
+            className={`flex-1 min-w-[200px] flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-medium transition ${
+              selectedCount === 0 || isRealScanRunning
+                ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
+                : 'bg-blue-600 text-white hover:bg-blue-700'
+            }`}
+          >
+            {isRealScanRunning ? (
+              <Loader2 size={20} className="animate-spin" />
+            ) : (
+              <Rocket size={20} />
+            )}
+            <div className="text-left">
+              <div>{isRealScanRunning ? 'Scanning...' : 'Real Scan'}</div>
+              <div className="text-xs font-normal opacity-75">
+                {isRealScanRunning ? 'Please wait' : 'Requires n8n (local)'}
+              </div>
+            </div>
+          </button>
+
+          {/* View Latest Data - NEW */}
+          <button
+            onClick={handleViewLatestData}
+            disabled={selectedCount === 0 || isRealScanRunning || checkingData}
+            className={`flex-1 min-w-[200px] flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-medium transition ${
+              selectedCount === 0 || isRealScanRunning || checkingData
+                ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
+                : hasLatestData
+                  ? 'bg-purple-600 text-white hover:bg-purple-700'
+                  : 'bg-purple-100 text-purple-700 hover:bg-purple-200'
+            }`}
+          >
+            {checkingData ? (
+              <Loader2 size={20} className="animate-spin" />
+            ) : (
+              <Database size={20} />
+            )}
+            <div className="text-left">
+              <div>{checkingData ? 'Checking...' : 'View Latest Data'}</div>
+              <div className="text-xs font-normal opacity-75">
+                {checkingData 
+                  ? 'Please wait' 
+                  : hasLatestData 
+                    ? 'Pre-scanned results' 
+                    : 'No data yet'
+                }
+              </div>
+            </div>
+          </button>
+        </div>
+
+        {/* Help Text */}
+        <div className="text-sm text-gray-600 bg-gray-50 p-3 rounded-lg">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+            <div>
+              <strong className="text-gray-700">Lighthouse Score:</strong>
+              <br />Performance, SEO metrics
+            </div>
+            <div>
+              <strong className="text-gray-700">Real Scan:</strong>
+              <br />Full a11y scan (needs n8n locally)
+            </div>
+            <div>
+              <strong className="text-gray-700">View Latest Data:</strong>
+              <br />Pre-scanned results (works for everyone)
+            </div>
+          </div>
+        </div>
       </div>
+
+      {/* Latest Data Modal */}
+      <LatestDataModal
+        isOpen={showLatestDataModal}
+        onClose={() => setShowLatestDataModal(false)}
+        selectedPages={getSelectedDataWithDetails()}
+      />
     </div>
   );
 }
