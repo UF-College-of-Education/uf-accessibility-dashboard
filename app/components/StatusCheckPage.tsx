@@ -22,7 +22,9 @@ import {
   Save,
   MessageSquare,
   Upload,
-  Check
+  Check,
+  Cloud,
+  CloudOff
 } from 'lucide-react';
 import { 
   PageStatusType,
@@ -37,8 +39,11 @@ import {
   exportAllPagesToSheet,
   isGoogleSheetsConfigured,
   getLastSyncTime,
+  setLastSyncTime,
   addTeamMember as addTeamMemberService,
-  removeTeamMember as removeTeamMemberService
+  removeTeamMember as removeTeamMemberService,
+  fetchAllDataFromSheet,
+  mergeSheetDataIntoLocal
 } from './GoogleSheetsService';
 
 interface Props {
@@ -59,9 +64,10 @@ export default function StatusCheckPage({ sites }: Props) {
   const [newMemberName, setNewMemberName] = useState('');
   const [showAddMember, setShowAddMember] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [lastSyncTime, setLastSyncTime] = useState<string>('');
+  const [lastSyncTime, setLastSyncTimeState] = useState<string>('');
   const [exporting, setExporting] = useState(false);
   const [exportSuccess, setExportSuccess] = useState(false);
+  const [cloudStatus, setCloudStatus] = useState<'loading' | 'connected' | 'offline'>('loading');
   
   // Notes popup state
   const [notesPopup, setNotesPopup] = useState<{
@@ -79,30 +85,79 @@ export default function StatusCheckPage({ sites }: Props) {
     scanData: ScanResultData | null;
   }>({ isOpen: false, pageUrl: '', pageTitle: '', scanData: null });
 
-  // Load data on mount
+  // ⭐ AUTO-LOAD FROM GOOGLE SHEETS ON MOUNT
   useEffect(() => {
-    loadAllData();
+    loadDataFromCloud();
   }, []);
 
-  function loadAllData() {
+  /**
+   * ⭐ NEW: Load data from Google Sheets first, then merge with local
+   * This ensures everyone sees the same data!
+   */
+  async function loadDataFromCloud() {
     setLoading(true);
+    setCloudStatus('loading');
+
     try {
+      // First, try to fetch from Google Sheets
+      const sheetData = await fetchAllDataFromSheet();
+      
+      if (sheetData.success && Object.keys(sheetData.statuses).length > 0) {
+        console.log('✅ Cloud data loaded:', Object.keys(sheetData.statuses).length, 'pages');
+        
+        // Merge sheet data into localStorage (sheet takes precedence)
+        mergeSheetDataIntoLocal(sheetData.statuses);
+        
+        // Update team members if we got any from sheet
+        if (sheetData.teamMembers && sheetData.teamMembers.length > 0) {
+          const members = sheetData.teamMembers.map(name => ({
+            name,
+            email: '',
+            role: 'Team Member'
+          }));
+          // Merge with existing
+          const existing = getTeamMembersLocal();
+          const allNames = new Set([...existing.map(m => m.name), ...sheetData.teamMembers]);
+          const mergedMembers = Array.from(allNames).map(name => ({
+            name,
+            email: '',
+            role: 'Team Member'
+          }));
+          saveTeamMembersLocal(mergedMembers);
+        }
+        
+        setCloudStatus('connected');
+        setLastSyncTime();
+      } else {
+        console.log('ℹ️ No cloud data or not configured, using local');
+        setCloudStatus('offline');
+      }
+      
+      // Now load from localStorage (which may have been updated with sheet data)
       const statuses = getAllPageStatusesLocal();
       const members = getTeamMembersLocal();
       const lastSync = getLastSyncTime();
 
       setPageStatuses(statuses);
       setTeamMembers(members);
-      setLastSyncTime(lastSync ? new Date(lastSync).toLocaleString() : 'Never');
+      setLastSyncTimeState(lastSync ? new Date(lastSync).toLocaleString() : 'Never');
+      
     } catch (error) {
       console.error('Error loading data:', error);
+      setCloudStatus('offline');
+      
+      // Fall back to local data
+      const statuses = getAllPageStatusesLocal();
+      const members = getTeamMembersLocal();
+      setPageStatuses(statuses);
+      setTeamMembers(members);
     } finally {
       setLoading(false);
     }
   }
 
-  function handleRefresh() {
-    loadAllData();
+  async function handleRefresh() {
+    await loadDataFromCloud();
   }
 
   // Export ALL pages to Google Sheets
@@ -115,7 +170,8 @@ export default function StatusCheckPage({ sites }: Props) {
       
       if (result.success) {
         setExportSuccess(true);
-        setLastSyncTime(new Date().toLocaleString());
+        setLastSyncTimeState(new Date().toLocaleString());
+        setCloudStatus('connected');
         setTimeout(() => setExportSuccess(false), 3000);
         alert(`✅ Successfully exported ${result.pagesExported} pages to Google Sheets!`);
       } else {
@@ -282,9 +338,10 @@ export default function StatusCheckPage({ sites }: Props) {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center p-12">
+      <div className="flex flex-col items-center justify-center p-12">
         <Loader2 className="animate-spin text-blue-600" size={40} />
-        <span className="ml-3 text-gray-600">Loading...</span>
+        <span className="mt-3 text-gray-600">Loading from Google Sheets...</span>
+        <span className="text-sm text-gray-400 mt-1">Syncing latest data...</span>
       </div>
     );
   }
@@ -297,17 +354,38 @@ export default function StatusCheckPage({ sites }: Props) {
           📊 Status Check
         </h2>
         <p className="text-gray-600 mt-1">Track completion status for all sites and pages</p>
+        
+        {/* Sync Controls */}
         <div className="flex items-center justify-center gap-3 mt-3 flex-wrap">
+          {/* Cloud Status Indicator */}
+          <span className={`flex items-center gap-1 text-sm ${
+            cloudStatus === 'connected' ? 'text-green-600' :
+            cloudStatus === 'loading' ? 'text-blue-600' : 'text-gray-500'
+          }`}>
+            {cloudStatus === 'connected' ? (
+              <><Cloud size={14} /> Connected</>
+            ) : cloudStatus === 'loading' ? (
+              <><Loader2 size={14} className="animate-spin" /> Syncing...</>
+            ) : (
+              <><CloudOff size={14} /> Offline</>
+            )}
+          </span>
+          
+          <span className="text-gray-300">|</span>
+          
           <span className="text-sm text-gray-500">
             Last sync: {lastSyncTime}
           </span>
+          
           <button
             onClick={handleRefresh}
-            className="flex items-center gap-2 px-3 py-1 text-sm bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition"
+            disabled={loading}
+            className="flex items-center gap-2 px-3 py-1 text-sm bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition disabled:opacity-50"
           >
-            <RefreshCw size={14} />
+            <RefreshCw size={14} className={loading ? 'animate-spin' : ''} />
             Refresh
           </button>
+          
           <button
             onClick={handleExportToSheet}
             disabled={exporting}
@@ -326,6 +404,7 @@ export default function StatusCheckPage({ sites }: Props) {
             )}
             {exporting ? 'Exporting...' : exportSuccess ? 'Exported!' : 'Export to Sheet'}
           </button>
+          
           <a
             href="https://docs.google.com/spreadsheets/d/1ntgfO0PeVULOCA-Q1eLfoEJwW-izHlPpP1FvWvVk2UM/edit"
             target="_blank"
@@ -337,10 +416,16 @@ export default function StatusCheckPage({ sites }: Props) {
           </a>
         </div>
         
-        {/* Sync Status */}
+        {/* Sync Status Messages */}
         {!isConfigured && (
           <div className="mt-3 p-2 bg-yellow-50 border border-yellow-200 rounded-lg text-sm text-yellow-800 max-w-2xl mx-auto">
-            ⚠️ Google Sheets sync not configured. Add <code className="bg-yellow-100 px-1 rounded">NEXT_PUBLIC_GOOGLE_SCRIPT_URL</code> to .env.local
+            ⚠️ Google Sheets sync not configured. Add <code className="bg-yellow-100 px-1 rounded">NEXT_PUBLIC_GOOGLE_SCRIPT_URL</code> to Vercel Environment Variables
+          </div>
+        )}
+        
+        {cloudStatus === 'connected' && (
+          <div className="mt-3 p-2 bg-green-50 border border-green-200 rounded-lg text-sm text-green-800 max-w-2xl mx-auto">
+            ✅ Connected to Google Sheets - All users see the same data
           </div>
         )}
       </div>
