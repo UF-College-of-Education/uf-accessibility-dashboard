@@ -301,7 +301,7 @@ export default function Home() {
           allPages.push({ 
             url: page.url, 
             title: page.title,
-            site: site.name 
+            site: site.title 
           });
         }
       }
