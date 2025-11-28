@@ -6,10 +6,10 @@
  * This service handles:
  * 1. Exporting ALL pages from dashboard to Google Sheets
  * 2. Syncing status changes from website to sheet
- * 3. Reading status from sheet back to website
+ * 3. Reading status from sheet back to website (AUTO-LOAD ON PAGE OPEN)
  * 
  * SETUP REQUIRED:
- * Add to .env.local:
+ * Add to .env.local AND Vercel Environment Variables:
  * NEXT_PUBLIC_GOOGLE_SCRIPT_URL=your_web_app_url_here
  */
 
@@ -43,7 +43,12 @@ const STATUS_MAP_FROM_SHEET: Record<string, PageStatusType> = {
   'Not Started': 'not-started',
   'Working on it': 'working',
   'Facing Issues': 'issues',
-  'Completed': 'completed'
+  'Completed': 'completed',
+  // Also handle lowercase variants
+  'not started': 'not-started',
+  'working on it': 'working',
+  'facing issues': 'issues',
+  'completed': 'completed',
 };
 
 export const STATUS_OPTIONS: { value: PageStatusType; label: string; color: string; bgColor: string }[] = [
@@ -120,6 +125,160 @@ const STORAGE_KEYS = {
  */
 export function isGoogleSheetsConfigured(): boolean {
   return Boolean(GOOGLE_SCRIPT_URL);
+}
+
+/**
+ * ⭐ NEW: Fetch ALL data from Google Sheets on page load
+ * This is the key function that enables sharing data between users!
+ */
+export async function fetchAllDataFromSheet(): Promise<{
+  success: boolean;
+  statuses: Record<string, { status: PageStatusType; assignedTo: string; notes: string }>;
+  teamMembers: string[];
+  error?: string;
+}> {
+  if (!GOOGLE_SCRIPT_URL) {
+    console.log('Google Sheets not configured, using local data only');
+    return { success: false, statuses: {}, teamMembers: [], error: 'Not configured' };
+  }
+
+  try {
+    // Use the Apps Script to fetch data (this avoids CORS issues)
+    const response = await fetch(`${GOOGLE_SCRIPT_URL}?action=getAllData&t=${Date.now()}`, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    if (data.success) {
+      console.log('✅ Loaded data from Google Sheets:', data);
+      
+      // Convert sheet data to our format
+      const statuses: Record<string, { status: PageStatusType; assignedTo: string; notes: string }> = {};
+      
+      if (data.pages && Array.isArray(data.pages)) {
+        data.pages.forEach((row: any) => {
+          if (row.url) {
+            statuses[row.url] = {
+              status: STATUS_MAP_FROM_SHEET[row.status] || STATUS_MAP_FROM_SHEET[row.status?.toLowerCase()] || 'not-started',
+              assignedTo: row.assignedTo || '',
+              notes: row.notes || '',
+            };
+          }
+        });
+      }
+
+      return {
+        success: true,
+        statuses,
+        teamMembers: data.teamMembers || [],
+      };
+    }
+
+    return { success: false, statuses: {}, teamMembers: [], error: data.error || 'Unknown error' };
+  } catch (error) {
+    console.error('Error fetching from Google Sheets:', error);
+    
+    // Fallback: Try CSV method
+    console.log('Trying CSV fallback...');
+    const csvStatuses = await fetchStatusesFromSheetCSV();
+    
+    return {
+      success: Object.keys(csvStatuses).length > 0,
+      statuses: csvStatuses,
+      teamMembers: [],
+      error: Object.keys(csvStatuses).length > 0 ? undefined : String(error),
+    };
+  }
+}
+
+/**
+ * Fallback: Read statuses from Google Sheets via published CSV
+ */
+async function fetchStatusesFromSheetCSV(): Promise<Record<string, { status: PageStatusType; assignedTo: string; notes: string }>> {
+  try {
+    // Try to read from published CSV
+    const url = `https://docs.google.com/spreadsheets/d/${STATUS_SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Status&t=${Date.now()}`;
+    
+    const response = await fetch(url, { 
+      cache: 'no-store',
+      headers: {
+        'Accept': 'text/csv',
+      }
+    });
+    
+    if (!response.ok) {
+      console.warn('Could not fetch CSV from Google Sheets');
+      return {};
+    }
+    
+    const csvText = await response.text();
+    
+    // Check if HTML (sheet not published)
+    if (csvText.includes('<!DOCTYPE') || csvText.includes('<html')) {
+      console.warn('Sheet not published. Go to File → Share → Publish to web');
+      return {};
+    }
+    
+    const rows = parseCSV(csvText);
+    const statuses: Record<string, { status: PageStatusType; assignedTo: string; notes: string }> = {};
+    
+    // Find column indices from header row
+    const headerRow = rows[0] || [];
+    const urlColIndex = headerRow.findIndex(h => h.toLowerCase().includes('url') || h.toLowerCase().includes('page'));
+    const statusColIndex = headerRow.findIndex(h => h.toLowerCase().includes('status'));
+    const assignedColIndex = headerRow.findIndex(h => h.toLowerCase().includes('assigned'));
+    const notesColIndex = headerRow.findIndex(h => h.toLowerCase().includes('notes'));
+    
+    // Skip header row, parse data
+    for (let i = 1; i < rows.length; i++) {
+      const row = rows[i];
+      
+      // Try to extract URL - it might be in a HYPERLINK formula
+      let pageUrl = '';
+      
+      if (urlColIndex >= 0 && row[urlColIndex]) {
+        const cellValue = row[urlColIndex];
+        // Check if it's a hyperlink formula: =HYPERLINK("url", "title")
+        const hyperlinkMatch = cellValue.match(/=HYPERLINK\s*\(\s*"([^"]+)"/i);
+        if (hyperlinkMatch) {
+          pageUrl = hyperlinkMatch[1];
+        } else if (cellValue.startsWith('http')) {
+          pageUrl = cellValue;
+        }
+      }
+      
+      // Also check column C (index 2) for URL as that's common
+      if (!pageUrl && row[2] && row[2].startsWith('http')) {
+        pageUrl = row[2];
+      }
+      
+      if (pageUrl) {
+        const status = statusColIndex >= 0 ? row[statusColIndex] : '';
+        const assignedTo = assignedColIndex >= 0 ? row[assignedColIndex] : '';
+        const notes = notesColIndex >= 0 ? row[notesColIndex] : '';
+        
+        statuses[pageUrl] = {
+          status: STATUS_MAP_FROM_SHEET[status] || STATUS_MAP_FROM_SHEET[status?.toLowerCase()] || 'not-started',
+          assignedTo: assignedTo || '',
+          notes: notes || '',
+        };
+      }
+    }
+    
+    console.log('✅ Loaded from CSV:', Object.keys(statuses).length, 'pages');
+    return statuses;
+  } catch (error) {
+    console.error('Error fetching CSV from Google Sheets:', error);
+    return {};
+  }
 }
 
 /**
@@ -234,60 +393,6 @@ export async function addTeamMemberToSheet(name: string): Promise<boolean> {
 }
 
 /**
- * Read statuses from Google Sheets (via published CSV)
- */
-export async function fetchStatusesFromSheet(): Promise<Record<string, { status: PageStatusType; assignedTo: string; notes: string }>> {
-  try {
-    const url = `https://docs.google.com/spreadsheets/d/${STATUS_SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Status`;
-    
-    const response = await fetch(url, { cache: 'no-store' });
-    
-    if (!response.ok) {
-      console.warn('Could not fetch from Google Sheets');
-      return {};
-    }
-    
-    const csvText = await response.text();
-    
-    // Check if HTML (sheet not published)
-    if (csvText.includes('<!DOCTYPE') || csvText.includes('<html')) {
-      console.warn('Sheet not published. Go to File → Share → Publish to web');
-      return {};
-    }
-    
-    const rows = parseCSV(csvText);
-    const statuses: Record<string, { status: PageStatusType; assignedTo: string; notes: string }> = {};
-    
-    // Skip header row, parse data
-    for (let i = 1; i < rows.length; i++) {
-      const row = rows[i];
-      if (row.length >= 5) {
-        // Column B (Page) contains hyperlink, we need to extract URL
-        // For now, we'll match by page title since URL is in formula
-        const siteName = row[0];
-        const pageTitle = row[1];
-        const assignedTo = row[2] || '';
-        const statusText = row[3] || 'Not Started';
-        const notes = row[4] || '';
-        
-        // We'll use a combination key for matching
-        const key = `${siteName}|${pageTitle}`;
-        statuses[key] = {
-          status: STATUS_MAP_FROM_SHEET[statusText] || 'not-started',
-          assignedTo,
-          notes
-        };
-      }
-    }
-    
-    return statuses;
-  } catch (error) {
-    console.error('Error fetching from Google Sheets:', error);
-    return {};
-  }
-}
-
-/**
  * Parse CSV text into 2D array
  */
 function parseCSV(csvText: string): string[][] {
@@ -376,6 +481,26 @@ export function getAllPageStatusesLocal(): Record<string, {
 }
 
 /**
+ * ⭐ NEW: Merge sheet data into localStorage
+ * This ensures everyone sees the same data
+ */
+export function mergeSheetDataIntoLocal(sheetStatuses: Record<string, { status: PageStatusType; assignedTo: string; notes: string }>): void {
+  if (typeof window === 'undefined') return;
+  
+  const existing = JSON.parse(localStorage.getItem(STORAGE_KEYS.PAGE_STATUSES) || '{}');
+  
+  // Merge: Sheet data takes precedence for pages that exist in sheet
+  Object.keys(sheetStatuses).forEach(url => {
+    existing[url] = {
+      ...sheetStatuses[url],
+      updatedDate: new Date().toISOString(),
+    };
+  });
+  
+  localStorage.setItem(STORAGE_KEYS.PAGE_STATUSES, JSON.stringify(existing));
+}
+
+/**
  * Save team members to localStorage AND sync to Google Sheets
  */
 export function saveTeamMembersLocal(members: TeamMember[]): void {
@@ -460,4 +585,9 @@ export function getLatestScanForPageLocal(pageUrl: string): ScanResultData | nul
 export function getLastSyncTime(): string | null {
   if (typeof window === 'undefined') return null;
   return localStorage.getItem(STORAGE_KEYS.LAST_SYNC);
+}
+
+export function setLastSyncTime(): void {
+  if (typeof window === 'undefined') return;
+  localStorage.setItem(STORAGE_KEYS.LAST_SYNC, new Date().toISOString());
 }
