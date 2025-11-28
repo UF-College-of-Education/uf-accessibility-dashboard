@@ -3,310 +3,704 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { statusManager, SiteStatus, PageStatus } from './StatusService';
 import { Site } from './DataService';
-import { CheckCircle, AlertCircle, ChevronDown, ChevronUp } from 'lucide-react';
+import { 
+  ChevronDown, 
+  ChevronUp, 
+  CheckCircle, 
+  Circle,
+  Clock,
+  AlertTriangle,
+  Users, 
+  Plus, 
+  RefreshCw,
+  ExternalLink,
+  Eye,
+  X,
+  FileText,
+  Loader2,
+  Save,
+  MessageSquare,
+  Upload,
+  Check
+} from 'lucide-react';
+import { 
+  PageStatusType,
+  STATUS_OPTIONS,
+  ScanResultData,
+  getTeamMembersLocal,
+  saveTeamMembersLocal,
+  getAllPageStatusesLocal,
+  savePageStatusLocal,
+  getLatestScanForPageLocal,
+  TeamMember,
+  exportAllPagesToSheet,
+  isGoogleSheetsConfigured,
+  getLastSyncTime,
+  addTeamMember as addTeamMemberService,
+  removeTeamMember as removeTeamMemberService
+} from './GoogleSheetsService';
 
 interface Props {
   sites: Site[];
 }
 
+interface LocalStatus {
+  status: PageStatusType;
+  assignedTo: string;
+  notes: string;
+  updatedDate: string;
+}
+
 export default function StatusCheckPage({ sites }: Props) {
-  const [siteStatuses, setSiteStatuses] = useState<SiteStatus[]>([]);
-  const [expandedSites, setExpandedSites] = useState<Set<string>>(new Set());
-  const [people, setPeople] = useState<string[]>(['Noah', 'Abhi']);
-  const [newPerson, setNewPerson] = useState('');
-  const [showAddPerson, setShowAddPerson] = useState(false);
-  const [changes, setChanges] = useState<boolean>(false);
-  const [savedMessage, setSavedMessage] = useState('');
+  const [expandedSite, setExpandedSite] = useState<string | null>(null);
+  const [pageStatuses, setPageStatuses] = useState<Record<string, LocalStatus>>({});
+  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
+  const [newMemberName, setNewMemberName] = useState('');
+  const [showAddMember, setShowAddMember] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [lastSyncTime, setLastSyncTime] = useState<string>('');
+  const [exporting, setExporting] = useState(false);
+  const [exportSuccess, setExportSuccess] = useState(false);
+  
+  // Notes popup state
+  const [notesPopup, setNotesPopup] = useState<{
+    isOpen: boolean;
+    pageUrl: string;
+    pageTitle: string;
+    notes: string;
+  }>({ isOpen: false, pageUrl: '', pageTitle: '', notes: '' });
+  
+  // View report popup state
+  const [reportPopup, setReportPopup] = useState<{
+    isOpen: boolean;
+    pageUrl: string;
+    pageTitle: string;
+    scanData: ScanResultData | null;
+  }>({ isOpen: false, pageUrl: '', pageTitle: '', scanData: null });
 
+  // Load data on mount
   useEffect(() => {
-    // Initialize status data
-    statusManager.initializeSiteStatuses(sites);
+    loadAllData();
+  }, []);
+
+  function loadAllData() {
+    setLoading(true);
+    try {
+      const statuses = getAllPageStatusesLocal();
+      const members = getTeamMembersLocal();
+      const lastSync = getLastSyncTime();
+
+      setPageStatuses(statuses);
+      setTeamMembers(members);
+      setLastSyncTime(lastSync ? new Date(lastSync).toLocaleString() : 'Never');
+    } catch (error) {
+      console.error('Error loading data:', error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  function handleRefresh() {
+    loadAllData();
+  }
+
+  // Export ALL pages to Google Sheets
+  async function handleExportToSheet() {
+    setExporting(true);
+    setExportSuccess(false);
     
-    const data = statusManager.getStatusData();
-    if (data) {
-      setSiteStatuses(data.siteStatuses);
-      setPeople(data.people);
-    }
-  }, [sites]);
-
-  function toggleSiteExpand(siteId: string) {
-    const newExpanded = new Set(expandedSites);
-    if (newExpanded.has(siteId)) {
-      newExpanded.delete(siteId);
-    } else {
-      newExpanded.add(siteId);
-    }
-    setExpandedSites(newExpanded);
-  }
-
-  function handlePageStatusChange(
-    siteId: string,
-    pageUrl: string,
-    newStatus: 'pending' | 'working' | 'completed',
-    person: string | null
-  ) {
-    statusManager.updatePageStatus(siteId, pageUrl, newStatus, person);
-    setChanges(true);
-
-    const data = statusManager.getStatusData();
-    if (data) {
-      setSiteStatuses([...data.siteStatuses]);
+    try {
+      const result = await exportAllPagesToSheet(sites);
+      
+      if (result.success) {
+        setExportSuccess(true);
+        setLastSyncTime(new Date().toLocaleString());
+        setTimeout(() => setExportSuccess(false), 3000);
+        alert(`✅ Successfully exported ${result.pagesExported} pages to Google Sheets!`);
+      } else {
+        alert(`❌ Export failed: ${result.error}`);
+      }
+    } catch (error) {
+      alert(`❌ Export failed: ${error}`);
+    } finally {
+      setExporting(false);
     }
   }
 
-  function handleAddPerson() {
-    if (newPerson.trim() && !people.includes(newPerson)) {
-      statusManager.addPerson(newPerson);
-      setPeople([...people, newPerson]);
-      setNewPerson('');
-      setShowAddPerson(false);
-      setChanges(true);
+  // Update page status
+  function updateStatus(pageUrl: string, newStatus: PageStatusType) {
+    const currentStatus = pageStatuses[pageUrl] || {
+      status: 'not-started',
+      assignedTo: '',
+      notes: '',
+      updatedDate: ''
+    };
+
+    const updated: LocalStatus = {
+      ...currentStatus,
+      status: newStatus,
+      assignedTo: newStatus === 'not-started' ? '' : currentStatus.assignedTo,
+      updatedDate: new Date().toISOString(),
+    };
+
+    // Save locally AND sync to Google Sheets
+    savePageStatusLocal(pageUrl, {
+      status: updated.status,
+      assignedTo: updated.assignedTo,
+      notes: updated.notes,
+    });
+
+    setPageStatuses(prev => ({
+      ...prev,
+      [pageUrl]: updated
+    }));
+  }
+
+  // Update assigned team member
+  function updateAssignedTo(pageUrl: string, assignedTo: string) {
+    const currentStatus = pageStatuses[pageUrl] || {
+      status: 'not-started',
+      assignedTo: '',
+      notes: '',
+      updatedDate: ''
+    };
+
+    const updated: LocalStatus = {
+      ...currentStatus,
+      assignedTo,
+      updatedDate: new Date().toISOString(),
+    };
+
+    // Save locally AND sync to Google Sheets
+    savePageStatusLocal(pageUrl, {
+      status: updated.status,
+      assignedTo: updated.assignedTo,
+      notes: updated.notes,
+    });
+
+    setPageStatuses(prev => ({
+      ...prev,
+      [pageUrl]: updated
+    }));
+  }
+
+  // Update notes
+  function saveNotes(pageUrl: string, notes: string) {
+    const currentStatus = pageStatuses[pageUrl] || {
+      status: 'not-started',
+      assignedTo: '',
+      notes: '',
+      updatedDate: ''
+    };
+
+    const updated: LocalStatus = {
+      ...currentStatus,
+      notes,
+      updatedDate: new Date().toISOString(),
+    };
+
+    savePageStatusLocal(pageUrl, {
+      status: updated.status,
+      assignedTo: updated.assignedTo,
+      notes: updated.notes,
+    });
+
+    setPageStatuses(prev => ({
+      ...prev,
+      [pageUrl]: updated
+    }));
+
+    setNotesPopup({ isOpen: false, pageUrl: '', pageTitle: '', notes: '' });
+  }
+
+  // Open notes popup
+  function openNotesPopup(pageUrl: string, pageTitle: string) {
+    const currentNotes = pageStatuses[pageUrl]?.notes || '';
+    setNotesPopup({
+      isOpen: true,
+      pageUrl,
+      pageTitle,
+      notes: currentNotes
+    });
+  }
+
+  // Open report popup
+  function openReportPopup(pageUrl: string, pageTitle: string) {
+    const scanData = getLatestScanForPageLocal(pageUrl);
+    setReportPopup({
+      isOpen: true,
+      pageUrl,
+      pageTitle,
+      scanData
+    });
+  }
+
+  // Team member functions
+  function addTeamMember() {
+    if (!newMemberName.trim()) return;
+    
+    const updated = addTeamMemberService(newMemberName.trim());
+    setTeamMembers(updated);
+    setNewMemberName('');
+    setShowAddMember(false);
+  }
+
+  function removeTeamMember(name: string) {
+    const updated = removeTeamMemberService(name);
+    setTeamMembers(updated);
+  }
+
+  // Get status icon
+  function getStatusIcon(status: PageStatusType) {
+    switch (status) {
+      case 'completed':
+        return <CheckCircle className="text-green-600 flex-shrink-0" size={20} />;
+      case 'working':
+        return <Clock className="text-blue-600 flex-shrink-0" size={20} />;
+      case 'issues':
+        return <AlertTriangle className="text-orange-600 flex-shrink-0" size={20} />;
+      default:
+        return <Circle className="text-gray-400 flex-shrink-0" size={20} />;
     }
   }
 
-  function handleSubmit() {
-    setSavedMessage('✅ All changes saved successfully!');
-    setChanges(false);
-    setTimeout(() => setSavedMessage(''), 3000);
+  // Get status style
+  function getStatusStyle(status: PageStatusType) {
+    const option = STATUS_OPTIONS.find(o => o.value === status);
+    return option || STATUS_OPTIONS[0];
   }
 
-  const stats = statusManager.getCompletionStats();
-  const completionPercentage = stats.totalPages > 0 ? Math.round((stats.completedPages / stats.totalPages) * 100) : 0;
-  const siteCompletionPercentage = stats.totalSites > 0 ? Math.round((stats.completedSites / stats.totalSites) * 100) : 0;
+  // Calculate stats
+  const totalPages = sites.reduce((sum, site) => sum + site.pages.length, 0);
+  const completedPages = Object.values(pageStatuses).filter(s => s.status === 'completed').length;
+  const completedSites = sites.filter(site => 
+    site.pages.length > 0 && site.pages.every(page => pageStatuses[page.url]?.status === 'completed')
+  ).length;
+
+  const isConfigured = isGoogleSheetsConfigured();
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center p-12">
+        <Loader2 className="animate-spin text-blue-600" size={40} />
+        <span className="ml-3 text-gray-600">Loading...</span>
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 p-6">
-      <div className="max-w-6xl mx-auto">
-        {/* Header */}
-        <div className="mb-8 text-center">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">📊 Status Check</h1>
-          <p className="text-gray-600">Track completion status for all sites and pages</p>
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="text-center">
+        <h2 className="text-3xl font-bold text-gray-900 flex items-center justify-center gap-3">
+          📊 Status Check
+        </h2>
+        <p className="text-gray-600 mt-1">Track completion status for all sites and pages</p>
+        <div className="flex items-center justify-center gap-3 mt-3 flex-wrap">
+          <span className="text-sm text-gray-500">
+            Last sync: {lastSyncTime}
+          </span>
+          <button
+            onClick={handleRefresh}
+            className="flex items-center gap-2 px-3 py-1 text-sm bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition"
+          >
+            <RefreshCw size={14} />
+            Refresh
+          </button>
+          <button
+            onClick={handleExportToSheet}
+            disabled={exporting}
+            className={`flex items-center gap-2 px-3 py-1 text-sm rounded-lg transition ${
+              exportSuccess 
+                ? 'bg-green-100 text-green-700' 
+                : 'bg-purple-100 text-purple-700 hover:bg-purple-200'
+            } ${exporting ? 'opacity-50 cursor-not-allowed' : ''}`}
+          >
+            {exporting ? (
+              <Loader2 size={14} className="animate-spin" />
+            ) : exportSuccess ? (
+              <Check size={14} />
+            ) : (
+              <Upload size={14} />
+            )}
+            {exporting ? 'Exporting...' : exportSuccess ? 'Exported!' : 'Export to Sheet'}
+          </button>
+          <a
+            href="https://docs.google.com/spreadsheets/d/1ntgfO0PeVULOCA-Q1eLfoEJwW-izHlPpP1FvWvVk2UM/edit"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1 px-3 py-1 text-sm bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition"
+          >
+            <ExternalLink size={14} />
+            Open Sheet
+          </a>
+        </div>
+        
+        {/* Sync Status */}
+        {!isConfigured && (
+          <div className="mt-3 p-2 bg-yellow-50 border border-yellow-200 rounded-lg text-sm text-yellow-800 max-w-2xl mx-auto">
+            ⚠️ Google Sheets sync not configured. Add <code className="bg-yellow-100 px-1 rounded">NEXT_PUBLIC_GOOGLE_SCRIPT_URL</code> to .env.local
+          </div>
+        )}
+      </div>
+
+      {/* Progress Overview - 2 BOXES */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="bg-white rounded-lg border-2 border-blue-200 p-6 shadow-sm">
+          <div className="flex justify-between items-center mb-3">
+            <h3 className="font-semibold text-gray-900">Sites Done</h3>
+            <span className="text-2xl font-bold text-blue-600">{completedSites}/{sites.length}</span>
+          </div>
+          <div className="w-full bg-gray-200 rounded-full h-3">
+            <div 
+              className="bg-blue-600 h-3 rounded-full transition-all duration-500"
+              style={{ width: `${sites.length > 0 ? (completedSites / sites.length) * 100 : 0}%` }}
+            />
+          </div>
         </div>
 
-        {/* Saved Message */}
-        {savedMessage && (
-          <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg text-green-700 font-semibold">
-            {savedMessage}
+        <div className="bg-white rounded-lg border-2 border-green-200 p-6 shadow-sm">
+          <div className="flex justify-between items-center mb-3">
+            <h3 className="font-semibold text-gray-900">Pages Completed</h3>
+            <span className="text-2xl font-bold text-green-600">{completedPages}/{totalPages}</span>
+          </div>
+          <div className="w-full bg-gray-200 rounded-full h-3">
+            <div 
+              className="bg-green-600 h-3 rounded-full transition-all duration-500"
+              style={{ width: `${totalPages > 0 ? (completedPages / totalPages) * 100 : 0}%` }}
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Team Members */}
+      <div className="bg-white rounded-lg border p-4 shadow-sm">
+        <div className="flex justify-between items-center mb-3">
+          <h3 className="font-semibold text-gray-900 flex items-center gap-2">
+            <Users size={18} />
+            Team Members
+          </h3>
+          <button
+            onClick={() => setShowAddMember(!showAddMember)}
+            className="flex items-center gap-1 px-3 py-1.5 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 transition"
+          >
+            <Plus size={14} />
+            Add
+          </button>
+        </div>
+
+        {showAddMember && (
+          <div className="flex gap-2 mb-3 p-3 bg-gray-50 rounded-lg">
+            <input
+              type="text"
+              value={newMemberName}
+              onChange={(e) => setNewMemberName(e.target.value)}
+              placeholder="Enter name..."
+              className="flex-1 px-3 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none"
+              onKeyDown={(e) => e.key === 'Enter' && addTeamMember()}
+            />
+            <button onClick={addTeamMember} className="px-3 py-2 bg-green-600 text-white rounded-lg text-sm hover:bg-green-700">Add</button>
+            <button onClick={() => setShowAddMember(false)} className="px-3 py-2 bg-gray-300 text-gray-700 rounded-lg text-sm hover:bg-gray-400">Cancel</button>
           </div>
         )}
 
-        {/* Completion Overview */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          {/* Sites Completion */}
-          <div className="bg-white p-6 rounded-lg shadow-md border border-blue-200">
-            <div className="flex justify-between items-center mb-3">
-              <h3 className="font-bold text-gray-900">Sites Completed</h3>
-              <span className="text-2xl font-bold text-blue-600">{stats.completedSites}/{stats.totalSites}</span>
-            </div>
-            <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
-              <div
-                className="bg-blue-600 h-3 rounded-full transition-all duration-300"
-                style={{ width: `${siteCompletionPercentage}%` }}
-              ></div>
-            </div>
-            <p className="text-sm text-gray-600 mt-2">{siteCompletionPercentage}% Complete</p>
-          </div>
-
-          {/* Pages Completion */}
-          <div className="bg-white p-6 rounded-lg shadow-md border border-green-200">
-            <div className="flex justify-between items-center mb-3">
-              <h3 className="font-bold text-gray-900">Pages Completed</h3>
-              <span className="text-2xl font-bold text-green-600">{stats.completedPages}/{stats.totalPages}</span>
-            </div>
-            <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
-              <div
-                className="bg-green-600 h-3 rounded-full transition-all duration-300"
-                style={{ width: `${completionPercentage}%` }}
-              ></div>
-            </div>
-            <p className="text-sm text-gray-600 mt-2">{completionPercentage}% Complete</p>
-          </div>
-        </div>
-
-        {/* Add Person Section */}
-        <div className="mb-8 bg-white p-6 rounded-lg shadow-md">
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="font-bold text-gray-900">Team Members</h3>
-            <button
-              onClick={() => setShowAddPerson(!showAddPerson)}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+        <div className="flex flex-wrap gap-2">
+          {teamMembers.map((member, idx) => (
+            <div 
+              key={idx}
+              className="flex items-center gap-2 px-3 py-1.5 bg-blue-100 text-blue-800 rounded-full text-sm group"
             >
-              {showAddPerson ? 'Cancel' : '+ Add Person'}
-            </button>
-          </div>
-
-          {showAddPerson && (
-            <div className="flex gap-2 mb-4">
-              <input
-                type="text"
-                placeholder="Enter name..."
-                value={newPerson}
-                onChange={(e) => setNewPerson(e.target.value)}
-                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-              />
+              <span>{member.name}</span>
               <button
-                onClick={handleAddPerson}
-                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
+                onClick={() => removeTeamMember(member.name)}
+                className="opacity-0 group-hover:opacity-100 text-blue-600 hover:text-red-600 transition"
               >
-                Add
+                ×
               </button>
             </div>
-          )}
-
-          <div className="flex gap-2 flex-wrap">
-            {people.map(person => (
-              <span key={person} className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold">
-                {person}
-              </span>
-            ))}
-          </div>
+          ))}
         </div>
+      </div>
 
-        {/* Sites List */}
-        <div className="space-y-4">
-          {siteStatuses.map(site => {
-            const completedPages = site.pages.filter(p => p.isCompleted).length;
-            const isExpanded = expandedSites.has(site.id);
+      {/* Sites List */}
+      <div className="space-y-3">
+        {sites.map(site => {
+          const isExpanded = expandedSite === site.id;
+          const completedInSite = site.pages.filter(p => pageStatuses[p.url]?.status === 'completed').length;
+          const progress = site.pages.length > 0 ? (completedInSite / site.pages.length) * 100 : 0;
 
-            return (
-              <div key={site.id} className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200">
-                {/* Site Header */}
-                <div
-                  className="p-4 hover:bg-gray-50 cursor-pointer transition flex items-center justify-between"
-                  onClick={() => toggleSiteExpand(site.id)}
-                >
+          return (
+            <div key={site.id} className="bg-white rounded-lg border shadow-sm overflow-hidden">
+              <div 
+                className="p-4 cursor-pointer hover:bg-gray-50 transition"
+                onClick={() => setExpandedSite(isExpanded ? null : site.id)}
+              >
+                <div className="flex items-center justify-between">
                   <div className="flex-1">
-                    <h3 className="font-bold text-gray-900">{site.title}</h3>
+                    <h3 className="font-semibold text-gray-900">{site.title}</h3>
                     <p className="text-sm text-gray-600">{site.baseUrl}</p>
-                    <div className="mt-2 flex items-center gap-2">
-                      <div className="text-sm font-semibold text-gray-700">
-                        {completedPages}/{site.pages.length} Pages Completed
-                      </div>
-                      <div className="w-32 bg-gray-200 rounded-full h-2">
-                        <div
-                          className="bg-green-600 h-2 rounded-full"
-                          style={{ width: `${(completedPages / site.pages.length) * 100}%` }}
-                        ></div>
+                    <div className="flex items-center gap-2 mt-2">
+                      <span className="text-sm text-gray-600">
+                        {completedInSite}/{site.pages.length} Pages
+                      </span>
+                      <div className="flex-1 max-w-xs bg-gray-200 rounded-full h-2">
+                        <div 
+                          className="bg-green-500 h-2 rounded-full transition-all"
+                          style={{ width: `${progress}%` }}
+                        />
                       </div>
                     </div>
                   </div>
-                  {isExpanded ? (
-                    <ChevronUp size={24} className="text-gray-600" />
-                  ) : (
-                    <ChevronDown size={24} className="text-gray-600" />
-                  )}
+                  {isExpanded ? <ChevronUp size={24} /> : <ChevronDown size={24} />}
+                </div>
+              </div>
+
+              {isExpanded && (
+                <div className="border-t bg-gray-50 p-4">
+                  <div className="space-y-2">
+                    {site.pages.map((page, idx) => {
+                      const status = pageStatuses[page.url] || { status: 'not-started', assignedTo: '', notes: '', updatedDate: '' };
+                      const statusStyle = getStatusStyle(status.status);
+                      const hasNotes = status.notes && status.notes.length > 0;
+                      const latestScan = getLatestScanForPageLocal(page.url);
+                      
+                      return (
+                        <div 
+                          key={idx}
+                          className={`p-3 rounded-lg border transition ${statusStyle.bgColor} border-opacity-50`}
+                        >
+                          <div className="flex items-center gap-3">
+                            <div className="flex items-center gap-3 flex-1 min-w-0">
+                              {getStatusIcon(status.status)}
+                              <div className="flex-1 min-w-0">
+                                <div className="font-medium text-gray-900 truncate">{page.title}</div>
+                                <div className="text-xs text-gray-500 truncate">{page.url}</div>
+                                {status.status !== 'not-started' && status.assignedTo && (
+                                  <div className={`text-xs mt-1 ${statusStyle.color}`}>
+                                    {statusStyle.label} by {status.assignedTo}
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                            
+                            <div className="flex items-center gap-2 flex-shrink-0">
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  openNotesPopup(page.url, page.title);
+                                }}
+                                className={`p-1.5 rounded hover:bg-white transition ${hasNotes ? 'text-purple-600' : 'text-gray-400'}`}
+                                title={hasNotes ? 'View/Edit Notes' : 'Add Notes'}
+                              >
+                                <MessageSquare size={16} />
+                              </button>
+
+                              {latestScan && (
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    openReportPopup(page.url, page.title);
+                                  }}
+                                  className="flex items-center gap-1 px-2 py-1 text-xs bg-purple-100 text-purple-700 rounded hover:bg-purple-200 transition"
+                                  title="View latest scan report"
+                                >
+                                  <Eye size={12} />
+                                  Report
+                                </button>
+                              )}
+                              
+                              <select
+                                value={status.assignedTo}
+                                onChange={(e) => {
+                                  e.stopPropagation();
+                                  updateAssignedTo(page.url, e.target.value);
+                                }}
+                                onClick={(e) => e.stopPropagation()}
+                                className="text-xs border rounded px-2 py-1.5 bg-white cursor-pointer hover:bg-gray-50 w-24"
+                              >
+                                <option value="">Assign to</option>
+                                {teamMembers.map((member, mIdx) => (
+                                  <option key={mIdx} value={member.name}>{member.name}</option>
+                                ))}
+                              </select>
+
+                              <select
+                                value={status.status}
+                                onChange={(e) => {
+                                  e.stopPropagation();
+                                  updateStatus(page.url, e.target.value as PageStatusType);
+                                }}
+                                onClick={(e) => e.stopPropagation()}
+                                className="text-xs border rounded px-2 py-1.5 bg-white cursor-pointer hover:bg-gray-50 w-28"
+                              >
+                                {STATUS_OPTIONS.map(option => (
+                                  <option key={option.value} value={option.value}>
+                                    {option.label}
+                                  </option>
+                                ))}
+                              </select>
+                            </div>
+                          </div>
+
+                          {hasNotes && (
+                            <div className="mt-2 p-2 bg-white rounded text-xs text-gray-600 border">
+                              <span className="font-medium">Notes:</span> {status.notes.substring(0, 100)}{status.notes.length > 100 ? '...' : ''}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Notes Popup */}
+      {notesPopup.isOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-lg shadow-xl max-w-lg w-full">
+            <div className="flex items-center justify-between p-4 border-b">
+              <h3 className="font-semibold text-gray-900 flex items-center gap-2">
+                <MessageSquare size={20} />
+                Notes
+              </h3>
+              <button
+                onClick={() => setNotesPopup({ isOpen: false, pageUrl: '', pageTitle: '', notes: '' })}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                <X size={20} />
+              </button>
+            </div>
+            <div className="p-4">
+              <p className="text-sm text-gray-600 mb-3 truncate">{notesPopup.pageTitle}</p>
+              <textarea
+                value={notesPopup.notes}
+                onChange={(e) => setNotesPopup(prev => ({ ...prev, notes: e.target.value }))}
+                placeholder="Add notes about this page..."
+                className="w-full h-32 p-3 border rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none resize-none"
+              />
+            </div>
+            <div className="flex justify-end gap-2 p-4 border-t bg-gray-50 rounded-b-lg">
+              <button
+                onClick={() => setNotesPopup({ isOpen: false, pageUrl: '', pageTitle: '', notes: '' })}
+                className="px-4 py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 transition"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => saveNotes(notesPopup.pageUrl, notesPopup.notes)}
+                className="px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition flex items-center gap-2"
+              >
+                <Save size={16} />
+                Save Notes
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Report Popup */}
+      {reportPopup.isOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 overflow-y-auto">
+          <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full my-8">
+            <div className="flex items-center justify-between p-4 border-b bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-t-lg">
+              <div>
+                <h3 className="font-semibold text-lg flex items-center gap-2">
+                  <FileText size={20} />
+                  Scan Report
+                </h3>
+                <p className="text-purple-100 text-sm truncate max-w-md">{reportPopup.pageTitle}</p>
+              </div>
+              <button
+                onClick={() => setReportPopup({ isOpen: false, pageUrl: '', pageTitle: '', scanData: null })}
+                className="text-white hover:bg-purple-800 p-2 rounded"
+              >
+                <X size={20} />
+              </button>
+            </div>
+            
+            {reportPopup.scanData ? (
+              <div className="p-6">
+                <div className="flex items-center justify-between mb-4 text-sm text-gray-600">
+                  <span>Scanned: {new Date(reportPopup.scanData.date).toLocaleString()}</span>
+                  <span className={`px-2 py-1 rounded text-xs font-medium ${
+                    reportPopup.scanData.source === 'auto' ? 'bg-blue-100 text-blue-700' : 'bg-green-100 text-green-700'
+                  }`}>
+                    {reportPopup.scanData.source === 'auto' ? '🤖 Auto Scan' : '👤 Manual Scan'}
+                  </span>
                 </div>
 
-                {/* Pages List */}
-                {isExpanded && (
-                  <div className="border-t p-4 space-y-3 bg-gray-50">
-                    {site.pages.map(page => (
-                      <PageStatusRow
-                        key={page.url}
-                        page={page}
-                        people={people}
-                        siteId={site.id}
-                        onStatusChange={handlePageStatusChange}
-                      />
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                  {[
+                    { label: 'Performance', value: reportPopup.scanData.lighthousePerformance, bg: 'bg-orange-50', border: 'border-orange-200' },
+                    { label: 'Accessibility', value: reportPopup.scanData.lighthouseAccessibility, bg: 'bg-blue-50', border: 'border-blue-200' },
+                    { label: 'Best Practices', value: reportPopup.scanData.lighthouseBestPractices, bg: 'bg-green-50', border: 'border-green-200' },
+                    { label: 'SEO', value: reportPopup.scanData.lighthouseSeo, bg: 'bg-purple-50', border: 'border-purple-200' },
+                  ].map((metric, idx) => (
+                    <div key={idx} className={`${metric.bg} p-4 rounded-lg border ${metric.border}`}>
+                      <div className="text-sm text-gray-600 mb-1">{metric.label}</div>
+                      <div className={`text-3xl font-bold ${
+                        metric.value >= 90 ? 'text-green-600' :
+                        metric.value >= 50 ? 'text-orange-600' : 'text-red-600'
+                      }`}>
+                        {metric.value || '-'}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="bg-gray-50 p-4 rounded-lg mb-6">
+                  <h4 className="font-semibold text-gray-900 mb-3">Accessibility Issues</h4>
+                  <div className="grid grid-cols-5 gap-3">
+                    {[
+                      { label: 'Total', value: reportPopup.scanData.totalIssues, color: 'text-gray-900' },
+                      { label: 'Critical', value: reportPopup.scanData.criticalCount, color: 'text-red-600' },
+                      { label: 'Serious', value: reportPopup.scanData.seriousCount, color: 'text-orange-600' },
+                      { label: 'Moderate', value: reportPopup.scanData.moderateCount, color: 'text-yellow-600' },
+                      { label: 'Minor', value: reportPopup.scanData.minorCount, color: 'text-blue-600' },
+                    ].map((item, idx) => (
+                      <div key={idx} className="text-center">
+                        <div className={`text-2xl font-bold ${item.color}`}>{item.value}</div>
+                        <div className="text-xs text-gray-600">{item.label}</div>
+                      </div>
                     ))}
                   </div>
-                )}
+                </div>
               </div>
-            );
-          })}
+            ) : (
+              <div className="p-12 text-center text-gray-500">
+                <FileText size={48} className="mx-auto mb-4 opacity-50" />
+                <p>No scan data available for this page.</p>
+              </div>
+            )}
+            
+            <div className="flex justify-end p-4 border-t bg-gray-50 rounded-b-lg">
+              <button
+                onClick={() => setReportPopup({ isOpen: false, pageUrl: '', pageTitle: '', scanData: null })}
+                className="px-6 py-2 text-white bg-purple-600 rounded-lg hover:bg-purple-700 transition"
+              >
+                Close
+              </button>
+            </div>
+          </div>
         </div>
+      )}
 
-        {/* Submit Button */}
-        <div className="mt-8 flex justify-center">
-          <button
-            onClick={handleSubmit}
-            disabled={!changes}
-            className={`px-8 py-3 rounded-lg font-bold text-white text-lg transition ${
-              changes
-                ? 'bg-blue-600 hover:bg-blue-700 cursor-pointer'
-                : 'bg-gray-400 cursor-not-allowed'
-            }`}
-          >
-            💾 SUBMIT
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-interface PageStatusRowProps {
-  page: PageStatus;
-  people: string[];
-  siteId: string;
-  onStatusChange: (siteId: string, pageUrl: string, status: 'pending' | 'working' | 'completed', person: string | null) => void;
-}
-
-function PageStatusRow({ page, people, siteId, onStatusChange }: PageStatusRowProps) {
-  const [selectedPerson, setSelectedPerson] = useState<string>(page.completedBy || '');
-  const [selectedStatus, setSelectedStatus] = useState<'pending' | 'working' | 'completed'>(page.status);
-
-  function handlePersonChange(person: string) {
-    setSelectedPerson(person);
-    onStatusChange(siteId, page.url, selectedStatus, person || null);
-  }
-
-  function handleStatusChange(status: 'pending' | 'working' | 'completed') {
-    setSelectedStatus(status);
-    onStatusChange(siteId, page.url, status, selectedPerson || null);
-  }
-
-  return (
-    <div className="bg-white p-4 rounded-lg border border-gray-200 hover:shadow-md transition">
-      <div className="flex items-center justify-between gap-4 flex-wrap">
-        <div className="flex-1 min-w-[200px]">
-          <h4 className="font-semibold text-gray-900">{page.title}</h4>
-          <p className="text-xs text-gray-600 truncate">{page.url}</p>
-        </div>
-
-        {/* Status Indicator */}
-        <div className="flex items-center gap-3">
-          {selectedStatus === 'completed' ? (
-            <CheckCircle className="text-green-600" size={20} />
-          ) : selectedStatus === 'working' ? (
-            <AlertCircle className="text-yellow-600" size={20} />
-          ) : (
-            <div className="w-5 h-5 rounded-full border-2 border-gray-400"></div>
-          )}
-        </div>
-
-        {/* Person Dropdown */}
-        <select
-          value={selectedPerson}
-          onChange={(e) => handlePersonChange(e.target.value)}
-          className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm"
-        >
-          <option value="">Select Person</option>
-          {people.map(person => (
-            <option key={person} value={person}>
-              {person}
-            </option>
+      {/* Status Legend */}
+      <div className="bg-white border rounded-lg p-4 text-sm">
+        <h4 className="font-semibold text-gray-800 mb-2">Status Legend:</h4>
+        <div className="flex flex-wrap gap-4">
+          {STATUS_OPTIONS.map(option => (
+            <div key={option.value} className="flex items-center gap-2">
+              <div className={`w-3 h-3 rounded-full ${option.bgColor} border`}></div>
+              <span className={option.color}>{option.label}</span>
+            </div>
           ))}
-        </select>
-
-        {/* Status Dropdown */}
-        <select
-          value={selectedStatus}
-          onChange={(e) => handleStatusChange(e.target.value as 'pending' | 'working' | 'completed')}
-          className={`px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm ${
-            selectedStatus === 'completed'
-              ? 'border-green-300 bg-green-50'
-              : selectedStatus === 'working'
-              ? 'border-yellow-300 bg-yellow-50'
-              : 'border-gray-300'
-          }`}
-        >
-          <option value="pending">Pending</option>
-          <option value="working">Working on it</option>
-          <option value="completed">Completed</option>
-        </select>
+        </div>
       </div>
     </div>
   );

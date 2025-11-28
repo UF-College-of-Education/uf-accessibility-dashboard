@@ -4,11 +4,11 @@
 
 import { useState, useEffect } from 'react';
 import { fetchSites, Site } from './DataService';
-import { ChevronDown, ChevronUp, AlertCircle } from 'lucide-react';
+import { ChevronDown, ChevronUp, AlertCircle, Gauge, Rocket } from 'lucide-react';
 
 interface Props {
   onSelectSites: (sites: Site[], pageCount: number) => void;
-  onRealScan?: (sites: Site[], pageCount: number) => Promise<any>; // ✅ CHANGED: Returns Promise
+  onRealScan?: (sites: Site[], pageCount: number) => Promise<any>;
   isRealScanRunning?: boolean;
   realScanMessage?: string;
 }
@@ -75,8 +75,6 @@ export default function SiteSelector({
     setSelectedPages(prev => {
       const sitePagesSet = new Set(prev[siteId] || []);
       const allPageUrls = new Set(allPages);
-      
-      // If all pages are selected, deselect all. Otherwise, select all.
       const shouldSelectAll = sitePagesSet.size !== allPageUrls.size;
       
       const updated = { ...prev };
@@ -112,13 +110,12 @@ export default function SiteSelector({
     setTotalPages(0);
   }
 
-  function handleRunAudit() {
+  function handleLighthouseScore() {
     if (totalPages === 0) {
       alert('Please select at least one page');
       return;
     }
 
-    // Build selected sites with only selected pages
     const selectedSitesWithPages: Site[] = [];
     
     Object.entries(selectedPages).forEach(([siteId, pageUrls]) => {
@@ -138,7 +135,6 @@ export default function SiteSelector({
     onSelectSites(selectedSitesWithPages, totalPages);
   }
 
-  // ✅ UPDATED: handleRealScan now returns the Promise
   async function handleRealScan() {
     if (totalPages === 0) {
       alert('Please select at least one page');
@@ -150,7 +146,6 @@ export default function SiteSelector({
       return;
     }
 
-    // Build selected sites with only selected pages
     const selectedSitesWithPages: Site[] = [];
     
     Object.entries(selectedPages).forEach(([siteId, pageUrls]) => {
@@ -168,7 +163,6 @@ export default function SiteSelector({
     });
 
     try {
-      // ✅ CHANGED: Call onRealScan and await the result
       const result = await onRealScan(selectedSitesWithPages, totalPages);
       return result;
     } catch (error) {
@@ -226,7 +220,7 @@ export default function SiteSelector({
         </div>
         <div className="bg-green-50 p-4 rounded border border-green-200">
           <div className="text-2xl font-bold text-green-600">{Object.keys(selectedPages).length}</div>
-          <div className="text-sm text-gray-600">Sites with Pages Selected</div>
+          <div className="text-sm text-gray-600">Sites Selected</div>
         </div>
         <div className="bg-purple-50 p-4 rounded border border-purple-200">
           <div className="text-2xl font-bold text-purple-600">{totalPages}</div>
@@ -268,13 +262,13 @@ export default function SiteSelector({
             ⚠️ Warning: You selected {totalPages} pages (max recommended: 50)
           </p>
           <p className="text-yellow-700 text-sm mt-1">
-            Large audits may take 30+ minutes to complete
+            Large audits may take 30+ minutes
           </p>
         </div>
       )}
 
       {/* Sites List */}
-      <div className="space-y-3 max-h-[600px] overflow-y-auto border rounded-lg p-4 bg-gray-50 mb-6">
+      <div className="space-y-3 max-h-[500px] overflow-y-auto border rounded-lg p-4 bg-gray-50 mb-6">
         {filteredSites.length === 0 ? (
           <div className="text-center py-8 text-gray-500">
             {searchTerm ? 'No sites match your search' : 'No sites available'}
@@ -283,12 +277,10 @@ export default function SiteSelector({
           filteredSites.map(site => {
             const sitePages = selectedPages[site.id] || new Set();
             const isSiteExpanded = expandedSite === site.id;
-            const isSiteSelected = sitePages.size > 0;
             const allPagesSelected = sitePages.size === site.pages.length;
 
             return (
               <div key={site.id} className="border rounded-lg bg-white overflow-hidden hover:shadow-md transition">
-                {/* Site Header */}
                 <div
                   className="flex items-center gap-3 p-4 hover:bg-blue-50 cursor-pointer transition"
                   onClick={() => setExpandedSite(isSiteExpanded ? null : site.id)}
@@ -302,23 +294,16 @@ export default function SiteSelector({
                       <div className="text-xs text-gray-600">{site.baseUrl}</div>
                     </div>
                   </div>
-                  {isSiteExpanded ? (
-                    <ChevronUp size={24} className="text-gray-600" />
-                  ) : (
-                    <ChevronDown size={24} className="text-gray-600" />
-                  )}
+                  {isSiteExpanded ? <ChevronUp size={24} className="text-gray-600" /> : <ChevronDown size={24} className="text-gray-600" />}
                 </div>
 
-                {/* Pages List */}
                 {isSiteExpanded && (
                   <div className="border-t bg-gray-50 p-4">
                     <div className="mb-3 flex gap-2">
                       <button
                         onClick={() => toggleSitePages(site.id, site.pages.map(p => p.url))}
                         className={`px-3 py-1 rounded text-sm font-semibold transition ${
-                          allPagesSelected
-                            ? 'bg-blue-600 text-white'
-                            : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
+                          allPagesSelected ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
                         }`}
                       >
                         {allPagesSelected ? 'Deselect All' : 'Select All'}
@@ -340,12 +325,8 @@ export default function SiteSelector({
                               className="w-4 h-4 cursor-pointer accent-blue-600"
                             />
                             <div className="flex-1 min-w-0">
-                              <div className="text-sm text-gray-900 truncate">
-                                {page.title || page.path}
-                              </div>
-                              <div className="text-xs text-gray-500 truncate">
-                                {page.url}
-                              </div>
+                              <div className="text-sm text-gray-900 truncate">{page.title || page.path}</div>
+                              <div className="text-xs text-gray-500 truncate">{page.url}</div>
                             </div>
                           </label>
                         );
@@ -359,60 +340,64 @@ export default function SiteSelector({
         )}
       </div>
 
-      {/* ===== DUAL BUTTON SETUP ===== */}
+      {/* Buttons */}
       <div className="grid grid-cols-2 gap-3 mb-4">
-        {/* Mock Audit Button */}
         <button
-          onClick={handleRunAudit}
+          onClick={handleLighthouseScore}
           disabled={totalPages === 0 || isRealScanRunning}
-          className={`py-3 px-4 rounded-lg font-semibold text-white transition text-lg ${
+          className={`py-4 px-4 rounded-lg font-semibold text-white transition text-lg flex flex-col items-center justify-center gap-1 ${
             totalPages === 0 || isRealScanRunning
               ? 'bg-gray-400 cursor-not-allowed'
               : 'bg-blue-600 hover:bg-blue-700 active:bg-blue-800 shadow-md'
           }`}
         >
-          🔍 Mock Audit
-          <div className="text-xs font-normal mt-1 opacity-90">Instant results</div>
+          <div className="flex items-center gap-2">
+            <Gauge size={24} />
+            <span>Lighthouse Score</span>
+          </div>
+          <div className="text-xs font-normal opacity-90">Performance metrics</div>
         </button>
 
-        {/* Real Scan Button */}
         <button
           onClick={handleRealScan}
           disabled={totalPages === 0 || isRealScanRunning}
-          className={`py-3 px-4 rounded-lg font-semibold text-white transition text-lg ${
+          className={`py-4 px-4 rounded-lg font-semibold text-white transition text-lg flex flex-col items-center justify-center gap-1 ${
             totalPages === 0 || isRealScanRunning
               ? 'bg-gray-400 cursor-not-allowed'
               : 'bg-green-600 hover:bg-green-700 active:bg-green-800 shadow-md'
           }`}
         >
-          {isRealScanRunning ? '⏳ Scanning...' : '🚀 Real Scan'}
-          <div className="text-xs font-normal mt-1 opacity-90">
+          <div className="flex items-center gap-2">
+            <Rocket size={24} />
+            <span>{isRealScanRunning ? 'Scanning...' : 'Real Scan'}</span>
+          </div>
+          <div className="text-xs font-normal opacity-90">
             {isRealScanRunning ? 'Please wait...' : 'via n8n + axe-core'}
           </div>
         </button>
       </div>
 
-      {/* Real Scan Status Message */}
+      {/* Status Message */}
       {realScanMessage && (
         <div className="mb-4 p-4 bg-blue-50 border-l-4 border-blue-500 rounded">
           <p className="text-blue-900 font-semibold">{realScanMessage}</p>
           {isRealScanRunning && (
             <div className="mt-2">
               <div className="w-full bg-blue-200 rounded-full h-2 overflow-hidden">
-                <div className="bg-blue-600 h-2 rounded-full animate-pulse"></div>
+                <div className="bg-blue-600 h-2 rounded-full animate-pulse" style={{ width: '60%' }}></div>
               </div>
             </div>
           )}
         </div>
       )}
 
-      {/* Help Text */}
+      {/* Help */}
       <div className="p-3 bg-gray-50 rounded text-sm text-gray-600 border border-gray-200">
         <p className="mb-1">
-          <strong className="text-blue-600">Mock Audit:</strong> Instant results with sample data (for UI testing)
+          <strong className="text-blue-600">Lighthouse Score:</strong> Get performance, SEO, and best practices scores
         </p>
         <p>
-          <strong className="text-green-600">Real Scan:</strong> Scans actual pages with Playwright + axe-core (30-60 sec/page)
+          <strong className="text-green-600">Real Scan:</strong> Full accessibility scan with Playwright + axe-core (30-60 sec/page)
         </p>
       </div>
     </div>
