@@ -160,7 +160,7 @@ export default function Home() {
           setStatusMessage(`Auditing ${page.title}... (${completedPages + 1}/${totalPages})`);
           
           // ===== TRY TO LOAD REAL ACCESSIBILITY ISSUES FIRST =====
-          let issues = [];
+          let issues: any[] = [];
           try {
             console.log(`🔍 Trying to load real accessibility report for: ${page.url}`);
             const realReport = await loadAccessibilityReport(page.url);
