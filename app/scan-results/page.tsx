@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Download, FileText, FileSpreadsheet, ChevronDown, ChevronUp, ExternalLink, CheckCircle, X, Filter } from 'lucide-react';
+import { Download, FileText, FileSpreadsheet, ChevronDown, ChevronUp, ExternalLink, CheckCircle, Filter, Tag } from 'lucide-react';
 
 interface IssueNode {
   html: string;
@@ -35,12 +35,84 @@ interface ScanResult {
   issues?: Issue[];
 }
 
+// Category mapping based on axe-core rule IDs
+const ISSUE_CATEGORIES: Record<string, { name: string; icon: string; description: string }> = {
+  'color-contrast': { name: 'Color Contrast', icon: '🎨', description: 'Text and background color contrast issues' },
+  'image-alt': { name: 'Image Alt Text', icon: '🖼️', description: 'Missing or improper image descriptions' },
+  'input-image-alt': { name: 'Image Alt Text', icon: '🖼️', description: 'Missing or improper image descriptions' },
+  'label': { name: 'Form Labels', icon: '📝', description: 'Form inputs without proper labels' },
+  'form-field-multiple-labels': { name: 'Form Labels', icon: '📝', description: 'Form field label issues' },
+  'select-name': { name: 'Form Labels', icon: '📝', description: 'Select elements need accessible names' },
+  'button-name': { name: 'Button/Link Names', icon: '🔘', description: 'Buttons without accessible names' },
+  'link-name': { name: 'Button/Link Names', icon: '🔗', description: 'Links without accessible names' },
+  'link-in-text-block': { name: 'Button/Link Names', icon: '🔗', description: 'Links must be distinguishable' },
+  'aria-allowed-attr': { name: 'ARIA Attributes', icon: '♿', description: 'ARIA attribute issues' },
+  'aria-hidden-body': { name: 'ARIA Attributes', icon: '♿', description: 'ARIA hidden on body' },
+  'aria-hidden-focus': { name: 'ARIA Attributes', icon: '♿', description: 'ARIA hidden with focusable elements' },
+  'aria-required-attr': { name: 'ARIA Attributes', icon: '♿', description: 'Missing required ARIA attributes' },
+  'aria-required-children': { name: 'ARIA Attributes', icon: '♿', description: 'Missing required ARIA children' },
+  'aria-required-parent': { name: 'ARIA Attributes', icon: '♿', description: 'Missing required ARIA parent' },
+  'aria-roles': { name: 'ARIA Attributes', icon: '♿', description: 'Invalid ARIA roles' },
+  'aria-valid-attr': { name: 'ARIA Attributes', icon: '♿', description: 'Invalid ARIA attributes' },
+  'aria-valid-attr-value': { name: 'ARIA Attributes', icon: '♿', description: 'Invalid ARIA attribute values' },
+  'heading-order': { name: 'Heading Structure', icon: '📑', description: 'Heading levels should increase by one' },
+  'empty-heading': { name: 'Heading Structure', icon: '📑', description: 'Empty heading elements' },
+  'page-has-heading-one': { name: 'Heading Structure', icon: '📑', description: 'Page should have h1' },
+  'focus-order-semantics': { name: 'Keyboard/Focus', icon: '⌨️', description: 'Focus order issues' },
+  'tabindex': { name: 'Keyboard/Focus', icon: '⌨️', description: 'Tab index issues' },
+  'accesskeys': { name: 'Keyboard/Focus', icon: '⌨️', description: 'Access key issues' },
+  'focus-visible': { name: 'Focus Indicators', icon: '👁️', description: 'Focus must be visible' },
+  'listitem': { name: 'List Structure', icon: '📋', description: 'List items must be in proper lists' },
+  'list': { name: 'List Structure', icon: '📋', description: 'List structure issues' },
+  'definition-list': { name: 'List Structure', icon: '📋', description: 'Definition list issues' },
+  'table-fake-caption': { name: 'Table Structure', icon: '📊', description: 'Table caption issues' },
+  'td-headers-attr': { name: 'Table Structure', icon: '📊', description: 'Table header issues' },
+  'th-has-data-cells': { name: 'Table Structure', icon: '📊', description: 'Table header cells' },
+  'document-title': { name: 'Page Structure', icon: '📄', description: 'Page title missing' },
+  'html-has-lang': { name: 'Page Structure', icon: '🌐', description: 'HTML language attribute' },
+  'html-lang-valid': { name: 'Page Structure', icon: '🌐', description: 'Valid language code' },
+  'landmark-one-main': { name: 'Landmarks', icon: '🗺️', description: 'Page should have main landmark' },
+  'region': { name: 'Landmarks', icon: '🗺️', description: 'Content should be in landmarks' },
+  'bypass': { name: 'Landmarks', icon: '🗺️', description: 'Skip navigation links' },
+  'duplicate-id': { name: 'HTML Validity', icon: '🔧', description: 'Duplicate ID attributes' },
+  'duplicate-id-active': { name: 'HTML Validity', icon: '🔧', description: 'Duplicate ID on active elements' },
+  'duplicate-id-aria': { name: 'HTML Validity', icon: '🔧', description: 'Duplicate ID for ARIA' },
+  'video-caption': { name: 'Media', icon: '🎬', description: 'Video needs captions' },
+  'audio-caption': { name: 'Media', icon: '🎵', description: 'Audio needs captions' },
+  'frame-title': { name: 'Frames', icon: '🖼️', description: 'Frames need titles' },
+  'frame-focusable-content': { name: 'Frames', icon: '🖼️', description: 'Frame focusable content' },
+  'meta-viewport': { name: 'Zoom/Scaling', icon: '🔍', description: 'Viewport zoom issues' },
+  'meta-refresh': { name: 'Timing', icon: '⏱️', description: 'Auto-refresh issues' },
+  'blink': { name: 'Animations', icon: '✨', description: 'Blinking content' },
+  'marquee': { name: 'Animations', icon: '✨', description: 'Marquee elements' },
+};
+
+// Get category for an issue
+function getCategoryForIssue(issueId: string): { name: string; icon: string } {
+  const category = ISSUE_CATEGORIES[issueId];
+  if (category) {
+    return { name: category.name, icon: category.icon };
+  }
+  // Default category based on common patterns
+  if (issueId.startsWith('aria-')) return { name: 'ARIA Attributes', icon: '♿' };
+  if (issueId.includes('color') || issueId.includes('contrast')) return { name: 'Color Contrast', icon: '🎨' };
+  if (issueId.includes('label') || issueId.includes('form')) return { name: 'Form Labels', icon: '📝' };
+  if (issueId.includes('button') || issueId.includes('link')) return { name: 'Button/Link Names', icon: '🔗' };
+  if (issueId.includes('heading')) return { name: 'Heading Structure', icon: '📑' };
+  if (issueId.includes('focus') || issueId.includes('keyboard')) return { name: 'Keyboard/Focus', icon: '⌨️' };
+  if (issueId.includes('image') || issueId.includes('alt')) return { name: 'Image Alt Text', icon: '🖼️' };
+  if (issueId.includes('table')) return { name: 'Table Structure', icon: '📊' };
+  if (issueId.includes('list')) return { name: 'List Structure', icon: '📋' };
+  return { name: 'Other', icon: '📌' };
+}
+
 export default function ScanResultsPage() {
   const [result, setResult] = useState<ScanResult | null>(null);
   const [activeTab, setActiveTab] = useState<'summary' | 'issues'>('summary');
   const [expandedIssues, setExpandedIssues] = useState<Set<number>>(new Set());
   const [filterImpact, setFilterImpact] = useState<string>('all');
   const [filterPage, setFilterPage] = useState<string>('all');
+  const [filterCategory, setFilterCategory] = useState<string>('all');
   const [isDownloading, setIsDownloading] = useState<string | null>(null);
 
   // Load results from localStorage on mount
@@ -77,11 +149,22 @@ export default function ScanResultsPage() {
   // Get unique pages from issues
   const uniquePages = [...new Set((result.issues || []).map(issue => issue.pageUrl).filter(Boolean))];
 
-  // Filter issues by page AND severity
+  // Get unique categories from issues
+  const categoryCount: Record<string, number> = {};
+  (result.issues || []).forEach(issue => {
+    const cat = getCategoryForIssue(issue.id);
+    categoryCount[cat.name] = (categoryCount[cat.name] || 0) + 1;
+  });
+  const uniqueCategories = Object.entries(categoryCount)
+    .sort((a, b) => b[1] - a[1])
+    .map(([name, count]) => ({ name, count }));
+
+  // Filter issues by page, severity, AND category
   const filteredIssues = (result.issues || []).filter(issue => {
     const matchesImpact = filterImpact === 'all' || issue.impact === filterImpact;
     const matchesPage = filterPage === 'all' || issue.pageUrl === filterPage;
-    return matchesImpact && matchesPage;
+    const matchesCategory = filterCategory === 'all' || getCategoryForIssue(issue.id).name === filterCategory;
+    return matchesImpact && matchesPage && matchesCategory;
   });
 
   // Group issues by type
@@ -93,6 +176,7 @@ export default function ScanResultsPage() {
         description: issue.description,
         help: issue.help,
         helpUrl: issue.helpUrl,
+        category: getCategoryForIssue(issue.id),
         instances: []
       };
     }
@@ -150,10 +234,7 @@ export default function ScanResultsPage() {
   const downloadAsWord = async () => {
     setIsDownloading('word');
     try {
-      // Create HTML content for the Word document
       const htmlContent = generateWordHTML(result, filteredIssues);
-      
-      // Create blob and download
       const blob = new Blob([htmlContent], { type: 'application/msword' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -175,10 +256,7 @@ export default function ScanResultsPage() {
   const downloadAsExcel = async () => {
     setIsDownloading('excel');
     try {
-      // Create CSV content (Excel compatible)
       const csvContent = generateExcelCSV(result, result.issues || []);
-      
-      // Create blob and download
       const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -199,6 +277,14 @@ export default function ScanResultsPage() {
   // Generate Word HTML
   const generateWordHTML = (result: ScanResult, issues: Issue[]) => {
     const date = new Date(result.timestamp).toLocaleString();
+    const escapeHtml = (text: string) => {
+      return text
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    };
     
     return `
 <!DOCTYPE html>
@@ -210,81 +296,42 @@ export default function ScanResultsPage() {
     body { font-family: Arial, sans-serif; margin: 40px; line-height: 1.6; }
     h1 { color: #1e40af; border-bottom: 3px solid #1e40af; padding-bottom: 10px; }
     h2 { color: #374151; margin-top: 30px; }
-    h3 { color: #4b5563; }
     .summary-box { background: #eff6ff; border: 1px solid #bfdbfe; padding: 20px; margin: 20px 0; border-radius: 8px; }
-    .severity-grid { display: flex; gap: 20px; margin: 20px 0; }
-    .severity-item { padding: 15px; border-radius: 8px; text-align: center; flex: 1; }
-    .critical { background: #fef2f2; border: 1px solid #fecaca; }
-    .serious { background: #fff7ed; border: 1px solid #fed7aa; }
-    .moderate { background: #fefce8; border: 1px solid #fef08a; }
-    .minor { background: #eff6ff; border: 1px solid #bfdbfe; }
     .issue-card { border: 1px solid #e5e7eb; margin: 15px 0; padding: 15px; border-radius: 8px; }
-    .issue-header { font-weight: bold; margin-bottom: 10px; }
     .code-block { background: #1f2937; color: #10b981; padding: 10px; font-family: monospace; font-size: 12px; overflow-x: auto; border-radius: 4px; margin: 10px 0; }
-    .page-url { color: #2563eb; font-size: 12px; }
-    .fix-suggestion { color: #dc2626; font-size: 12px; margin-top: 10px; }
-    table { width: 100%; border-collapse: collapse; margin: 20px 0; }
-    th, td { border: 1px solid #d1d5db; padding: 10px; text-align: left; }
-    th { background: #f3f4f6; }
+    .category-tag { background: #e0e7ff; color: #3730a3; padding: 2px 8px; border-radius: 4px; font-size: 12px; }
   </style>
 </head>
 <body>
   <h1>♿ Accessibility Audit Report</h1>
   <p><strong>Generated:</strong> ${date}</p>
-  <p><strong>Tool:</strong> Playwright + axe-core via n8n</p>
+  <p><strong>Tool:</strong> axe-core via Playwright</p>
   
   <div class="summary-box">
     <h2>📊 Summary</h2>
     <p><strong>Pages Scanned:</strong> ${result.totalScanned}</p>
-    <p><strong>Total Issues Found:</strong> ${result.totalIssues}</p>
+    <p><strong>Total Issues:</strong> ${result.totalIssues}</p>
+    <p><strong>Critical:</strong> ${result.criticalCount} | <strong>Serious:</strong> ${result.seriousCount} | <strong>Moderate:</strong> ${result.moderateCount} | <strong>Minor:</strong> ${result.minorCount}</p>
   </div>
 
-  <h2>Issue Severity Breakdown</h2>
-  <div class="severity-grid">
-    <div class="severity-item critical">
-      <div style="font-size: 24px; font-weight: bold;">${result.criticalCount}</div>
-      <div>🔴 Critical</div>
-    </div>
-    <div class="severity-item serious">
-      <div style="font-size: 24px; font-weight: bold;">${result.seriousCount}</div>
-      <div>🟠 Serious</div>
-    </div>
-    <div class="severity-item moderate">
-      <div style="font-size: 24px; font-weight: bold;">${result.moderateCount}</div>
-      <div>🟡 Moderate</div>
-    </div>
-    <div class="severity-item minor">
-      <div style="font-size: 24px; font-weight: bold;">${result.minorCount}</div>
-      <div>🔵 Minor</div>
-    </div>
-  </div>
-
-  <h2>📄 Pages Scanned</h2>
-  <ul>
-    ${result.files.map(file => `<li>${file}</li>`).join('\n    ')}
-  </ul>
-
-  <h2>🐛 Detailed Issues</h2>
-  ${issues.map(issue => `
+  <h2>🐛 Issues by Category</h2>
+  ${issues.map(issue => {
+    const category = getCategoryForIssue(issue.id);
+    return `
   <div class="issue-card">
-    <div class="issue-header">${getImpactBadge(issue.impact)} - ${issue.id}</div>
+    <span class="category-tag">${category.icon} ${category.name}</span>
+    <span style="margin-left: 10px;">${getImpactBadge(issue.impact)}</span>
+    <h3>${issue.id}</h3>
     <p><strong>${issue.help}</strong></p>
     <p>${issue.description}</p>
-    ${issue.pageUrl ? `<p class="page-url">📄 Page: ${issue.pageUrl}</p>` : ''}
+    ${issue.pageUrl ? `<p>📄 Page: ${issue.pageUrl}</p>` : ''}
     ${issue.nodes && issue.nodes[0] ? `
     <p><strong>Selector:</strong> ${issue.nodes[0].target?.join(' > ')}</p>
     <div class="code-block">${escapeHtml(issue.nodes[0].html)}</div>
-    ${issue.nodes[0].failureSummary ? `<p class="fix-suggestion">⚠️ ${issue.nodes[0].failureSummary}</p>` : ''}
     ` : ''}
-    ${issue.helpUrl ? `<p><a href="${issue.helpUrl}">Learn more about this issue →</a></p>` : ''}
   </div>
-  `).join('\n')}
-
-  <hr style="margin-top: 40px;">
-  <p style="color: #6b7280; font-size: 12px;">
-    Generated by UF College of Education Accessibility Dashboard<br>
-    WCAG 2.1 Level AA Compliance Check
-  </p>
+  `;
+  }).join('\n')}
 </body>
 </html>
     `;
@@ -293,32 +340,34 @@ export default function ScanResultsPage() {
   // Generate Excel CSV
   const generateExcelCSV = (result: ScanResult, issues: Issue[]) => {
     const headers = [
+      'Category',
       'Issue ID',
       'Severity',
       'Description',
       'Help Text',
       'Page URL',
-      'Page Title',
       'CSS Selector',
       'HTML Element',
       'Fix Suggestion',
       'Learn More URL'
     ];
 
-    const rows = issues.map(issue => [
-      issue.id,
-      issue.impact,
-      `"${(issue.description || '').replace(/"/g, '""')}"`,
-      `"${(issue.help || '').replace(/"/g, '""')}"`,
-      issue.pageUrl || '',
-      issue.pageTitle || '',
-      `"${(issue.nodes?.[0]?.target?.join(' > ') || '').replace(/"/g, '""')}"`,
-      `"${(issue.nodes?.[0]?.html || '').replace(/"/g, '""').replace(/\n/g, ' ')}"`,
-      `"${(issue.nodes?.[0]?.failureSummary || '').replace(/"/g, '""').replace(/\n/g, ' ')}"`,
-      issue.helpUrl || ''
-    ]);
+    const rows = issues.map(issue => {
+      const category = getCategoryForIssue(issue.id);
+      return [
+        category.name,
+        issue.id,
+        issue.impact,
+        `"${(issue.description || '').replace(/"/g, '""')}"`,
+        `"${(issue.help || '').replace(/"/g, '""')}"`,
+        issue.pageUrl || '',
+        `"${(issue.nodes?.[0]?.target?.join(' > ') || '').replace(/"/g, '""')}"`,
+        `"${(issue.nodes?.[0]?.html || '').replace(/"/g, '""').replace(/\n/g, ' ')}"`,
+        `"${(issue.nodes?.[0]?.failureSummary || '').replace(/"/g, '""').replace(/\n/g, ' ')}"`,
+        issue.helpUrl || ''
+      ];
+    });
 
-    // Add summary rows at the top
     const summaryRows = [
       ['ACCESSIBILITY AUDIT REPORT'],
       [`Generated: ${new Date(result.timestamp).toLocaleString()}`],
@@ -331,6 +380,9 @@ export default function ScanResultsPage() {
       [`Moderate,${result.moderateCount}`],
       [`Minor,${result.minorCount}`],
       [''],
+      ['ISSUES BY CATEGORY'],
+      ...Object.entries(categoryCount).map(([cat, count]) => [`${cat},${count}`]),
+      [''],
       ['DETAILED ISSUES'],
       headers
     ];
@@ -338,21 +390,11 @@ export default function ScanResultsPage() {
     return [...summaryRows.map(row => row.join(',')), ...rows.map(row => row.join(','))].join('\n');
   };
 
-  // Escape HTML for Word document
-  const escapeHtml = (text: string) => {
-    return text
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#039;');
-  };
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50">
       {/* Header */}
       <div className="bg-gradient-to-r from-green-600 to-green-700 text-white p-6 shadow-lg">
-        <div className="max-w-7xl mx-auto flex justify-between items-center">
+        <div className="max-w-7xl mx-auto flex justify-between items-center flex-wrap gap-4">
           <div>
             <h1 className="text-3xl font-bold flex items-center gap-3">
               🎯 Accessibility Scan Results
@@ -361,7 +403,7 @@ export default function ScanResultsPage() {
               Scanned {result.totalScanned} pages • Found {result.totalIssues} issues
             </p>
           </div>
-          <div className="flex gap-3">
+          <div className="flex gap-3 flex-wrap">
             <button
               onClick={downloadAsWord}
               disabled={isDownloading === 'word'}
@@ -434,7 +476,7 @@ export default function ScanResultsPage() {
 
               {/* Issue Severity Breakdown */}
               <div className="mb-6">
-                <h3 className="font-bold text-gray-900 mb-4 text-xl">Issue Severity</h3>
+                <h3 className="font-bold text-gray-900 mb-4 text-xl">By Severity</h3>
                 <div className="grid grid-cols-4 gap-4">
                   <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-center">
                     <div className="text-3xl font-bold text-red-600">{result.criticalCount}</div>
@@ -452,6 +494,32 @@ export default function ScanResultsPage() {
                     <div className="text-3xl font-bold text-blue-600">{result.minorCount}</div>
                     <div className="text-sm text-blue-700 mt-1">🔵 Minor</div>
                   </div>
+                </div>
+              </div>
+
+              {/* Issues by Category - NEW! */}
+              <div className="mb-6">
+                <h3 className="font-bold text-gray-900 mb-4 text-xl">By Category</h3>
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                  {uniqueCategories.map(({ name, count }) => {
+                    const categoryInfo = Object.values(ISSUE_CATEGORIES).find(c => c.name === name) || { icon: '📌' };
+                    return (
+                      <div 
+                        key={name} 
+                        className="bg-indigo-50 border border-indigo-200 rounded-lg p-3 flex items-center gap-3 cursor-pointer hover:bg-indigo-100 transition"
+                        onClick={() => {
+                          setFilterCategory(name);
+                          setActiveTab('issues');
+                        }}
+                      >
+                        <span className="text-2xl">{categoryInfo.icon}</span>
+                        <div>
+                          <div className="font-bold text-indigo-900">{count}</div>
+                          <div className="text-xs text-indigo-700">{name}</div>
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
 
@@ -479,9 +547,46 @@ export default function ScanResultsPage() {
           ) : (
             <>
               {/* Filters */}
-              <div className="mb-6 p-4 bg-gray-50 rounded-lg border">
+              <div className="mb-6 p-4 bg-gray-50 rounded-lg border space-y-4">
+                
+                {/* Category Filter - NEW! */}
+                <div>
+                  <div className="flex items-center gap-2 mb-2">
+                    <Tag size={16} className="text-gray-600" />
+                    <span className="text-gray-700 font-semibold">Filter by Category:</span>
+                  </div>
+                  <div className="flex gap-2 flex-wrap">
+                    <button
+                      onClick={() => setFilterCategory('all')}
+                      className={`px-3 py-1.5 rounded-lg text-sm font-medium transition ${
+                        filterCategory === 'all'
+                          ? 'bg-indigo-600 text-white'
+                          : 'bg-white border text-gray-700 hover:bg-gray-100'
+                      }`}
+                    >
+                      All Categories
+                    </button>
+                    {uniqueCategories.map(({ name, count }) => {
+                      const categoryInfo = Object.values(ISSUE_CATEGORIES).find(c => c.name === name) || { icon: '📌' };
+                      return (
+                        <button
+                          key={name}
+                          onClick={() => setFilterCategory(name)}
+                          className={`px-3 py-1.5 rounded-lg text-sm font-medium transition ${
+                            filterCategory === name
+                              ? 'bg-indigo-600 text-white'
+                              : 'bg-white border text-gray-700 hover:bg-gray-100'
+                          }`}
+                        >
+                          {categoryInfo.icon} {name} ({count})
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
                 {/* Page Filter */}
-                <div className="mb-4">
+                <div>
                   <div className="flex items-center gap-2 mb-2">
                     <Filter size={16} className="text-gray-600" />
                     <span className="text-gray-700 font-semibold">Filter by Page:</span>
@@ -495,7 +600,7 @@ export default function ScanResultsPage() {
                           : 'bg-white border text-gray-700 hover:bg-gray-100'
                       }`}
                     >
-                      All Pages ({result.issues?.length || 0})
+                      All Pages
                     </button>
                     {uniquePages.map((pageUrl, idx) => {
                       const pageIssueCount = (result.issues || []).filter(i => i.pageUrl === pageUrl).length;
@@ -539,8 +644,11 @@ export default function ScanResultsPage() {
                 </div>
 
                 {/* Filter Status */}
-                <div className="mt-3 text-sm text-gray-600">
-                  Showing {filteredIssues.length} of {result.issues?.length || 0} issues
+                <div className="pt-2 border-t text-sm text-gray-600">
+                  Showing <strong>{filteredIssues.length}</strong> of <strong>{result.issues?.length || 0}</strong> issues
+                  {filterCategory !== 'all' && <span className="ml-2 text-indigo-600">• Category: {filterCategory}</span>}
+                  {filterPage !== 'all' && <span className="ml-2 text-blue-600">• Page: {getPageName(filterPage)}</span>}
+                  {filterImpact !== 'all' && <span className="ml-2 text-orange-600">• Severity: {filterImpact}</span>}
                 </div>
               </div>
 
@@ -562,8 +670,12 @@ export default function ScanResultsPage() {
                         onClick={() => toggleIssue(idx)}
                       >
                         <div className="flex-1">
-                          <div className="flex items-center gap-3 mb-2">
-                            <span className={`px-3 py-1 rounded-full text-sm font-bold ${getImpactColor(issueGroup.impact)}`}>
+                          <div className="flex items-center gap-3 mb-2 flex-wrap">
+                            {/* Category Badge - NEW! */}
+                            <span className="px-2 py-1 bg-indigo-100 text-indigo-800 rounded text-xs font-medium">
+                              {issueGroup.category.icon} {issueGroup.category.name}
+                            </span>
+                            <span className={`px-2 py-1 rounded text-xs font-bold ${getImpactColor(issueGroup.impact)}`}>
                               {getImpactBadge(issueGroup.impact)}
                             </span>
                             <span className="text-gray-600 text-sm font-medium">
@@ -638,7 +750,7 @@ export default function ScanResultsPage() {
         {/* Footer */}
         <div className="mt-8 text-center text-sm text-gray-500">
           <p>UF College of Education | Accessibility Compliance Tool</p>
-          <p className="mt-1">WCAG 2.1 Level AA • Powered by Playwright + axe-core</p>
+          <p className="mt-1">WCAG 2.1 Level AA • Powered by axe-core + Playwright</p>
         </div>
       </div>
     </div>
