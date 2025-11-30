@@ -1,0 +1,703 @@
+{
+  "url": "https://education.ufl.edu/about/mission-and-history/",
+  "title": "Mission and History",
+  "site": "UF College of Education",
+  "scannedAt": "2025-11-30T04:48:30.820Z",
+  "scannedBy": "Saignaneswar",
+  "issues": [
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_0\" aria-expanded=\"false\">1905</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_0\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_1\" aria-expanded=\"false\">1906</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_1\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_2\" aria-expanded=\"false\">1912</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_2\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_3\" aria-expanded=\"false\">1913</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_3\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_4\" aria-expanded=\"false\">1931</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_4\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_5\" aria-expanded=\"false\">1934</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_5\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_6\" aria-expanded=\"false\">1947</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_6\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_7\" aria-expanded=\"false\">1948</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_7\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_8\" aria-expanded=\"false\">1954</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_8\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_9\" aria-expanded=\"false\">1957</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_9\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_10\" aria-expanded=\"false\">1958</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_10\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_11\" aria-expanded=\"false\">1966</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_11\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_12\" aria-expanded=\"false\">1975</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_12\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_13\" aria-expanded=\"false\">1979</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_13\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_14\" aria-expanded=\"false\">1984</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_14\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_15\" aria-expanded=\"false\">1985</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_15\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_16\" aria-expanded=\"false\">1995</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_16\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_17\" aria-expanded=\"false\">1996</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_17\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_18\" aria-expanded=\"false\">1997</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_18\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_19\" aria-expanded=\"false\">1998</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_19\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_20\" aria-expanded=\"false\">1999</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_20\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_21\" aria-expanded=\"false\">2000</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_21\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_22\" aria-expanded=\"false\">2002</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_22\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_23\" aria-expanded=\"false\">2004</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_23\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_24\" aria-expanded=\"false\">2005</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_24\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_25\" aria-expanded=\"false\">2006</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_25\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_26\" aria-expanded=\"false\">2007</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_26\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_27\" aria-expanded=\"false\">2008</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_27\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_28\" aria-expanded=\"false\">2010</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_28\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_29\" aria-expanded=\"false\">2011</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_29\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_30\" aria-expanded=\"false\">2012</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_30\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_31\" aria-expanded=\"false\">2013</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_31\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_32\" aria-expanded=\"false\">2014</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_32\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_33\" aria-expanded=\"false\">2015</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_33\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_34\" aria-expanded=\"false\">2016</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_34\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_35\" aria-expanded=\"false\">2017</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_35\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_36\" aria-expanded=\"false\">2018</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_36\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_37\" aria-expanded=\"false\">2019</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_37\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_38\" aria-expanded=\"false\">2020</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_38\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_39\" aria-expanded=\"false\">2021</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_39\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_40\" aria-expanded=\"false\">2022</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_40\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_41\" aria-expanded=\"false\">2023</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_41\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "label",
+      "impact": "critical",
+      "description": "Ensures every form element has a label",
+      "help": "Form elements must have labels",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/label?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<input type=\"email\" value=\"Email Address\" name=\"EMAIL\" class=\"required email\" id=\"mce-EMAIL\" required=\"\">",
+          "target": [
+            ".et_pb_code_2_tb_footer > .et_pb_code_inner > div > .validate[method=\"post\"][name=\"mc-embedded-subscribe-form\"] > div > .mc-field-group > div[aria-label=\"Email Address\"] > .required.email[type=\"email\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Form element does not have an implicit (wrapped) <label>\n  Form element does not have an explicit <label>\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element has no placeholder attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "critical": 1,
+    "serious": 0,
+    "moderate": 0,
+    "minor": 42
+  }
+}
