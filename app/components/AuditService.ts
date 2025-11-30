@@ -26,14 +26,17 @@ export interface LighthousePerformanceIssue {
 }
 
 export interface LighthouseAccessibilityIssue {
+  id: string;  // Added: rule ID like "image-alt", "button-name"
   title: string;
   description: string;
   impact: 'critical' | 'serious' | 'moderate' | 'minor';
+  score: number | null;  // Added: audit score
   nodes: Array<{
     html: string;
     target: string;
+    failureSummary?: string;  // Added: explanation of failure
   }>;
-  recommendation: string;
+  recommendation?: string;
 }
 
 export interface LighthouseBestPracticesIssue {
@@ -46,6 +49,16 @@ export interface LighthouseSEOIssue {
   title: string;
   description: string;
   recommendation: string;
+}
+
+// Added: Summary of issue counts by severity
+export interface IssueSummary {
+  critical: number;
+  serious: number;
+  moderate: number;
+  minor: number;
+  total: number;
+  passed: number;
 }
 
 export interface AuditPageResult {
@@ -64,6 +77,7 @@ export interface AuditPageResult {
   bestPracticesIssues?: LighthouseBestPracticesIssue[];
   lighthouseSEOIssues?: LighthouseSEOIssue[];
   seoIssues?: LighthouseSEOIssue[];
+  summary?: IssueSummary;  // Added: summary counts
 }
 
 export interface AuditRun {
@@ -81,13 +95,26 @@ export class AuditHistoryManager {
 
   saveAuditRun(results: AuditPageResult[], siteCount: number): AuditRun {
     const now = Date.now();
+    
+    // Calculate total issues from both legacy and new format
+    const totalIssues = results.reduce((sum, r) => {
+      // Try summary first, then lighthouseAccessibilityIssues, then legacy issues
+      if (r.summary) {
+        return sum + r.summary.total;
+      } else if (r.lighthouseAccessibilityIssues) {
+        return sum + r.lighthouseAccessibilityIssues.length;
+      } else {
+        return sum + r.issues.length;
+      }
+    }, 0);
+
     const auditRun: AuditRun = {
       id: `audit-${now}`,
       timestamp: now,
       dateString: new Date(now).toLocaleString(),
       siteCount,
       pageCount: results.length,
-      totalIssues: results.reduce((sum, r) => sum + r.issues.length, 0),
+      totalIssues,
       results,
     };
 

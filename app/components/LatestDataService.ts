@@ -1,6 +1,6 @@
 // app/components/LatestDataService.ts
-// OPTION A: Compatible with both LatestDataModal and PreScannedDataModal
-// Uses lightweight index.json + fetches individual pages on demand
+// UPDATED: Removed all fake score calculations
+// Only shows real issue counts, no fake Lighthouse scores
 
 // ============ TYPES ============
 
@@ -122,14 +122,12 @@ const CACHE_TTL = 30000; // 30 seconds
  */
 export async function hasScanData(): Promise<boolean> {
   try {
-    // Try new index first
     let response = await fetch('/scan-data/index.json', { 
       cache: 'no-store',
       headers: { 'Cache-Control': 'no-cache' }
     });
     if (response.ok) return true;
     
-    // Fallback to legacy
     response = await fetch('/scan-data/latest-scan.json', { cache: 'no-store' });
     return response.ok;
   } catch {
@@ -153,7 +151,6 @@ export async function getLastScanDate(): Promise<string | null> {
  * Load the lightweight index
  */
 export async function loadIndex(): Promise<ScanIndex | null> {
-  // Return cached if fresh
   if (indexCache && Date.now() - indexCacheTime < CACHE_TTL) {
     return indexCache;
   }
@@ -171,7 +168,6 @@ export async function loadIndex(): Promise<ScanIndex | null> {
       return index;
     }
     
-    // Fallback to legacy
     return await loadLegacyAsIndex();
   } catch (error) {
     console.error('Error loading index:', error);
@@ -192,7 +188,7 @@ async function loadLegacyAsIndex(): Promise<ScanIndex | null> {
     const pages: PageIndexEntry[] = (data.results || []).map((r: any) => ({
       url: r.url,
       title: r.title,
-      filePath: '', // Legacy doesn't have file paths
+      filePath: '',
       scannedAt: r.scannedAt || data.metadata?.scanDate,
       scannedBy: data.metadata?.scannedBy || 'Unknown',
       summary: r.summary,
@@ -258,12 +254,10 @@ export async function loadPageDetails(url: string): Promise<PageScanResult | nul
   const pageEntry = index.pages.find(p => p.url === url);
   if (!pageEntry) return null;
   
-  // If has file path (new format), load from file
   if (pageEntry.filePath) {
     return await loadPageData(pageEntry.filePath);
   }
   
-  // Fallback: try legacy format
   try {
     const response = await fetch('/scan-data/latest-scan.json', { cache: 'no-store' });
     if (response.ok) {
@@ -332,19 +326,16 @@ export async function loadPreScannedData(): Promise<{
     summary: index.summary,
   };
   
-  // Separate pages with file paths (new) vs without (legacy)
   const pagesWithFiles = index.pages.filter(p => p.filePath && p.filePath.length > 0);
   const pagesWithoutFiles = index.pages.filter(p => !p.filePath || p.filePath.length === 0);
   
   const results: PageScanResult[] = [];
   
-  // Load new format pages (parallel fetch)
   if (pagesWithFiles.length > 0) {
     const loaded = await loadMultiplePages(pagesWithFiles.map(p => p.filePath));
     results.push(...loaded);
   }
   
-  // Load legacy format pages
   if (pagesWithoutFiles.length > 0) {
     try {
       const response = await fetch('/scan-data/latest-scan.json', { cache: 'no-store' });
@@ -361,18 +352,17 @@ export async function loadPreScannedData(): Promise<{
 }
 
 // ============ LEGACY FUNCTIONS (for LatestDataModal compatibility) ============
+// UPDATED: No fake scores - only real issue counts
 
 /**
  * Fetch page scan data by URL (for LatestDataModal)
- * Converts new format to old PageScanData format
+ * UPDATED: Returns 0 for all Lighthouse scores (no fake calculation)
  */
 export async function fetchPageScanDataByUrl(url: string, siteBaseUrl?: string): Promise<PageScanData | null> {
   try {
-    // First try to load from index
     const pageResult = await loadPageDetails(url);
     
     if (pageResult) {
-      // Convert PageScanResult to PageScanData format
       const totalIssues = (pageResult.summary?.critical || 0) + 
                           (pageResult.summary?.serious || 0) + 
                           (pageResult.summary?.moderate || 0) + 
@@ -382,9 +372,11 @@ export async function fetchPageScanDataByUrl(url: string, siteBaseUrl?: string):
         url: pageResult.url,
         title: pageResult.title,
         lastScanned: pageResult.scannedAt || new Date().toISOString(),
+        // NO FAKE SCORES - all zeros
+        // Use "Lighthouse Score" button for real accessibility scores
         lighthouse: {
-          performance: 0, // Not available in new format
-          accessibility: Math.max(0, 100 - (pageResult.summary.critical * 10 + pageResult.summary.serious * 5 + pageResult.summary.moderate * 2 + pageResult.summary.minor)),
+          performance: 0,
+          accessibility: 0, // NO FAKE SCORE - use Lighthouse button for real score
           bestPractices: 0,
           seo: 0,
         },
@@ -415,6 +407,7 @@ export async function fetchPageScanDataByUrl(url: string, siteBaseUrl?: string):
 
 /**
  * Get all available scan data (for LatestDataModal)
+ * UPDATED: Returns 0 for all Lighthouse scores (no fake calculation)
  */
 export async function getAllScanData(): Promise<PageScanData[]> {
   const data = await loadPreScannedData();
@@ -430,9 +423,10 @@ export async function getAllScanData(): Promise<PageScanData[]> {
       url: r.url,
       title: r.title,
       lastScanned: r.scannedAt || new Date().toISOString(),
+      // NO FAKE SCORES - all zeros
       lighthouse: {
         performance: 0,
-        accessibility: Math.max(0, 100 - (r.summary.critical * 10 + r.summary.serious * 5 + r.summary.moderate * 2 + r.summary.minor)),
+        accessibility: 0, // NO FAKE SCORE
         bestPractices: 0,
         seo: 0,
       },
