@@ -1,0 +1,111 @@
+{
+  "url": "https://education.ufl.edu/help-and-support/",
+  "title": "Help and Support",
+  "site": "UF College of Education",
+  "scannedAt": "2025-11-30T04:48:30.820Z",
+  "scannedBy": "Saignaneswar",
+  "issues": [
+    {
+      "id": "landmark-one-main",
+      "impact": "moderate",
+      "description": "Ensures the document has a main landmark",
+      "help": "Document should have one main landmark",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/landmark-one-main?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<html lang=\"en-US\" class=\"js\">",
+          "target": [
+            "html"
+          ],
+          "failureSummary": "Fix all of the following:\n  Document does not have a main landmark"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<div class=\"et_pb_section et_pb_section_0 et_pb_with_background et_section_regular\">",
+          "target": [
+            ".et_pb_section_0"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<div class=\"form-container\">",
+          "target": [
+            ".form-container:nth-child(16)"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<div class=\"no-category-selected-notification\"> ⚠️ Please select a form category from the list above. </div>",
+          "target": [
+            ".no-category-selected-notification"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<div class=\"et_pb_section et_pb_section_2 et_pb_with_background et_section_regular\">",
+          "target": [
+            ".et_pb_section_2"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<div class=\"et_pb_section et_pb_section_3 et_section_regular\">",
+          "target": [
+            ".et_pb_section_3"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "critical": 0,
+    "serious": 0,
+    "moderate": 6,
+    "minor": 0
+  }
+}
