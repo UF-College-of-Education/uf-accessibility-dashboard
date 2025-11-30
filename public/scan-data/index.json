@@ -1,1 +1,91 @@
-{"lastUpdated":"2025-11-29T02:00:00Z","totalSites":55,"totalPages":1178,"totalScannedPages":2,"sites":[{"id":"education-ufl-edu","name":"Homepage - UF College of Education","folderName":"education-ufl-edu","totalPages":67,"scannedPages":2,"lastScanned":"2025-11-29T02:15:00Z"}]}
+{
+  "lastUpdated": "2025-11-30T05:34:15.681Z",
+  "totalPages": 6,
+  "totalIssues": 224,
+  "summary": {
+    "critical": 12,
+    "serious": 69,
+    "moderate": 143,
+    "minor": 0
+  },
+  "pages": [
+    {
+      "url": "https://education.ufl.edu/ai/ai-in-education-fair/ai-fair-2025-full-interviews/",
+      "title": "AI Fair 2025: Full Interviews",
+      "filePath": "pages/education_ufl_edu/ai__ai-in-education-fair__ai-fair-2025-full-interviews.json",
+      "scannedAt": "2025-11-30T05:34:15.681Z",
+      "scannedBy": "Saignaneswar",
+      "summary": {
+        "critical": 0,
+        "serious": 0,
+        "moderate": 1,
+        "minor": 0
+      }
+    },
+    {
+      "url": "https://education.ufl.edu/ai/ai-in-education-fair/",
+      "title": "AI in Education Fair",
+      "filePath": "pages/education_ufl_edu/ai__ai-in-education-fair.json",
+      "scannedAt": "2025-11-30T05:34:15.681Z",
+      "scannedBy": "Saignaneswar",
+      "summary": {
+        "critical": 0,
+        "serious": 0,
+        "moderate": 1,
+        "minor": 0
+      }
+    },
+    {
+      "url": "https://education.ufl.edu/riel/riel-resources/",
+      "title": "Resources",
+      "filePath": "pages/education_ufl_edu/riel__riel-resources.json",
+      "scannedAt": "2025-11-30T05:33:23.867Z",
+      "scannedBy": "Saignaneswar",
+      "summary": {
+        "critical": 3,
+        "serious": 3,
+        "moderate": 37,
+        "minor": 0
+      }
+    },
+    {
+      "url": "https://education.ufl.edu/riel/fall-institute-photo/",
+      "title": "Fall Institute Photo",
+      "filePath": "pages/education_ufl_edu/riel__fall-institute-photo.json",
+      "scannedAt": "2025-11-30T05:33:23.867Z",
+      "scannedBy": "Saignaneswar",
+      "summary": {
+        "critical": 3,
+        "serious": 54,
+        "moderate": 19,
+        "minor": 0
+      }
+    },
+    {
+      "url": "https://education.ufl.edu/riel/application-information/",
+      "title": "Application Information",
+      "filePath": "pages/education_ufl_edu/riel__application-information.json",
+      "scannedAt": "2025-11-30T05:33:23.867Z",
+      "scannedBy": "Saignaneswar",
+      "summary": {
+        "critical": 3,
+        "serious": 6,
+        "moderate": 19,
+        "minor": 0
+      }
+    },
+    {
+      "url": "https://education.ufl.edu/riel/",
+      "title": "Home",
+      "filePath": "pages/education_ufl_edu/riel.json",
+      "scannedAt": "2025-11-30T05:33:23.867Z",
+      "scannedBy": "Saignaneswar",
+      "summary": {
+        "critical": 3,
+        "serious": 6,
+        "moderate": 66,
+        "minor": 0
+      }
+    }
+  ]
+}
