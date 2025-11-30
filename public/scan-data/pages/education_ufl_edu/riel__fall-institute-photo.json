@@ -1,0 +1,1231 @@
+{
+  "url": "https://education.ufl.edu/riel/fall-institute-photo/",
+  "title": "Fall Institute Photo",
+  "site": "UF College of Education",
+  "scannedAt": "2025-11-30T04:54:22.133Z",
+  "scannedBy": "Saignaneswar",
+  "issues": [
+    {
+      "id": "button-name",
+      "impact": "critical",
+      "description": "Ensures buttons have discernible text",
+      "help": "Buttons must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/button-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<button type=\"submit\" class=\"COET-sa\">",
+          "target": [
+            "button"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element does not have inner text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+        }
+      ]
+    },
+    {
+      "id": "heading-order",
+      "impact": "moderate",
+      "description": "Ensures the order of headings is semantically correct",
+      "help": "Heading levels should only increase by one",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/heading-order?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h4>Resources</h4>",
+          "target": [
+            ".footer-resources > h4"
+          ],
+          "failureSummary": "Fix any of the following:\n  Heading order invalid"
+        }
+      ]
+    },
+    {
+      "id": "image-alt",
+      "impact": "critical",
+      "description": "Ensures <img> elements have alternate text or a role of none or presentation",
+      "help": "Images must have alternate text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/image-alt?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<img src=\"https://education.ufl.edu/old_coeio/enf/CAEP-Accredited-Logo-white.png\" width=\"80%\" height=\"80%\" style=\"max-width:300px;\">",
+          "target": [
+            "img[width=\"80%\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+        }
+      ]
+    },
+    {
+      "id": "label-title-only",
+      "impact": "serious",
+      "description": "Ensures that every form element has a visible label and is not solely labeled using hidden labels, or the title or aria-describedby attributes",
+      "help": "Form elements should have a visible label",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/label-title-only?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<input id=\"COET-searchinput\" type=\"text\" name=\"q\" title=\"Search the College of Education\" value=\"\" placeholder=\"Search\">",
+          "target": [
+            "#COET-searchinput"
+          ],
+          "failureSummary": "Fix all of the following:\n  Only title used to generate label for form element"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a class=\"coe-head-logo\" href=\"https://education.ufl.edu\"><span></span></a>",
+          "target": [
+            ".coe-head-logo"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a href=\"#\" class=\"coe-search-trigger\">",
+          "target": [
+            ".coe-search-trigger"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a href=\"https://education.ufl.edu/riel/files/2022/10/IMG_0153-1030x687.jpg\" data-rel=\"gallery-1\" data-prev-img=\"https://education.ufl.edu/riel/files/2022/10/IMG_0153-495x400.jpg\" class=\"first_thumb l",
+          "target": [
+            "a[data-onclick=\"1\"]"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a href=\"https://education.ufl.edu/riel/files/2022/10/IMG_0157-1030x687.jpg\" data-rel=\"gallery-1\" data-prev-img=\"https://education.ufl.edu/riel/files/2022/10/IMG_0157-495x400.jpg\" class=\"lightbox  lig",
+          "target": [
+            "a[data-onclick=\"2\"]"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a href=\"https://education.ufl.edu/riel/files/2022/10/IMG_0163-1030x687.jpg\" data-rel=\"gallery-1\" data-prev-img=\"https://education.ufl.edu/riel/files/2022/10/IMG_0163-495x400.jpg\" class=\"lightbox  lig",
+          "target": [
+            "a[data-onclick=\"3\"]"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a href=\"https://education.ufl.edu/riel/files/2022/10/IMG_0169-1030x687.jpg\" data-rel=\"gallery-1\" data-prev-img=\"https://education.ufl.edu/riel/files/2022/10/IMG_0169-495x400.jpg\" class=\"lightbox  lig",
+          "target": [
+            "a[data-onclick=\"4\"]"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a href=\"https://education.ufl.edu/riel/files/2022/10/IMG_0183-1030x687.jpg\" data-rel=\"gallery-1\" data-prev-img=\"https://education.ufl.edu/riel/files/2022/10/IMG_0183-495x400.jpg\" class=\"lightbox  lig",
+          "target": [
+            "a[data-onclick=\"5\"]"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a href=\"https://education.ufl.edu/riel/files/2022/10/IMG_0270-1030x687.jpg\" data-rel=\"gallery-1\" data-prev-img=\"https://education.ufl.edu/riel/files/2022/10/IMG_0270-495x400.jpg\" class=\"first_thumb l",
+          "target": [
+            "a[data-onclick=\"6\"]"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a href=\"https://education.ufl.edu/riel/files/2022/10/IMG_0286-1030x687.jpg\" data-rel=\"gallery-1\" data-prev-img=\"https://education.ufl.edu/riel/files/2022/10/IMG_0286-495x400.jpg\" class=\"lightbox  lig",
+          "target": [
+            "a[data-onclick=\"7\"]"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a href=\"https://education.ufl.edu/riel/files/2022/10/IMG_0295-1030x687.jpg\" data-rel=\"gallery-1\" data-prev-img=\"https://education.ufl.edu/riel/files/2022/10/IMG_0295-495x400.jpg\" class=\"lightbox  lig",
+          "target": [
+            "a[data-onclick=\"8\"]"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a href=\"https://education.ufl.edu/riel/files/2022/10/IMG_0308-1030x687.jpg\" data-rel=\"gallery-1\" data-prev-img=\"https://education.ufl.edu/riel/files/2022/10/IMG_0308-495x400.jpg\" class=\"lightbox  lig",
+          "target": [
+            "a[data-onclick=\"9\"]"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a href=\"https://education.ufl.edu/riel/files/2022/10/IMG_0338-1030x687.jpg\" data-rel=\"gallery-1\" data-prev-img=\"https://education.ufl.edu/riel/files/2022/10/IMG_0338-495x400.jpg\" class=\"lightbox  lig",
+          "target": [
+            "a[data-onclick=\"10\"]"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a href=\"https://education.ufl.edu/riel/files/2022/10/IMG_0350-1030x687.jpg\" data-rel=\"gallery-1\" data-prev-img=\"https://education.ufl.edu/riel/files/2022/10/IMG_0350-495x400.jpg\" class=\"first_thumb l",
+          "target": [
+            "a[data-onclick=\"11\"]"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a href=\"https://education.ufl.edu/riel/files/2022/10/IMG_0408-1030x687.jpg\" data-rel=\"gallery-1\" data-prev-img=\"https://education.ufl.edu/riel/files/2022/10/IMG_0408-495x400.jpg\" class=\"lightbox  lig",
+          "target": [
+            "a[data-onclick=\"12\"]"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a href=\"https://education.ufl.edu/riel/files/2022/10/IMG_0364-1030x687.jpg\" data-rel=\"gallery-1\" data-prev-img=\"https://education.ufl.edu/riel/files/2022/10/IMG_0364-495x400.jpg\" class=\"lightbox  lig",
+          "target": [
+            "a[data-onclick=\"13\"]"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a href=\"https://education.ufl.edu/riel/files/2022/10/IMG_0462-1030x687.jpg\" data-rel=\"gallery-1\" data-prev-img=\"https://education.ufl.edu/riel/files/2022/10/IMG_0462-495x400.jpg\" class=\"lightbox  lig",
+          "target": [
+            "a[data-onclick=\"14\"]"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a href=\"https://education.ufl.edu/riel/files/2022/10/IMG_0466-1030x687.jpg\" data-rel=\"gallery-1\" data-prev-img=\"https://education.ufl.edu/riel/files/2022/10/IMG_0466-495x400.jpg\" class=\"lightbox  lig",
+          "target": [
+            "a[data-onclick=\"15\"]"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a href=\"https://education.ufl.edu/riel/files/2022/10/IMG_0467-1030x687.jpg\" data-rel=\"gallery-1\" data-prev-img=\"https://education.ufl.edu/riel/files/2022/10/IMG_0467-495x400.jpg\" class=\"first_thumb l",
+          "target": [
+            "a[data-onclick=\"16\"]"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a href=\"https://education.ufl.edu/riel/files/2022/10/IMG_0479-1030x687.jpg\" data-rel=\"gallery-1\" data-prev-img=\"https://education.ufl.edu/riel/files/2022/10/IMG_0479-495x400.jpg\" class=\"lightbox  lig",
+          "target": [
+            "a[data-onclick=\"17\"]"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a href=\"https://education.ufl.edu/riel/files/2022/10/IMG_0489-1030x687.jpg\" data-rel=\"gallery-1\" data-prev-img=\"https://education.ufl.edu/riel/files/2022/10/IMG_0489-495x400.jpg\" class=\"lightbox  lig",
+          "target": [
+            "a[data-onclick=\"18\"]"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a href=\"https://education.ufl.edu/riel/files/2022/10/IMG_0497-1030x687.jpg\" data-rel=\"gallery-1\" data-prev-img=\"https://education.ufl.edu/riel/files/2022/10/IMG_0497-495x400.jpg\" class=\"lightbox  lig",
+          "target": [
+            "a[data-onclick=\"19\"]"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a href=\"https://education.ufl.edu/riel/files/2022/10/IMG_0501-1030x687.jpg\" data-rel=\"gallery-1\" data-prev-img=\"https://education.ufl.edu/riel/files/2022/10/IMG_0501-495x400.jpg\" class=\"lightbox  lig",
+          "target": [
+            "a[data-onclick=\"20\"]"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a href=\"https://education.ufl.edu/riel/files/2022/10/IMG_0503-1030x687.jpg\" data-rel=\"gallery-1\" data-prev-img=\"https://education.ufl.edu/riel/files/2022/10/IMG_0503-495x400.jpg\" class=\"first_thumb l",
+          "target": [
+            "a[data-onclick=\"21\"]"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a href=\"https://education.ufl.edu/riel/files/2022/10/IMG_0505-1030x687.jpg\" data-rel=\"gallery-1\" data-prev-img=\"https://education.ufl.edu/riel/files/2022/10/IMG_0505-495x400.jpg\" class=\"lightbox  lig",
+          "target": [
+            "a[data-onclick=\"22\"]"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a href=\"https://education.ufl.edu/riel/files/2022/10/IMG_0511-1030x687.jpg\" data-rel=\"gallery-1\" data-prev-img=\"https://education.ufl.edu/riel/files/2022/10/IMG_0511-495x400.jpg\" class=\"lightbox  lig",
+          "target": [
+            "a[data-onclick=\"23\"]"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a href=\"https://education.ufl.edu/riel/files/2022/10/IMG_0521-1030x687.jpg\" data-rel=\"gallery-1\" data-prev-img=\"https://education.ufl.edu/riel/files/2022/10/IMG_0521-495x400.jpg\" class=\"lightbox  lig",
+          "target": [
+            "a[data-onclick=\"24\"]"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a href=\"https://education.ufl.edu/riel/files/2022/10/IMG_0527-1030x687.jpg\" data-rel=\"gallery-1\" data-prev-img=\"https://education.ufl.edu/riel/files/2022/10/IMG_0527-495x400.jpg\" class=\"lightbox  lig",
+          "target": [
+            "a[data-onclick=\"25\"]"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a href=\"https://education.ufl.edu/riel/files/2022/10/IMG_0529-1030x687.jpg\" data-rel=\"gallery-1\" data-prev-img=\"https://education.ufl.edu/riel/files/2022/10/IMG_0529-495x400.jpg\" class=\"first_thumb l",
+          "target": [
+            "a[data-onclick=\"26\"]"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a href=\"https://education.ufl.edu/riel/files/2022/10/IMG_0551-1030x687.jpg\" data-rel=\"gallery-1\" data-prev-img=\"https://education.ufl.edu/riel/files/2022/10/IMG_0551-495x400.jpg\" class=\"lightbox  lig",
+          "target": [
+            "a[data-onclick=\"27\"]"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a href=\"https://education.ufl.edu/riel/files/2022/10/IMG_0567-1030x687.jpg\" data-rel=\"gallery-1\" data-prev-img=\"https://education.ufl.edu/riel/files/2022/10/IMG_0567-495x400.jpg\" class=\"lightbox  lig",
+          "target": [
+            "a[data-onclick=\"28\"]"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a href=\"https://education.ufl.edu/riel/files/2022/10/IMG_0578-1030x687.jpg\" data-rel=\"gallery-1\" data-prev-img=\"https://education.ufl.edu/riel/files/2022/10/IMG_0578-495x400.jpg\" class=\"lightbox  lig",
+          "target": [
+            "a[data-onclick=\"29\"]"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a href=\"https://education.ufl.edu/riel/files/2022/10/IMG_0587-1030x687.jpg\" data-rel=\"gallery-1\" data-prev-img=\"https://education.ufl.edu/riel/files/2022/10/IMG_0587-495x400.jpg\" class=\"lightbox  lig",
+          "target": [
+            "a[data-onclick=\"30\"]"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a href=\"https://education.ufl.edu/riel/files/2022/10/IMG_0600-1030x687.jpg\" data-rel=\"gallery-1\" data-prev-img=\"https://education.ufl.edu/riel/files/2022/10/IMG_0600-495x400.jpg\" class=\"first_thumb l",
+          "target": [
+            "a[data-onclick=\"31\"]"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a href=\"https://education.ufl.edu/riel/files/2022/10/IMG_0662-1030x687.jpg\" data-rel=\"gallery-1\" data-prev-img=\"https://education.ufl.edu/riel/files/2022/10/IMG_0662-495x400.jpg\" class=\"lightbox  lig",
+          "target": [
+            "a[data-onclick=\"32\"]"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a href=\"https://education.ufl.edu/riel/files/2022/10/IMG_0606-1030x687.jpg\" data-rel=\"gallery-1\" data-prev-img=\"https://education.ufl.edu/riel/files/2022/10/IMG_0606-495x400.jpg\" class=\"lightbox  lig",
+          "target": [
+            "a[data-onclick=\"33\"]"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a href=\"https://education.ufl.edu/riel/files/2022/10/IMG_0665-1030x687.jpg\" data-rel=\"gallery-1\" data-prev-img=\"https://education.ufl.edu/riel/files/2022/10/IMG_0665-495x400.jpg\" class=\"lightbox  lig",
+          "target": [
+            "a[data-onclick=\"34\"]"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a href=\"https://education.ufl.edu/riel/files/2022/10/IMG_0711-1030x687.jpg\" data-rel=\"gallery-1\" data-prev-img=\"https://education.ufl.edu/riel/files/2022/10/IMG_0711-495x400.jpg\" class=\"lightbox  lig",
+          "target": [
+            "a[data-onclick=\"35\"]"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a href=\"https://education.ufl.edu/riel/files/2022/10/IMG_0924-1030x687.jpg\" data-rel=\"gallery-1\" data-prev-img=\"https://education.ufl.edu/riel/files/2022/10/IMG_0924-495x400.jpg\" class=\"first_thumb l",
+          "target": [
+            "a[data-onclick=\"36\"]"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a href=\"https://education.ufl.edu/riel/files/2022/10/IMG_0979-1030x687.jpg\" data-rel=\"gallery-1\" data-prev-img=\"https://education.ufl.edu/riel/files/2022/10/IMG_0979-495x400.jpg\" class=\"lightbox  lig",
+          "target": [
+            "a[data-onclick=\"37\"]"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a href=\"https://education.ufl.edu/riel/files/2022/10/IMG_0995-1030x687.jpg\" data-rel=\"gallery-1\" data-prev-img=\"https://education.ufl.edu/riel/files/2022/10/IMG_0995-495x400.jpg\" class=\"lightbox  lig",
+          "target": [
+            "a[data-onclick=\"38\"]"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a href=\"https://education.ufl.edu/riel/files/2022/10/IMG_1033-1030x687.jpg\" data-rel=\"gallery-1\" data-prev-img=\"https://education.ufl.edu/riel/files/2022/10/IMG_1033-495x400.jpg\" class=\"lightbox  lig",
+          "target": [
+            "a[data-onclick=\"39\"]"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a href=\"https://education.ufl.edu/riel/files/2022/10/IMG_1052-1030x687.jpg\" data-rel=\"gallery-1\" data-prev-img=\"https://education.ufl.edu/riel/files/2022/10/IMG_1052-495x400.jpg\" class=\"lightbox  lig",
+          "target": [
+            "a[data-onclick=\"40\"]"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a href=\"https://education.ufl.edu/riel/files/2022/10/IMG_1092-1030x687.jpg\" data-rel=\"gallery-1\" data-prev-img=\"https://education.ufl.edu/riel/files/2022/10/IMG_1092-495x400.jpg\" class=\"first_thumb l",
+          "target": [
+            "a[data-onclick=\"41\"]"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a href=\"https://education.ufl.edu/riel/files/2022/10/IMG_1214-1030x687.jpg\" data-rel=\"gallery-1\" data-prev-img=\"https://education.ufl.edu/riel/files/2022/10/IMG_1214-495x400.jpg\" class=\"lightbox  lig",
+          "target": [
+            "a[data-onclick=\"42\"]"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a href=\"https://education.ufl.edu/riel/files/2022/10/IMG_1220-1030x687.jpg\" data-rel=\"gallery-1\" data-prev-img=\"https://education.ufl.edu/riel/files/2022/10/IMG_1220-495x400.jpg\" class=\"lightbox  lig",
+          "target": [
+            "a[data-onclick=\"43\"]"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a href=\"https://education.ufl.edu/riel/files/2022/10/IMG_1248-1030x687.jpg\" data-rel=\"gallery-1\" data-prev-img=\"https://education.ufl.edu/riel/files/2022/10/IMG_1248-495x400.jpg\" class=\"lightbox  lig",
+          "target": [
+            "a[data-onclick=\"44\"]"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a href=\"https://education.ufl.edu/riel/files/2022/10/IMG_1287-1030x687.jpg\" data-rel=\"gallery-1\" data-prev-img=\"https://education.ufl.edu/riel/files/2022/10/IMG_1287-495x400.jpg\" class=\"lightbox  lig",
+          "target": [
+            "a[data-onclick=\"45\"]"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a href=\"https://education.ufl.edu/riel/files/2022/10/IMG_1288-1030x687.jpg\" data-rel=\"gallery-1\" data-prev-img=\"https://education.ufl.edu/riel/files/2022/10/IMG_1288-495x400.jpg\" class=\"first_thumb l",
+          "target": [
+            "a[data-onclick=\"46\"]"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a href=\"https://education.ufl.edu/riel/files/2022/10/IMG_1289-1030x687.jpg\" data-rel=\"gallery-1\" data-prev-img=\"https://education.ufl.edu/riel/files/2022/10/IMG_1289-495x400.jpg\" class=\"lightbox  lig",
+          "target": [
+            "a[data-onclick=\"47\"]"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a href=\"https://education.ufl.edu/riel/files/2022/10/IMG_1290-1030x687.jpg\" data-rel=\"gallery-1\" data-prev-img=\"https://education.ufl.edu/riel/files/2022/10/IMG_1290-495x400.jpg\" class=\"lightbox  lig",
+          "target": [
+            "a[data-onclick=\"48\"]"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a href=\"https://education.ufl.edu/riel/files/2022/10/IMG_0492-1030x687.jpg\" data-rel=\"gallery-1\" data-prev-img=\"https://education.ufl.edu/riel/files/2022/10/IMG_0492-495x400.jpg\" class=\"lightbox  lig",
+          "target": [
+            "a[data-onclick=\"49\"]"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a href=\"https://education.ufl.edu/riel/files/2022/10/IMG_0802-1030x687.jpg\" data-rel=\"gallery-1\" data-prev-img=\"https://education.ufl.edu/riel/files/2022/10/IMG_0802-495x400.jpg\" class=\"lightbox  lig",
+          "target": [
+            "a[data-onclick=\"50\"]"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a href=\"https://education.ufl.edu/riel/files/2022/10/IMG_1250-1030x687.jpg\" data-rel=\"gallery-1\" data-prev-img=\"https://education.ufl.edu/riel/files/2022/10/IMG_1250-495x400.jpg\" class=\"first_thumb l",
+          "target": [
+            "a[data-onclick=\"51\"]"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has an empty title attribute"
+        }
+      ]
+    },
+    {
+      "id": "meta-viewport",
+      "impact": "critical",
+      "description": "Ensures <meta name=\"viewport\"> does not disable text scaling and zooming",
+      "help": "Zooming and scaling must not be disabled",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/meta-viewport?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1\">",
+          "target": [
+            "meta[name=\"viewport\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  maximum-scale on <meta> tag disables zooming on mobile devices"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<div class=\"top-uf-links-wrap\">",
+          "target": [
+            ".top-uf-links-wrap"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a class=\"COEMM-0 submenu-trigger\" href=\"#\">Academics</a>",
+          "target": [
+            ".COEMM-Academics.COEMM-0 > .submenu-trigger.COEMM-0[href=\"#\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a class=\"COEMM-0 submenu-trigger\" href=\"#\">Student Services</a>",
+          "target": [
+            ".COEMM-StudentServices.COEMM-0 > .submenu-trigger.COEMM-0[href=\"#\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a class=\"COEMM-0 submenu-trigger\" href=\"#\">Research</a>",
+          "target": [
+            ".COEMM-About.COEMM-0:nth-child(3) > .submenu-trigger.COEMM-0[href=\"#\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a id=\"megamenu-news\" class=\"COEMM-0 submenu-trigger\" href=\"#\">News</a>",
+          "target": [
+            ".COEMM-News.COEMM-0 > .submenu-trigger.COEMM-0[href=\"#\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a id=\"megamenu-alumni\" class=\"COEMM-0 submenu-trigger\" href=\"/alumni/\">Alumni / Giving</a>",
+          "target": [
+            ".submenu-trigger.COEMM-0[href$=\"alumni/\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a title=\"About the College\" class=\"COEMM-0 submenu-trigger\" href=\"/about-the-college/\">About the College</a>",
+          "target": [
+            ".submenu-trigger[title=\"About the College\"][href$=\"about-the-college/\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<ul id=\"uf-menu-nav\">\n\t\t\t\t\t\t\t\t<li><a class=\"uf-head-logo\" href=\"https://education.ufl.edu\"><span>UF</span></a></li>\n\t\t\t\t\t\t\t\t<li><a class=\"coe-head-logo\" href=\"https://education.ufl.edu\"><span></span><",
+          "target": [
+            "#uf-menu-nav"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a class=\"right-menu-item hide-mobile\" href=\"/student-services/contacts/\">Ask Us</a>",
+          "target": [
+            "a[href$=\"contacts/\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a class=\"right-menu-item hide-mobile login-menu-trigger\">Login</a>",
+          "target": [
+            ".login-menu-trigger"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<input id=\"COET-searchinput\" type=\"text\" name=\"q\" title=\"Search the College of Education\" value=\"\" placeholder=\"Search\">",
+          "target": [
+            "#COET-searchinput"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a class=\"COEMM-0\" href=\"#\">Academics</a>",
+          "target": [
+            "#COET-menu2 > .COEMM-0 > .COEMM-Academics.COEMM-0 > .COEMM-0[href=\"#\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a class=\"COEMM-0\" href=\"#\">Student Services</a>",
+          "target": [
+            "#COET-menu2 > .COEMM-0 > .COEMM-StudentServices.COEMM-0 > .COEMM-0[href=\"#\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a class=\"COEMM-0\" href=\"#\">Research</a>",
+          "target": [
+            "#COET-menu2 > .COEMM-0 > .COEMM-About.COEMM-0:nth-child(3) > .COEMM-0[href=\"#\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a id=\"megamenu-news\" class=\"COEMM-0\" href=\"#\">News</a>",
+          "target": [
+            "#COET-menu2 > .COEMM-0 > .COEMM-News.COEMM-0 > .COEMM-0[href=\"#\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a id=\"megamenu-alumni\" class=\"COEMM-0\" href=\"/alumni/\">Alumni / Giving</a>",
+          "target": [
+            "#COET-menu2 > .COEMM-0 > .COEMM-Alumni.COEMM-0 > .COEMM-0[href$=\"alumni/\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a title=\"About the College\" class=\"COEMM-0\" href=\"/about-the-college/\">About the College</a>",
+          "target": [
+            "#COET-menu2 > .COEMM-0 > .COEMM-About.COEMM-0:nth-child(6) > .COEMM-0[title=\"About the College\"][href$=\"about-the-college/\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<div class=\"container_wrap footer_color\" id=\"footer\">",
+          "target": [
+            "#footer"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "critical": 3,
+    "serious": 54,
+    "moderate": 19,
+    "minor": 0
+  }
+}

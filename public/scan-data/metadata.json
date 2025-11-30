@@ -1,8 +1,8 @@
 {
-  "lastScanDate": "2025-11-30T04:44:16.888Z",
+  "lastScanDate": "2025-11-30T04:54:22.133Z",
   "lastScannedBy": "Saignaneswar",
-  "lastScanNote": "Scan of 47 pages - 142 issues found",
-  "totalPagesScanned": 52,
+  "lastScanNote": "Scan of 4 pages - 222 issues found",
+  "totalPagesScanned": 76,
   "scannedPages": [
     "https://education.ufl.edu/capes/specialists/",
     "https://education.ufl.edu/capes/services/",
@@ -55,9 +55,45 @@
     "https://education.ufl.edu/templates/global-styles/breadcrumbs/",
     "https://education.ufl.edu/templates/global-styles/type/",
     "https://education.ufl.edu/templates/global-styles/color/",
-    "https://education.ufl.edu/templates/global-styles/"
+    "https://education.ufl.edu/templates/global-styles/",
+    "https://education.ufl.edu/faculty-staff-resources/",
+    "https://education.ufl.edu/connect/",
+    "https://education.ufl.edu/about/schools/",
+    "https://education.ufl.edu/search-results/",
+    "https://education.ufl.edu/study/",
+    "https://education.ufl.edu/course-syllabi/",
+    "https://education.ufl.edu/instagram/",
+    "https://education.ufl.edu/contact/directory-2/",
+    "https://education.ufl.edu/current-edugators/",
+    "https://education.ufl.edu/contact/",
+    "https://education.ufl.edu/teacher-apprenticeship/",
+    "https://education.ufl.edu/future-edugators/",
+    "https://education.ufl.edu/about/facts/",
+    "https://education.ufl.edu/remote-access/",
+    "https://education.ufl.edu/about/mission-and-history/",
+    "https://education.ufl.edu/help-and-support/",
+    "https://education.ufl.edu/templates/",
+    "https://education.ufl.edu/about/",
+    "https://education.ufl.edu/",
+    "https://education.ufl.edu/templates/header-templates/",
+    "https://education.ufl.edu/riel/riel-resources/",
+    "https://education.ufl.edu/riel/fall-institute-photo/",
+    "https://education.ufl.edu/riel/application-information/",
+    "https://education.ufl.edu/riel/"
   ],
   "scanHistory": [
+    {
+      "date": "2025-11-30T04:54:22.133Z",
+      "scannedBy": "Saignaneswar",
+      "pagesScanned": 4,
+      "note": "Scan of 4 pages - 222 issues found"
+    },
+    {
+      "date": "2025-11-30T04:48:30.820Z",
+      "scannedBy": "Saignaneswar",
+      "pagesScanned": 20,
+      "note": "Scan of 20 pages - 165 issues found"
+    },
     {
       "date": "2025-11-30T04:44:16.888Z",
       "scannedBy": "Saignaneswar",

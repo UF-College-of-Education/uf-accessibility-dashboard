@@ -1,0 +1,703 @@
+{
+  "url": "https://education.ufl.edu/riel/riel-resources/",
+  "title": "Resources",
+  "site": "UF College of Education",
+  "scannedAt": "2025-11-30T04:54:22.133Z",
+  "scannedBy": "Saignaneswar",
+  "issues": [
+    {
+      "id": "button-name",
+      "impact": "critical",
+      "description": "Ensures buttons have discernible text",
+      "help": "Buttons must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/button-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<button type=\"submit\" class=\"COET-sa\">",
+          "target": [
+            "button"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element does not have inner text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+        }
+      ]
+    },
+    {
+      "id": "heading-order",
+      "impact": "moderate",
+      "description": "Ensures the order of headings is semantically correct",
+      "help": "Heading levels should only increase by one",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/heading-order?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h4>Resources</h4>",
+          "target": [
+            ".footer-resources > h4"
+          ],
+          "failureSummary": "Fix any of the following:\n  Heading order invalid"
+        }
+      ]
+    },
+    {
+      "id": "image-alt",
+      "impact": "critical",
+      "description": "Ensures <img> elements have alternate text or a role of none or presentation",
+      "help": "Images must have alternate text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/image-alt?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<img src=\"https://education.ufl.edu/old_coeio/enf/CAEP-Accredited-Logo-white.png\" width=\"80%\" height=\"80%\" style=\"max-width:300px;\">",
+          "target": [
+            "img[width=\"80%\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+        }
+      ]
+    },
+    {
+      "id": "label-title-only",
+      "impact": "serious",
+      "description": "Ensures that every form element has a visible label and is not solely labeled using hidden labels, or the title or aria-describedby attributes",
+      "help": "Form elements should have a visible label",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/label-title-only?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<input id=\"COET-searchinput\" type=\"text\" name=\"q\" title=\"Search the College of Education\" value=\"\" placeholder=\"Search\">",
+          "target": [
+            "#COET-searchinput"
+          ],
+          "failureSummary": "Fix all of the following:\n  Only title used to generate label for form element"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a class=\"coe-head-logo\" href=\"https://education.ufl.edu\"><span></span></a>",
+          "target": [
+            ".coe-head-logo"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a href=\"#\" class=\"coe-search-trigger\">",
+          "target": [
+            ".coe-search-trigger"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute"
+        }
+      ]
+    },
+    {
+      "id": "meta-viewport",
+      "impact": "critical",
+      "description": "Ensures <meta name=\"viewport\"> does not disable text scaling and zooming",
+      "help": "Zooming and scaling must not be disabled",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/meta-viewport?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1\">",
+          "target": [
+            "meta[name=\"viewport\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  maximum-scale on <meta> tag disables zooming on mobile devices"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<div class=\"top-uf-links-wrap\">",
+          "target": [
+            ".top-uf-links-wrap"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a class=\"COEMM-0 submenu-trigger\" href=\"#\">Academics</a>",
+          "target": [
+            ".COEMM-Academics.COEMM-0 > .submenu-trigger.COEMM-0[href=\"#\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a class=\"COEMM-0 submenu-trigger\" href=\"#\">Student Services</a>",
+          "target": [
+            ".COEMM-StudentServices.COEMM-0 > .submenu-trigger.COEMM-0[href=\"#\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a class=\"COEMM-0 submenu-trigger\" href=\"#\">Research</a>",
+          "target": [
+            ".COEMM-About.COEMM-0:nth-child(3) > .submenu-trigger.COEMM-0[href=\"#\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a id=\"megamenu-news\" class=\"COEMM-0 submenu-trigger\" href=\"#\">News</a>",
+          "target": [
+            ".COEMM-News.COEMM-0 > .submenu-trigger.COEMM-0[href=\"#\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a id=\"megamenu-alumni\" class=\"COEMM-0 submenu-trigger\" href=\"/alumni/\">Alumni / Giving</a>",
+          "target": [
+            ".submenu-trigger.COEMM-0[href$=\"alumni/\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a title=\"About the College\" class=\"COEMM-0 submenu-trigger\" href=\"/about-the-college/\">About the College</a>",
+          "target": [
+            ".submenu-trigger[title=\"About the College\"][href$=\"about-the-college/\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<ul id=\"uf-menu-nav\">\n\t\t\t\t\t\t\t\t<li><a class=\"uf-head-logo\" href=\"https://education.ufl.edu\"><span>UF</span></a></li>\n\t\t\t\t\t\t\t\t<li><a class=\"coe-head-logo\" href=\"https://education.ufl.edu\"><span></span><",
+          "target": [
+            "#uf-menu-nav"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a class=\"right-menu-item hide-mobile\" href=\"/student-services/contacts/\">Ask Us</a>",
+          "target": [
+            "a[href$=\"contacts/\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a class=\"right-menu-item hide-mobile login-menu-trigger\">Login</a>",
+          "target": [
+            ".login-menu-trigger"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<input id=\"COET-searchinput\" type=\"text\" name=\"q\" title=\"Search the College of Education\" value=\"\" placeholder=\"Search\">",
+          "target": [
+            "#COET-searchinput"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a class=\"COEMM-0\" href=\"#\">Academics</a>",
+          "target": [
+            "#COET-menu2 > .COEMM-0 > .COEMM-Academics.COEMM-0 > .COEMM-0[href=\"#\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a class=\"COEMM-0\" href=\"#\">Student Services</a>",
+          "target": [
+            "#COET-menu2 > .COEMM-0 > .COEMM-StudentServices.COEMM-0 > .COEMM-0[href=\"#\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a class=\"COEMM-0\" href=\"#\">Research</a>",
+          "target": [
+            "#COET-menu2 > .COEMM-0 > .COEMM-About.COEMM-0:nth-child(3) > .COEMM-0[href=\"#\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a id=\"megamenu-news\" class=\"COEMM-0\" href=\"#\">News</a>",
+          "target": [
+            "#COET-menu2 > .COEMM-0 > .COEMM-News.COEMM-0 > .COEMM-0[href=\"#\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a id=\"megamenu-alumni\" class=\"COEMM-0\" href=\"/alumni/\">Alumni / Giving</a>",
+          "target": [
+            "#COET-menu2 > .COEMM-0 > .COEMM-Alumni.COEMM-0 > .COEMM-0[href$=\"alumni/\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a title=\"About the College\" class=\"COEMM-0\" href=\"/about-the-college/\">About the College</a>",
+          "target": [
+            "#COET-menu2 > .COEMM-0 > .COEMM-About.COEMM-0:nth-child(6) > .COEMM-0[title=\"About the College\"][href$=\"about-the-college/\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<div id=\"av_section_2\" class=\"avia-section main_color avia-section-default avia-no-border-styling avia-bg-style-scroll  avia-builder-el-1  el_after_av_section  el_before_av_section  container_wrap ful",
+          "target": [
+            "#av_section_2"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<section class=\"av_textblock_section\" itemscope=\"itemscope\" itemtype=\"https://schema.org/CreativeWork\"><div class=\"avia_textblock \" itemprop=\"text\"><h1><b>RIEL Biology Lesson Plans by FL Next Generati",
+          "target": [
+            "#av_section_3 > .container > .template-page.content.av-content-full > .post-entry.post-entry-type-page.post-entry-445 > .entry-content-wrapper.clearfix > .av_textblock_section[itemscope=\"itemscope\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<p data-fake-id=\"#toggle-id-1\" class=\"toggler \" itemprop=\"headline\">Matter and Energy Transformation<span class=\"toggle_icon\">        <span class=\"vert_icon\"></span><span class=\"hor_icon\"></span></spa",
+          "target": [
+            "p[data-fake-id=\"#toggle-id-1\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<p data-fake-id=\"#toggle-id-2\" class=\"toggler \" itemprop=\"headline\">Organization and Development of Living Organisms<span class=\"toggle_icon\">        <span class=\"vert_icon\"></span><span class=\"hor_ic",
+          "target": [
+            "p[data-fake-id=\"#toggle-id-2\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<p data-fake-id=\"#toggle-id-3\" class=\"toggler \" itemprop=\"headline\">Earth Systems and Patterns<span class=\"toggle_icon\">        <span class=\"vert_icon\"></span><span class=\"hor_icon\"></span></span></p>",
+          "target": [
+            "p[data-fake-id=\"#toggle-id-3\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<p data-fake-id=\"#toggle-id-4\" class=\"toggler \" itemprop=\"headline\">Energy<span class=\"toggle_icon\">        <span class=\"vert_icon\"></span><span class=\"hor_icon\"></span></span></p>",
+          "target": [
+            "p[data-fake-id=\"#toggle-id-4\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<p data-fake-id=\"#toggle-id-5\" class=\"toggler \" itemprop=\"headline\">Interdependence<span class=\"toggle_icon\">        <span class=\"vert_icon\"></span><span class=\"hor_icon\"></span></span></p>",
+          "target": [
+            "p[data-fake-id=\"#toggle-id-5\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<p data-fake-id=\"#toggle-id-6\" class=\"toggler \" itemprop=\"headline\">Heredity and Reproduction<span class=\"toggle_icon\">        <span class=\"vert_icon\"></span><span class=\"hor_icon\"></span></span></p>",
+          "target": [
+            "p[data-fake-id=\"#toggle-id-6\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<p data-fake-id=\"#toggle-id-7\" class=\"toggler \" itemprop=\"headline\">Diversity and Evolution of Living Organisms<span class=\"toggle_icon\">        <span class=\"vert_icon\"></span><span class=\"hor_icon\"><",
+          "target": [
+            "p[data-fake-id=\"#toggle-id-7\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<p data-fake-id=\"#toggle-id-8\" class=\"toggler \" itemprop=\"headline\">The Practice of Science<span class=\"toggle_icon\">        <span class=\"vert_icon\"></span><span class=\"hor_icon\"></span></span></p>",
+          "target": [
+            "p[data-fake-id=\"#toggle-id-8\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<p data-fake-id=\"#toggle-id-9\" class=\"toggler \" itemprop=\"headline\">Integration of Knowledge and Ideas <span class=\"toggle_icon\">        <span class=\"vert_icon\"></span><span class=\"hor_icon\"></span></",
+          "target": [
+            "p[data-fake-id=\"#toggle-id-9\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<section class=\"av_textblock_section\" itemscope=\"itemscope\" itemtype=\"https://schema.org/CreativeWork\"><div class=\"avia_textblock \" itemprop=\"text\"><h1><b>RIEL Biology Lesson Plans by Instructional El",
+          "target": [
+            "#av_section_4 > .container > .template-page.content.av-content-full > .post-entry.post-entry-type-page.post-entry-445 > .entry-content-wrapper.clearfix > .av_textblock_section[itemscope=\"itemscope\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<p data-fake-id=\"#toggle-id-10\" class=\"toggler \" itemprop=\"headline\">Multiple Modalities<span class=\"toggle_icon\">        <span class=\"vert_icon\"></span><span class=\"hor_icon\"></span></span></p>",
+          "target": [
+            "p[data-fake-id=\"#toggle-id-10\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<p data-fake-id=\"#toggle-id-11\" class=\"toggler \" itemprop=\"headline\">Funds of Knowledge<span class=\"toggle_icon\">        <span class=\"vert_icon\"></span><span class=\"hor_icon\"></span></span></p>",
+          "target": [
+            "p[data-fake-id=\"#toggle-id-11\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<p data-fake-id=\"#toggle-id-12\" class=\"toggler \" itemprop=\"headline\">Collaboration<span class=\"toggle_icon\">        <span class=\"vert_icon\"></span><span class=\"hor_icon\"></span></span></p>",
+          "target": [
+            "p[data-fake-id=\"#toggle-id-12\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<p data-fake-id=\"#toggle-id-13\" class=\"toggler \" itemprop=\"headline\">Affirming Identities<span class=\"toggle_icon\">        <span class=\"vert_icon\"></span><span class=\"hor_icon\"></span></span></p>",
+          "target": [
+            "p[data-fake-id=\"#toggle-id-13\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<p data-fake-id=\"#toggle-id-14\" class=\"toggler \" itemprop=\"headline\">Sociopolitical Consciousness<span class=\"toggle_icon\">        <span class=\"vert_icon\"></span><span class=\"hor_icon\"></span></span><",
+          "target": [
+            "p[data-fake-id=\"#toggle-id-14\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<p data-fake-id=\"#toggle-id-15\" class=\"toggler \" itemprop=\"headline\">Attention to Language<span class=\"toggle_icon\">        <span class=\"vert_icon\"></span><span class=\"hor_icon\"></span></span></p>",
+          "target": [
+            "p[data-fake-id=\"#toggle-id-15\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<div class=\"container_wrap footer_color\" id=\"footer\">",
+          "target": [
+            "#footer"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "critical": 3,
+    "serious": 3,
+    "moderate": 37,
+    "minor": 0
+  }
+}
