@@ -13,28 +13,25 @@ import {
   ChevronUp,
   ExternalLink,
   Filter,
-  Loader2,
-  Download
+  Loader2
 } from 'lucide-react';
 import {
   PreScannedData,
   PageScanResult,
   ScanIssue,
-  ScanMetadata,
   loadPreScannedData,
   filterResultsByUrls,
   calculateTotals,
   formatScanDate,
   checkDataAvailability
-} from './LatestDataService';
+} from './PreScannedDataService';
 
 interface SelectedPage {
-  siteId: string;
-  siteBaseUrl: string;
-  pages: { url: string; title: string }[];
+  url: string;
+  title: string;
 }
 
-interface LatestDataModalProps {
+interface ViewPreScannedDataModalProps {
   isOpen: boolean;
   onClose: () => void;
   selectedPages: SelectedPage[];
@@ -42,11 +39,11 @@ interface LatestDataModalProps {
 
 type SeverityFilter = 'all' | 'critical' | 'serious' | 'moderate' | 'minor';
 
-export default function LatestDataModal({
+export default function ViewPreScannedDataModal({
   isOpen,
   onClose,
   selectedPages
-}: LatestDataModalProps) {
+}: ViewPreScannedDataModalProps) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [scanData, setScanData] = useState<PreScannedData | null>(null);
@@ -55,17 +52,6 @@ export default function LatestDataModal({
   const [expandedPages, setExpandedPages] = useState<Set<string>>(new Set());
   const [expandedIssues, setExpandedIssues] = useState<Set<string>>(new Set());
   const [severityFilter, setSeverityFilter] = useState<SeverityFilter>('all');
-
-  // Get all selected URLs from the nested structure
-  const getAllSelectedUrls = (): string[] => {
-    const urls: string[] = [];
-    selectedPages.forEach(site => {
-      site.pages.forEach(page => {
-        urls.push(page.url);
-      });
-    });
-    return urls;
-  };
 
   // Load data when modal opens
   useEffect(() => {
@@ -77,9 +63,6 @@ export default function LatestDataModal({
   async function loadData() {
     setLoading(true);
     setError(null);
-    setSeverityFilter('all');
-    setExpandedPages(new Set());
-    setExpandedIssues(new Set());
 
     try {
       const data = await loadPreScannedData();
@@ -92,11 +75,11 @@ export default function LatestDataModal({
 
       setScanData(data);
 
-      // Get all selected URLs
-      const selectedUrls = getAllSelectedUrls();
+      // Get selected URLs
+      const selectedUrls = selectedPages.map(p => p.url);
 
       // Check availability
-      const { missing } = checkDataAvailability(data.results, selectedUrls);
+      const { available, missing } = checkDataAvailability(data.results, selectedUrls);
       setMissingPages(missing);
 
       // Filter results
@@ -104,7 +87,7 @@ export default function LatestDataModal({
       setFilteredResults(filtered);
 
       // Auto-expand first page if only a few results
-      if (filtered.length <= 3 && filtered.length > 0) {
+      if (filtered.length <= 3) {
         setExpandedPages(new Set(filtered.map(r => r.url)));
       }
 
@@ -138,17 +121,6 @@ export default function LatestDataModal({
     setExpandedIssues(newExpanded);
   }
 
-  // Expand all pages
-  function expandAll() {
-    setExpandedPages(new Set(filteredResults.map(r => r.url)));
-  }
-
-  // Collapse all pages
-  function collapseAll() {
-    setExpandedPages(new Set());
-    setExpandedIssues(new Set());
-  }
-
   // Filter issues by severity
   function getFilteredIssues(issues: ScanIssue[]): ScanIssue[] {
     if (severityFilter === 'all') return issues;
@@ -177,41 +149,9 @@ export default function LatestDataModal({
     }
   }
 
-  // Export results as CSV
-  function exportAsCSV() {
-    const rows: string[] = ['Page URL,Page Title,Issue ID,Severity,Description,Help,Help URL'];
-    
-    filteredResults.forEach(page => {
-      page.issues.forEach(issue => {
-        const row = [
-          `"${page.url}"`,
-          `"${page.title}"`,
-          `"${issue.id}"`,
-          `"${issue.impact}"`,
-          `"${issue.description.replace(/"/g, '""')}"`,
-          `"${issue.help.replace(/"/g, '""')}"`,
-          `"${issue.helpUrl}"`
-        ].join(',');
-        rows.push(row);
-      });
-    });
-
-    const csv = rows.join('\n');
-    const blob = new Blob([csv], { type: 'text/csv' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `accessibility-scan-${new Date().toISOString().split('T')[0]}.csv`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-  }
-
   if (!isOpen) return null;
 
   const totals = calculateTotals(filteredResults);
-  const totalSelectedPages = getAllSelectedUrls().length;
 
   return (
     <div className="fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-50 overflow-y-auto">
@@ -289,8 +229,7 @@ export default function LatestDataModal({
                     <div>
                       <p className="text-xs text-gray-500 uppercase tracking-wide">Showing</p>
                       <p className="font-semibold text-gray-800">
-                        {filteredResults.length} of {totalSelectedPages} selected
-                        <span className="text-gray-500 font-normal text-sm"> ({scanData.metadata.totalPages} total scanned)</span>
+                        {filteredResults.length} of {scanData.metadata.totalPages} pages
                       </p>
                     </div>
                   </div>
@@ -400,56 +339,25 @@ export default function LatestDataModal({
                     </button>
                   </div>
 
-                  {/* Action bar */}
-                  <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
-                    {/* Filter indicator */}
-                    <div className="flex items-center gap-2 text-sm text-gray-600">
-                      {severityFilter !== 'all' ? (
-                        <>
-                          <Filter className="w-4 h-4" />
-                          <span>Filtering by: <strong className="capitalize">{severityFilter}</strong></span>
-                          <button
-                            onClick={() => setSeverityFilter('all')}
-                            className="text-purple-600 hover:underline ml-2"
-                          >
-                            Clear filter
-                          </button>
-                        </>
-                      ) : (
-                        <span className="text-gray-400">Click severity cards above to filter</span>
-                      )}
-                    </div>
-
-                    {/* Expand/Collapse & Export */}
-                    <div className="flex items-center gap-2">
+                  {/* Filter indicator */}
+                  {severityFilter !== 'all' && (
+                    <div className="flex items-center gap-2 mb-4 text-sm text-gray-600">
+                      <Filter className="w-4 h-4" />
+                      <span>Filtering by: <strong className="capitalize">{severityFilter}</strong></span>
                       <button
-                        onClick={expandAll}
-                        className="px-3 py-1.5 text-sm bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition"
+                        onClick={() => setSeverityFilter('all')}
+                        className="text-purple-600 hover:underline ml-2"
                       >
-                        Expand All
-                      </button>
-                      <button
-                        onClick={collapseAll}
-                        className="px-3 py-1.5 text-sm bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition"
-                      >
-                        Collapse All
-                      </button>
-                      <button
-                        onClick={exportAsCSV}
-                        className="px-3 py-1.5 text-sm bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition flex items-center gap-1"
-                      >
-                        <Download className="w-4 h-4" />
-                        Export CSV
+                        Clear filter
                       </button>
                     </div>
-                  </div>
+                  )}
 
                   {/* Page Results */}
                   <div className="space-y-4">
                     {filteredResults.map((page) => {
                       const pageIssues = getFilteredIssues(page.issues);
                       const isExpanded = expandedPages.has(page.url);
-                      const totalPageIssues = page.issues.length;
 
                       return (
                         <div key={page.url} className="border border-gray-200 rounded-xl overflow-hidden">
@@ -469,39 +377,26 @@ export default function LatestDataModal({
                                 <p className="text-sm text-gray-500 truncate max-w-md">{page.url}</p>
                               </div>
                             </div>
-                            <div className="flex items-center gap-2 flex-wrap justify-end">
-                              {page.summary?.critical > 0 && (
+                            <div className="flex items-center gap-2">
+                              {page.summary.critical > 0 && (
                                 <span className="px-2 py-1 text-xs font-medium bg-red-100 text-red-700 rounded-full">
                                   {page.summary.critical} critical
                                 </span>
                               )}
-                              {page.summary?.serious > 0 && (
+                              {page.summary.serious > 0 && (
                                 <span className="px-2 py-1 text-xs font-medium bg-orange-100 text-orange-700 rounded-full">
                                   {page.summary.serious} serious
                                 </span>
                               )}
-                              {page.summary?.moderate > 0 && (
-                                <span className="px-2 py-1 text-xs font-medium bg-yellow-100 text-yellow-700 rounded-full">
-                                  {page.summary.moderate} moderate
-                                </span>
-                              )}
-                              {page.summary?.minor > 0 && (
-                                <span className="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-700 rounded-full">
-                                  {page.summary.minor} minor
-                                </span>
-                              )}
                               <span className="px-3 py-1 text-sm font-medium bg-gray-200 text-gray-700 rounded-full">
-                                {severityFilter !== 'all' 
-                                  ? `${pageIssues.length} of ${totalPageIssues}`
-                                  : totalPageIssues
-                                } issue{totalPageIssues !== 1 ? 's' : ''}
+                                {pageIssues.length} {severityFilter !== 'all' ? severityFilter : ''} issue{pageIssues.length !== 1 ? 's' : ''}
                               </span>
                             </div>
                           </button>
 
                           {/* Page Issues */}
                           {isExpanded && (
-                            <div className="p-4 space-y-3 bg-white">
+                            <div className="p-4 space-y-3">
                               {pageIssues.length === 0 ? (
                                 <p className="text-gray-500 text-center py-4">
                                   No {severityFilter !== 'all' ? severityFilter : ''} issues found for this page.
@@ -530,18 +425,11 @@ export default function LatestDataModal({
                                             <span className="font-medium">{issue.help}</span>
                                           </div>
                                         </div>
-                                        <div className="flex items-center gap-2">
-                                          {issue.nodes && issue.nodes.length > 1 && (
-                                            <span className="text-xs text-gray-500">
-                                              {issue.nodes.length} elements
-                                            </span>
-                                          )}
-                                          {isIssueExpanded ? (
-                                            <ChevronUp className="w-4 h-4" />
-                                          ) : (
-                                            <ChevronDown className="w-4 h-4" />
-                                          )}
-                                        </div>
+                                        {isIssueExpanded ? (
+                                          <ChevronUp className="w-4 h-4" />
+                                        ) : (
+                                          <ChevronDown className="w-4 h-4" />
+                                        )}
                                       </button>
 
                                       {/* Issue Details */}
@@ -571,7 +459,7 @@ export default function LatestDataModal({
                                                   </div>
                                                 ))}
                                                 {issue.nodes.length > 5 && (
-                                                  <p className="text-xs text-gray-500 text-center py-2">
+                                                  <p className="text-xs text-gray-500">
                                                     ...and {issue.nodes.length - 5} more elements
                                                   </p>
                                                 )}
@@ -609,14 +497,7 @@ export default function LatestDataModal({
         </div>
 
         {/* Footer */}
-        <div className="border-t p-4 bg-gray-50 rounded-b-xl flex justify-between items-center flex-shrink-0">
-          <div className="text-sm text-gray-500">
-            {!loading && !error && filteredResults.length > 0 && (
-              <span>
-                {totals.total} issues found across {filteredResults.length} pages
-              </span>
-            )}
-          </div>
+        <div className="border-t p-4 bg-gray-50 rounded-b-xl flex justify-end gap-3 flex-shrink-0">
           <button
             onClick={onClose}
             className="px-6 py-2 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-700 transition"

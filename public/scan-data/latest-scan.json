@@ -1,0 +1,187 @@
+{
+  "metadata": {
+    "scanDate": "2025-11-30T10:30:00Z",
+    "scannedBy": "Saignaneswar",
+    "totalPages": 5,
+    "note": "Weekly accessibility scan - Sample data for testing"
+  },
+  "results": [
+    {
+      "url": "https://education.ufl.edu/",
+      "title": "Homepage - UF College of Education",
+      "site": "UF College of Education",
+      "issues": [
+        {
+          "id": "image-alt",
+          "impact": "critical",
+          "description": "Ensures <img> elements have alternate text or a role of none or presentation",
+          "help": "Images must have alternate text",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/image-alt",
+          "nodes": [
+            {
+              "html": "<img src=\"/images/banner.jpg\" class=\"hero-image\">",
+              "target": ".hero-image",
+              "failureSummary": "Fix any of the following: Element does not have an alt attribute"
+            }
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "description": "Ensures the contrast between foreground and background colors meets WCAG 2 AA contrast ratio thresholds",
+          "help": "Elements must have sufficient color contrast",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/color-contrast",
+          "nodes": [
+            {
+              "html": "<p class=\"subtitle\">Welcome to our college</p>",
+              "target": ".subtitle",
+              "failureSummary": "Element has insufficient color contrast of 3.5:1 (foreground color: #888888, background color: #ffffff, font size: 14px, font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        }
+      ],
+      "summary": {
+        "critical": 1,
+        "serious": 1,
+        "moderate": 0,
+        "minor": 0
+      }
+    },
+    {
+      "url": "https://education.ufl.edu/program-directory/",
+      "title": "Program Directory",
+      "site": "UF College of Education",
+      "issues": [
+        {
+          "id": "link-name",
+          "impact": "serious",
+          "description": "Ensures links have discernible text",
+          "help": "Links must have discernible text",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name",
+          "nodes": [
+            {
+              "html": "<a href=\"/programs/details\"><i class=\"icon-arrow\"></i></a>",
+              "target": "a[href='/programs/details']",
+              "failureSummary": "Fix all of the following: Element is in tab order and does not have accessible text"
+            }
+          ]
+        }
+      ],
+      "summary": {
+        "critical": 0,
+        "serious": 1,
+        "moderate": 0,
+        "minor": 0
+      }
+    },
+    {
+      "url": "https://education.ufl.edu/program-directory/testing/",
+      "title": "testing",
+      "site": "UF College of Education",
+      "issues": [
+        {
+          "id": "label",
+          "impact": "critical",
+          "description": "Ensures every form element has a label",
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/label",
+          "nodes": [
+            {
+              "html": "<input type=\"text\" name=\"search\" placeholder=\"Search...\">",
+              "target": "input[name='search']",
+              "failureSummary": "Fix any of the following: Form element does not have an implicit (wrapped) <label>"
+            }
+          ]
+        },
+        {
+          "id": "heading-order",
+          "impact": "moderate",
+          "description": "Ensures the order of headings is semantically correct",
+          "help": "Heading levels should only increase by one",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/heading-order",
+          "nodes": [
+            {
+              "html": "<h3>Section Title</h3>",
+              "target": "h3",
+              "failureSummary": "Fix any of the following: Heading order invalid"
+            }
+          ]
+        }
+      ],
+      "summary": {
+        "critical": 1,
+        "serious": 0,
+        "moderate": 1,
+        "minor": 0
+      }
+    },
+    {
+      "url": "https://education.ufl.edu/program-directory/testing2/",
+      "title": "testing2",
+      "site": "UF College of Education",
+      "issues": [
+        {
+          "id": "button-name",
+          "impact": "critical",
+          "description": "Ensures buttons have discernible text",
+          "help": "Buttons must have discernible text",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/button-name",
+          "nodes": [
+            {
+              "html": "<button class=\"submit-btn\"></button>",
+              "target": ".submit-btn",
+              "failureSummary": "Fix any of the following: Element does not have inner text that is visible to screen readers"
+            }
+          ]
+        }
+      ],
+      "summary": {
+        "critical": 1,
+        "serious": 0,
+        "moderate": 0,
+        "minor": 0
+      }
+    },
+    {
+      "url": "https://education.ufl.edu/program-directory/editor/",
+      "title": "Program Directory Editor",
+      "site": "UF College of Education",
+      "issues": [
+        {
+          "id": "region",
+          "impact": "moderate",
+          "description": "Ensures all page content is contained by landmarks",
+          "help": "All page content should be contained by landmarks",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region",
+          "nodes": [
+            {
+              "html": "<div class=\"content-wrapper\">...</div>",
+              "target": ".content-wrapper",
+              "failureSummary": "Fix any of the following: Some page content is not contained by landmarks"
+            }
+          ]
+        },
+        {
+          "id": "html-has-lang",
+          "impact": "serious",
+          "description": "Ensures every HTML document has a lang attribute",
+          "help": "<html> element must have a lang attribute",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/html-has-lang",
+          "nodes": [
+            {
+              "html": "<html>",
+              "target": "html",
+              "failureSummary": "Fix any of the following: The <html> element does not have a lang attribute"
+            }
+          ]
+        }
+      ],
+      "summary": {
+        "critical": 0,
+        "serious": 1,
+        "moderate": 1,
+        "minor": 0
+      }
+    }
+  ]
+}

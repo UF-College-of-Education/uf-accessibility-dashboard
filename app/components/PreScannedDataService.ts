@@ -1,4 +1,4 @@
-// app/components/LatestDataService.ts
+// PreScannedDataService.ts
 // Service to load and filter pre-scanned accessibility data
 
 export interface ScanIssueNode {
@@ -20,7 +20,7 @@ export interface PageScanResult {
   url: string;
   title: string;
   site: string;
-  scannedAt?: string;
+  scannedAt: string;
   issues: ScanIssue[];
   summary: {
     critical: number;
@@ -42,67 +42,18 @@ export interface PreScannedData {
   results: PageScanResult[];
 }
 
-// Cache the loaded data to avoid multiple fetches
-let cachedData: PreScannedData | null = null;
-let lastFetchTime: number = 0;
-const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
-
 // Load pre-scanned data from the public folder
 export async function loadPreScannedData(): Promise<PreScannedData | null> {
-  // Use cached data if available and fresh
-  const now = Date.now();
-  if (cachedData && (now - lastFetchTime) < CACHE_DURATION) {
-    return cachedData;
-  }
-
   try {
-    const response = await fetch('/scan-data/latest-scan.json', {
-      cache: 'no-store' // Always get fresh data
-    });
-    
+    const response = await fetch('/scan-data/latest-scan.json');
     if (!response.ok) {
       console.error('Failed to load pre-scanned data:', response.status);
       return null;
     }
-    
     const data: PreScannedData = await response.json();
-    cachedData = data;
-    lastFetchTime = now;
     return data;
   } catch (error) {
     console.error('Error loading pre-scanned data:', error);
-    return null;
-  }
-}
-
-// Check if scan data exists
-export async function hasScanData(): Promise<boolean> {
-  try {
-    const response = await fetch('/scan-data/latest-scan.json', {
-      method: 'HEAD'
-    });
-    return response.ok;
-  } catch {
-    return false;
-  }
-}
-
-// Get last scan date
-export async function getLastScanDate(): Promise<string | null> {
-  try {
-    const data = await loadPreScannedData();
-    return data?.metadata?.scanDate || null;
-  } catch {
-    return null;
-  }
-}
-
-// Get scan metadata
-export async function getScanMetadata(): Promise<ScanMetadata | null> {
-  try {
-    const data = await loadPreScannedData();
-    return data?.metadata || null;
-  } catch {
     return null;
   }
 }
@@ -141,10 +92,10 @@ export function calculateTotals(results: PageScanResult[]): {
   };
 
   results.forEach(page => {
-    totals.critical += page.summary?.critical || 0;
-    totals.serious += page.summary?.serious || 0;
-    totals.moderate += page.summary?.moderate || 0;
-    totals.minor += page.summary?.minor || 0;
+    totals.critical += page.summary.critical;
+    totals.serious += page.summary.serious;
+    totals.moderate += page.summary.moderate;
+    totals.minor += page.summary.minor;
   });
 
   totals.total = totals.critical + totals.serious + totals.moderate + totals.minor;
@@ -193,38 +144,4 @@ export function checkDataAvailability(
   });
 
   return { available, missing };
-}
-
-// Get scan data for specific URLs
-export async function getScanDataForUrls(
-  urls: string[]
-): Promise<{
-  metadata: ScanMetadata | null;
-  results: PageScanResult[];
-  missing: string[];
-}> {
-  const data = await loadPreScannedData();
-  
-  if (!data) {
-    return {
-      metadata: null,
-      results: [],
-      missing: urls
-    };
-  }
-
-  const { available, missing } = checkDataAvailability(data.results, urls);
-  const results = filterResultsByUrls(data.results, urls);
-
-  return {
-    metadata: data.metadata,
-    results,
-    missing
-  };
-}
-
-// Clear cache (useful after saving new scan data)
-export function clearCache(): void {
-  cachedData = null;
-  lastFetchTime = 0;
 }
