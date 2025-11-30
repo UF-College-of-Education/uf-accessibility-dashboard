@@ -1,0 +1,27 @@
+{
+  "lastScanDate": "2025-11-30T03:16:57.339Z",
+  "lastScannedBy": "Saignaneswar",
+  "lastScanNote": "Scan of 1 pages - 37 issues found",
+  "totalPagesScanned": 5,
+  "scannedPages": [
+    "https://education.ufl.edu/capes/specialists/",
+    "https://education.ufl.edu/capes/services/",
+    "https://education.ufl.edu/capes/portfolio/",
+    "https://education.ufl.edu/capes/contact-us/",
+    "https://education.ufl.edu/capes/"
+  ],
+  "scanHistory": [
+    {
+      "date": "2025-11-30T03:16:57.339Z",
+      "scannedBy": "Saignaneswar",
+      "pagesScanned": 1,
+      "note": "Scan of 1 pages - 37 issues found"
+    },
+    {
+      "date": "2025-11-30T02:41:48.830Z",
+      "scannedBy": "Saignaneswar",
+      "pagesScanned": 5,
+      "note": "Scan of 5 pages - 246 issues found"
+    }
+  ]
+}
