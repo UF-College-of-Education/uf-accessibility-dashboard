@@ -1,0 +1,47 @@
+{
+  "url": "https://education.ufl.edu/faculty-staff-resources/",
+  "title": "Faculty/Staff",
+  "site": "UF College of Education",
+  "scannedAt": "2025-11-30T04:48:30.820Z",
+  "scannedBy": "Saignaneswar",
+  "issues": [
+    {
+      "id": "label",
+      "impact": "critical",
+      "description": "Ensures every form element has a label",
+      "help": "Form elements must have labels",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/label?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<input type=\"email\" value=\"Email Address\" name=\"EMAIL\" class=\"required email\" id=\"mce-EMAIL\" required=\"\">",
+          "target": [
+            ".et_pb_code_2_tb_footer > .et_pb_code_inner > div > .validate[method=\"post\"][name=\"mc-embedded-subscribe-form\"] > div > .mc-field-group > div[aria-label=\"Email Address\"] > .required.email[type=\"email\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Form element does not have an implicit (wrapped) <label>\n  Form element does not have an explicit <label>\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element has no placeholder attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+        }
+      ]
+    },
+    {
+      "id": "page-has-heading-one",
+      "impact": "moderate",
+      "description": "Ensure that the page, or at least one of its frames contains a level-one heading",
+      "help": "Page should contain a level-one heading",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/page-has-heading-one?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<html lang=\"en-US\" class=\"js\">",
+          "target": [
+            "html"
+          ],
+          "failureSummary": "Fix all of the following:\n  Page must have a level-one heading"
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "critical": 1,
+    "serious": 0,
+    "moderate": 1,
+    "minor": 0
+  }
+}
