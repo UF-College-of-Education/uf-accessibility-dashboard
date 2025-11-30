@@ -1,0 +1,863 @@
+{
+  "url": "https://education.ufl.edu/future-edugators/",
+  "title": "Future EduGators",
+  "site": "UF College of Education",
+  "scannedAt": "2025-11-30T04:48:30.820Z",
+  "scannedBy": "Saignaneswar",
+  "issues": [
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_0\" aria-expanded=\"false\">Education Sciences Major</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_0\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_1\" aria-expanded=\"false\">Elementary Education Major</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_1\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_2\" aria-expanded=\"false\">Early Childhood Education Major</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_2\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_3\" aria-expanded=\"false\">UFTeach | Mathematics or Science Minor</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_3\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_4\" aria-expanded=\"false\">Education Studies Minor</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_4\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_5\" aria-expanded=\"false\">Secondary English Language Arts Education Minor</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_5\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_6\" aria-expanded=\"false\">Florida Teaching Minor</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_6\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_7\" aria-expanded=\"false\">Disabilities in Society Minor</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_7\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_8\" aria-expanded=\"false\">Early Childhood Studies Minor</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_8\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_9\" aria-expanded=\"false\">Educational Technology Minor</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_9\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_10\" aria-expanded=\"false\">Secondary Social Studies Education Minor</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_10\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_11\" aria-expanded=\"false\">Computer Science Education</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_11\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_12\" aria-expanded=\"false\">Counselor Education</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_12\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_13\" aria-expanded=\"false\">Early Childhood Education</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_13\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_14\" aria-expanded=\"false\">Educational Leadership and Policy</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_14\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_15\" aria-expanded=\"false\">Educational Technology</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_15\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_16\" aria-expanded=\"false\">English Education</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_16\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_17\" aria-expanded=\"false\">ESOL/Bilingual Education</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_17\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_18\" aria-expanded=\"false\">Mathematics Education</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_18\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_19\" aria-expanded=\"false\">Reading and Literacy Education</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_19\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_20\" aria-expanded=\"false\"> Research Evaluation and Methodology</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_20\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_21\" aria-expanded=\"false\">Science Education</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_21\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_22\" aria-expanded=\"false\">Social Studies Education</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_22\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_23\" aria-expanded=\"false\">Special Education</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_23\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_24\" aria-expanded=\"false\">Student Personnel in Higher Education </h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_24\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_25\" aria-expanded=\"false\">Teacher Leadership for School Improvement</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_25\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_26\" aria-expanded=\"false\">Teachers, Schools, and Society</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_26\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_27\" aria-expanded=\"false\">Teaching Pathway for Career-path Changers</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_27\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_28\" aria-expanded=\"false\">Computer Science Education</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_28\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_29\" aria-expanded=\"false\">Counselor Education</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_29\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_30\" aria-expanded=\"false\">Early Childhood Education</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_30\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_31\" aria-expanded=\"false\">Educational Leadership and Policy</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_31\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_32\" aria-expanded=\"false\">Educational Technology</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_32\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_33\" aria-expanded=\"false\">English Education</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_33\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_34\" aria-expanded=\"false\">ESOL/Bilingual Education</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_34\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_35\" aria-expanded=\"false\">Higher Education Administration</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_35\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_36\" aria-expanded=\"false\">Mathematics Education</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_36\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_37\" aria-expanded=\"false\">Reading and Literacy Education</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_37\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_38\" aria-expanded=\"false\"> Research Evaluation and Methodology</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_38\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_39\" aria-expanded=\"false\">School Psychology</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_39\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_40\" aria-expanded=\"false\">Science Education</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_40\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_41\" aria-expanded=\"false\">Social Studies Education</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_41\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_42\" aria-expanded=\"false\">Special Education</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_42\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_43\" aria-expanded=\"false\">Teacher Leadership for School Improvement</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_43\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_44\" aria-expanded=\"false\">Teachers, Schools, and Society</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_44\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_45\" aria-expanded=\"false\">Computer Science Education</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_45\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_46\" aria-expanded=\"false\">Early Childhood Education</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_46\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_47\" aria-expanded=\"false\">Educational Technology</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_47\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_48\" aria-expanded=\"false\">Science or Mathematics Teaching</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_48\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_49\" aria-expanded=\"false\">Secondary Teaching Preparation</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_49\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_50\" aria-expanded=\"false\">Special Education</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_50\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "aria-allowed-role",
+      "impact": "minor",
+      "description": "Ensures role attribute has an appropriate value for the element",
+      "help": "ARIA role should be appropriate for the element",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/aria-allowed-role?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3 class=\"et_pb_toggle_title\" role=\"button\" tabindex=\"0\" aria-controls=\"et_pb_toggle_content_51\" aria-expanded=\"false\">Teacher Leadership</h3>",
+          "target": [
+            "h3[aria-controls=\"et_pb_toggle_content_51\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  ARIA role button is not allowed for given element"
+        }
+      ]
+    },
+    {
+      "id": "label",
+      "impact": "critical",
+      "description": "Ensures every form element has a label",
+      "help": "Form elements must have labels",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/label?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<input type=\"email\" value=\"Email Address\" name=\"EMAIL\" class=\"required email\" id=\"mce-EMAIL\" required=\"\">",
+          "target": [
+            ".et_pb_code_2_tb_footer > .et_pb_code_inner > div > .validate[method=\"post\"][name=\"mc-embedded-subscribe-form\"] > div > .mc-field-group > div[aria-label=\"Email Address\"] > .required.email[type=\"email\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Form element does not have an implicit (wrapped) <label>\n  Form element does not have an explicit <label>\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element has no placeholder attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "critical": 1,
+    "serious": 0,
+    "moderate": 0,
+    "minor": 52
+  }
+}
