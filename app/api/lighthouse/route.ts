@@ -8,38 +8,28 @@ export const maxDuration = 60;
 interface LighthouseResult {
   url: string;
   scores: {
-    performance: number;
     accessibility: number;
-    bestPractices: number;
-    seo: number;
   };
-  performanceIssues: Array<{
-    title: string;
-    description: string;
-    score: number;
-    displayValue?: string;
-    recommendation: string;
-  }>;
   accessibilityIssues: Array<{
+    id: string;
     title: string;
     description: string;
     impact: 'critical' | 'serious' | 'moderate' | 'minor';
+    score: number | null;
     nodes: Array<{
       html: string;
       target: string;
+      failureSummary?: string;
     }>;
-    recommendation: string;
   }>;
-  bestPracticesIssues: Array<{
-    title: string;
-    description: string;
-    recommendation: string;
-  }>;
-  seoIssues: Array<{
-    title: string;
-    description: string;
-    recommendation: string;
-  }>;
+  summary: {
+    critical: number;
+    serious: number;
+    moderate: number;
+    minor: number;
+    total: number;
+    passed: number;
+  };
 }
 
 export async function POST(request: NextRequest) {
@@ -51,13 +41,26 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'URL is required' }, { status: 400 });
     }
 
-    console.log(`Starting PageSpeed Insights audit for: ${url}`);
+    // ✅ GET THE API KEY FROM ENVIRONMENT
+    const apiKey = process.env.PAGESPEED_API_KEY;
+    
+    if (!apiKey) {
+      console.error('❌ PAGESPEED_API_KEY not found in environment variables');
+      return NextResponse.json({ 
+        error: 'API key not configured. Add PAGESPEED_API_KEY to .env.local' 
+      }, { status: 500 });
+    }
 
-    const apiUrl = `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodeURIComponent(url)}&category=PERFORMANCE&category=ACCESSIBILITY&category=BEST_PRACTICES&category=SEO&strategy=mobile`;
+    console.log(`🔍 Starting Lighthouse Accessibility audit for: ${url}`);
+
+    // ✅ ADD API KEY TO THE URL
+    const apiUrl = `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodeURIComponent(url)}&category=ACCESSIBILITY&strategy=desktop&key=${apiKey}`;
     
     const response = await fetch(apiUrl);
     
     if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      console.error('PageSpeed API error:', errorData);
       throw new Error(`PageSpeed API failed: ${response.statusText}`);
     }
 
@@ -68,89 +71,108 @@ export async function POST(request: NextRequest) {
       throw new Error('No Lighthouse result in PageSpeed response');
     }
 
-    const scores = {
-      performance: Math.round((lhr.categories.performance?.score || 0) * 100),
-      accessibility: Math.round((lhr.categories.accessibility?.score || 0) * 100),
-      bestPractices: Math.round((lhr.categories['best-practices']?.score || 0) * 100),
-      seo: Math.round((lhr.categories.seo?.score || 0) * 100),
-    };
+    // Get accessibility score
+    const accessibilityScore = Math.round((lhr.categories.accessibility?.score || 0) * 100);
 
-    const performanceIssues = [];
-    const perfAudits = ['first-contentful-paint', 'largest-contentful-paint', 'speed-index', 'total-blocking-time', 'cumulative-layout-shift', 'render-blocking-resources', 'uses-optimized-images', 'uses-text-compression', 'unused-css-rules', 'unused-javascript', 'modern-image-formats', 'uses-responsive-images', 'efficient-animated-content', 'server-response-time'];
+    // Get all accessibility audits
+    const accessibilityIssues: LighthouseResult['accessibilityIssues'] = [];
+    let passedCount = 0;
+    let criticalCount = 0;
+    let seriousCount = 0;
+    let moderateCount = 0;
+    let minorCount = 0;
 
-    for (const auditId of perfAudits) {
+    // Known critical accessibility audits
+    const CRITICAL_AUDITS = ['image-alt', 'button-name', 'link-name', 'label', 'document-title', 'html-has-lang', 'bypass', 'frame-title'];
+    const SERIOUS_AUDITS = ['color-contrast', 'heading-order', 'list', 'listitem', 'aria-required-attr', 'aria-required-children', 'aria-required-parent', 'aria-roles', 'aria-valid-attr', 'aria-valid-attr-value', 'aria-allowed-attr'];
+
+    // Process all audits in the accessibility category
+    const auditRefs = lhr.categories.accessibility?.auditRefs || [];
+    
+    for (const auditRef of auditRefs) {
+      const auditId = auditRef.id;
       const audit = lhr.audits[auditId];
-      if (audit && (audit.score === null || audit.score < 0.9)) {
-        performanceIssues.push({
-          title: audit.title,
-          description: audit.description,
-          score: audit.score ? Math.round(audit.score * 100) : 0,
-          displayValue: audit.displayValue || '',
-          recommendation: audit.description,
-        });
+      
+      if (!audit) continue;
+      
+      // Skip manual and not applicable audits
+      if (audit.scoreDisplayMode === 'manual' || audit.scoreDisplayMode === 'notApplicable') {
+        continue;
       }
+
+      // Check if passed (score === 1)
+      if (audit.score === 1) {
+        passedCount++;
+        continue;
+      }
+
+      // This is a failed audit - determine impact
+      let impact: 'critical' | 'serious' | 'moderate' | 'minor';
+      
+      if (CRITICAL_AUDITS.includes(auditId)) {
+        impact = 'critical';
+        criticalCount++;
+      } else if (SERIOUS_AUDITS.includes(auditId)) {
+        impact = 'serious';
+        seriousCount++;
+      } else if (audit.score === 0 || audit.score === null) {
+        impact = 'serious';
+        seriousCount++;
+      } else if (audit.score < 0.5) {
+        impact = 'moderate';
+        moderateCount++;
+      } else {
+        impact = 'minor';
+        minorCount++;
+      }
+
+      // Extract affected elements (limit to 5 per issue)
+      const nodes: Array<{ html: string; target: string; failureSummary?: string }> = [];
+      
+      if (audit.details?.items) {
+        for (const item of audit.details.items.slice(0, 5)) {
+          nodes.push({
+            html: item.node?.snippet || item.snippet || '',
+            target: item.node?.selector || item.selector || '',
+            failureSummary: item.node?.explanation || item.failureSummary || '',
+          });
+        }
+      }
+
+      accessibilityIssues.push({
+        id: auditId,
+        title: audit.title,
+        description: audit.description,
+        impact,
+        score: audit.score,
+        nodes,
+      });
     }
 
-    const accessibilityIssues = [];
-    const a11yAudits = ['color-contrast', 'image-alt', 'button-name', 'link-name', 'label', 'aria-required-attr', 'aria-valid-attr', 'aria-valid-attr-value', 'document-title', 'html-has-lang', 'meta-viewport', 'duplicate-id-active', 'duplicate-id-aria', 'heading-order', 'list', 'listitem', 'tabindex', 'td-headers-attr', 'th-has-data-cells', 'valid-lang', 'video-caption', 'form-field-multiple-labels'];
-
-    for (const auditId of a11yAudits) {
-      const audit = lhr.audits[auditId];
-      if (audit && audit.score !== null && audit.score < 1) {
-        const nodes = audit.details?.items?.slice(0, 3).map((item: any) => ({
-          html: item.node?.snippet || item.snippet || '',
-          target: item.node?.selector || item.selector || '',
-        })) || [];
-
-        accessibilityIssues.push({
-          title: audit.title,
-          description: audit.description,
-          impact: (audit.score === 0 ? 'critical' : audit.score < 0.5 ? 'serious' : 'moderate') as 'critical' | 'serious' | 'moderate' | 'minor',
-          nodes,
-          recommendation: audit.description,
-        });
-      }
-    }
-
-    const bestPracticesIssues = [];
-    const bpAudits = ['errors-in-console', 'is-on-https', 'uses-http2', 'uses-passive-event-listeners', 'no-document-write', 'geolocation-on-start', 'notification-on-start', 'deprecations', 'doctype', 'charset', 'no-vulnerable-libraries', 'js-libraries', 'inspector-issues'];
-
-    for (const auditId of bpAudits) {
-      const audit = lhr.audits[auditId];
-      if (audit && (audit.score === null || audit.score < 1)) {
-        bestPracticesIssues.push({
-          title: audit.title,
-          description: audit.description,
-          recommendation: audit.description,
-        });
-      }
-    }
-
-    const seoIssues = [];
-    const seoAudits = ['meta-description', 'document-title', 'link-text', 'is-crawlable', 'robots-txt', 'hreflang', 'canonical', 'font-size', 'tap-targets', 'structured-data', 'image-alt'];
-
-    for (const auditId of seoAudits) {
-      const audit = lhr.audits[auditId];
-      if (audit && (audit.score === null || audit.score < 1)) {
-        seoIssues.push({
-          title: audit.title,
-          description: audit.description,
-          recommendation: audit.description,
-        });
-      }
-    }
+    // Sort by severity
+    const severityOrder = { critical: 0, serious: 1, moderate: 2, minor: 3 };
+    accessibilityIssues.sort((a, b) => severityOrder[a.impact] - severityOrder[b.impact]);
 
     const result: LighthouseResult = {
       url,
-      scores,
-      performanceIssues,
+      scores: {
+        accessibility: accessibilityScore,
+      },
       accessibilityIssues,
-      bestPracticesIssues,
-      seoIssues,
+      summary: {
+        critical: criticalCount,
+        serious: seriousCount,
+        moderate: moderateCount,
+        minor: minorCount,
+        total: criticalCount + seriousCount + moderateCount + minorCount,
+        passed: passedCount,
+      },
     };
 
-    console.log(`PageSpeed audit completed for: ${url}`);
+    console.log(`✅ Lighthouse Accessibility audit completed: ${url} - Score: ${accessibilityScore}, Issues: ${result.summary.total}`);
+    
     return NextResponse.json(result);
+    
   } catch (error) {
     console.error('PageSpeed Insights error:', error);
     return NextResponse.json(

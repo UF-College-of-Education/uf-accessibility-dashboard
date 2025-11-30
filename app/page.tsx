@@ -2,13 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import SiteSelector from './components/SiteSelector';
-import ResultsModal from './components/ResultsModal';
 import StatusCheckPage from './components/StatusCheckPage';
 import { Site, triggerGitHubAction, fetchSites } from './components/DataService';
 import { AuditPageResult, auditManager, AuditRun } from './components/AuditService';
-import { CheckCircle, AlertCircle, History } from 'lucide-react';
-import { loadAccessibilityReport, convertAxeIssuesToDashboardFormat } from './components/RealAccessibilityService';
-import { triggerN8nScan, estimateScanTime } from './components/N8nTriggerService';
+import { CheckCircle, AlertCircle, History, ExternalLink } from 'lucide-react';
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<'audit' | 'status'>('audit');
@@ -18,13 +15,8 @@ export default function Home() {
   const [selectedSites, setSelectedSites] = useState<Site[]>([]);
   const [progress, setProgress] = useState(0);
   const [currentAuditRun, setCurrentAuditRun] = useState<AuditRun | null>(null);
-  const [showResults, setShowResults] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
   const [auditHistory, setAuditHistory] = useState<AuditRun[]>([]);
-  
-  // Real Scan state variables
-  const [isRealScanRunning, setIsRealScanRunning] = useState(false);
-  const [realScanMessage, setRealScanMessage] = useState('');
 
   const previousRun = auditManager.getPreviousRun();
 
@@ -35,6 +27,14 @@ export default function Home() {
     }
     loadSites();
   }, []);
+
+  // Function to open results in a new browser tab
+  function openResultsInNewTab(auditRun: AuditRun) {
+    // Store results in sessionStorage so the new tab can access them
+    sessionStorage.setItem('auditResults', JSON.stringify(auditRun));
+    // Open the results page in a new tab
+    window.open('/results', '_blank');
+  }
 
   function loadHistory() {
     const history = auditManager.getHistory();
@@ -52,7 +52,6 @@ export default function Home() {
     setAuditStatus('running');
     setStatusMessage(`Starting audit for ${sites.length} site(s) and ${pageCount} page(s)...`);
     setProgress(0);
-    setShowResults(false);
 
     try {
       const progressInterval = setInterval(() => {
@@ -67,90 +66,6 @@ export default function Home() {
 
       const results: AuditPageResult[] = [];
 
-      // Array of realistic accessibility issues (FALLBACK MOCK DATA)
-      const accessibilityIssues = [
-        {
-          message: 'Image missing alt text',
-          wcagPrinciple: 'Perceivable',
-          code: 'WCAG2AA.Principle1.Guideline1_1.1_1_1.H37',
-          codeSnippet: '<img src="banner.jpg" />',
-          recommendation: 'Add descriptive alt text to all images',
-          type: 'error' as const,
-        },
-        {
-          message: 'Color contrast insufficient',
-          wcagPrinciple: 'Perceivable',
-          code: 'WCAG2AA.Principle1.Guideline1_4.1_4_3.G18.Fail',
-          codeSnippet: '<p style="color: #888; background: #fff;">Light gray text</p>',
-          recommendation: 'Increase contrast ratio to at least 4.5:1',
-          type: 'error' as const,
-        },
-        {
-          message: 'Form label missing',
-          wcagPrinciple: 'Perceivable',
-          code: 'WCAG2AA.Principle1.Guideline1_3.1_3_1.H44.2.NoLabel',
-          codeSnippet: '<input type="text" placeholder="Enter name" />',
-          recommendation: 'Add associated <label> element for form inputs',
-          type: 'error' as const,
-        },
-        {
-          message: 'Button text not descriptive',
-          wcagPrinciple: 'Operable',
-          code: 'WCAG2AA.Principle2.Guideline2_4.2_4_4.H30.2.Adjacent',
-          codeSnippet: '<button>Click here</button>',
-          recommendation: 'Use descriptive button text like "Submit Form" or "Download PDF"',
-          type: 'error' as const,
-        },
-        {
-          message: 'Page title missing',
-          wcagPrinciple: 'Operable',
-          code: 'WCAG2AA.Principle2.Guideline2_4.2_4_2.H25.1.NoTitle',
-          codeSnippet: '<head>\n<!-- Missing <title> element -->\n</head>',
-          recommendation: 'Add descriptive <title> element to page',
-          type: 'error' as const,
-        },
-        {
-          message: 'Focus indicator not visible',
-          wcagPrinciple: 'Operable',
-          code: 'WCAG2AA.Principle2.Guideline2_4.2_4_7.G149.NoFocusStyle',
-          codeSnippet: 'a { outline: none; }',
-          recommendation: 'Provide visible focus indicators for keyboard navigation',
-          type: 'warning' as const,
-        },
-        {
-          message: 'Heading structure is incorrect',
-          wcagPrinciple: 'Understandable',
-          code: 'WCAG2AA.Principle3.Guideline3_1.3_1_1.G57.Section.NoHeading',
-          codeSnippet: '<h1>Main Title</h1>\n<h3>Subheading</h3>',
-          recommendation: 'Use proper heading hierarchy (h1, h2, h3)',
-          type: 'error' as const,
-        },
-        {
-          message: 'Link without descriptive text',
-          wcagPrinciple: 'Understandable',
-          code: 'WCAG2AA.Principle4.Guideline4_1.4_1_2.H91.A.NoContent',
-          codeSnippet: '<a href="/page">Read more</a>',
-          recommendation: 'Use descriptive link text that explains the destination',
-          type: 'error' as const,
-        },
-        {
-          message: 'Video without captions',
-          wcagPrinciple: 'Perceivable',
-          code: 'WCAG2AA.Principle1.Guideline1_2.1_2_1.G158',
-          codeSnippet: '<video src="movie.mp4"></video>',
-          recommendation: 'Add captions or transcripts for video content',
-          type: 'error' as const,
-        },
-        {
-          message: 'Form without error identification',
-          wcagPrinciple: 'Understandable',
-          code: 'WCAG2AA.Principle3.Guideline3_3.3_3_1.G83.OnSubmit',
-          codeSnippet: '<form onsubmit="validate()">...</form>',
-          recommendation: 'Display clear error messages and highlight invalid fields',
-          type: 'warning' as const,
-        },
-      ];
-
       const totalPages = sites.reduce((sum, site) => sum + site.pages.length, 0);
       let completedPages = 0;
 
@@ -159,58 +74,10 @@ export default function Home() {
         for (const page of site.pages) {
           setStatusMessage(`Auditing ${page.title}... (${completedPages + 1}/${totalPages})`);
           
-          // ===== TRY TO LOAD REAL ACCESSIBILITY ISSUES FIRST =====
-          let issues: any[] = [];
-          try {
-            console.log(`🔍 Trying to load real accessibility report for: ${page.url}`);
-            const realReport = await loadAccessibilityReport(page.url);
-            
-            if (realReport && realReport.issues.length > 0) {
-              issues = convertAxeIssuesToDashboardFormat(realReport.issues);
-              console.log(`✅ Loaded ${issues.length} REAL issues from axe-core report`);
-            } else {
-              console.log(`⚠️ No real report found for ${page.url}, using mock data`);
-              // Fallback to mock
-              const hasIssues = Math.random() > 0.3;
-              const numIssues = hasIssues ? Math.floor(Math.random() * 5) + 1 : 0;
-              
-              for (let i = 0; i < numIssues; i++) {
-                const issue = accessibilityIssues[Math.floor(Math.random() * accessibilityIssues.length)];
-                issues.push({
-                  type: issue.type,
-                  code: issue.code,
-                  wcagPrinciple: issue.wcagPrinciple,
-                  message: issue.message,
-                  selector: `#element-${Math.floor(Math.random() * 1000)} > div > span:nth-child(${Math.floor(Math.random() * 5)})`,
-                  codeSnippet: issue.codeSnippet,
-                  recommendation: issue.recommendation,
-                });
-              }
-            }
-          } catch (error) {
-            console.error(`❌ Error loading real issues for ${page.url}:`, error);
-            // Fallback on error
-            const hasIssues = Math.random() > 0.3;
-            const numIssues = hasIssues ? Math.floor(Math.random() * 5) + 1 : 0;
-            
-            for (let i = 0; i < numIssues; i++) {
-              const issue = accessibilityIssues[Math.floor(Math.random() * accessibilityIssues.length)];
-              issues.push({
-                type: issue.type,
-                code: issue.code,
-                wcagPrinciple: issue.wcagPrinciple,
-                message: issue.message,
-                selector: `#element-${Math.floor(Math.random() * 1000)} > div > span:nth-child(${Math.floor(Math.random() * 5)})`,
-                codeSnippet: issue.codeSnippet,
-                recommendation: issue.recommendation,
-              });
-            }
-          }
-
-          // Try to get REAL Lighthouse scores (but don't fail if it doesn't work)
+          // Try to get REAL Lighthouse scores
           let lighthouseData = null;
           try {
-            console.log(`Trying Lighthouse for: ${page.url}`);
+            console.log(`🔍 Calling Lighthouse API for: ${page.url}`);
             const lighthouseResponse = await fetch('/api/lighthouse', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
@@ -219,38 +86,35 @@ export default function Home() {
 
             if (lighthouseResponse.ok) {
               lighthouseData = await lighthouseResponse.json();
-              console.log(`✅ Lighthouse success for: ${page.url}`, lighthouseData.scores);
+              console.log(`✅ Lighthouse success for: ${page.url}`, lighthouseData);
             } else {
-              console.log(`⚠️ Lighthouse failed for ${page.url}, using fallback`);
+              console.log(`⚠️ Lighthouse failed for ${page.url}, status: ${lighthouseResponse.status}`);
             }
           } catch (error) {
             console.log(`⚠️ Lighthouse error for ${page.url}:`, error);
           }
 
-          // If Lighthouse worked, use real data. Otherwise, generate realistic scores
+          // Use real Lighthouse data if available
           const lighthouseScores = lighthouseData?.scores || {
-            performance: Math.floor(Math.random() * 40) + 60,
-            accessibility: Math.floor(Math.random() * 30) + 70,
-            bestPractices: Math.floor(Math.random() * 35) + 65,
-            seo: Math.floor(Math.random() * 25) + 75,
+            performance: 0,
+            accessibility: lighthouseData?.accessibility || 0,
+            bestPractices: 0,
+            seo: 0,
           };
 
-          const lighthousePerformanceIssues = lighthouseData?.performanceIssues || [];
+          // Get real accessibility issues from Lighthouse
           const lighthouseAccessibilityIssues = lighthouseData?.accessibilityIssues || [];
-          const lighthouseBestPracticesIssues = lighthouseData?.bestPracticesIssues || [];
-          const lighthouseSEOIssues = lighthouseData?.seoIssues || [];
+          const summary = lighthouseData?.summary || null;
 
           results.push({
             url: page.url,
             title: page.title,
             status: 'success',
-            issues, // REAL ISSUES if available, otherwise MOCK
+            issues: [], // Legacy field - kept for compatibility
             timestamp: Date.now(),
             lighthouseScores,
-            lighthousePerformanceIssues,
             lighthouseAccessibilityIssues,
-            lighthouseBestPracticesIssues,
-            lighthouseSEOIssues,
+            summary,
           });
 
           completedPages++;
@@ -269,8 +133,10 @@ export default function Home() {
       setCurrentAuditRun(auditRun);
 
       setAuditStatus('success');
-      setStatusMessage(`✅ Audit completed! Scanned ${pageCount} pages. Results below.`);
-      setShowResults(true);
+      setStatusMessage(`✅ Audit completed! Scanned ${pageCount} pages.`);
+
+      // OPEN RESULTS IN NEW TAB
+      openResultsInNewTab(auditRun);
 
       try {
         await triggerGitHubAction(results.map(r => r.url));
@@ -280,65 +146,6 @@ export default function Home() {
     } catch (error) {
       setAuditStatus('error');
       setStatusMessage(`❌ Error: ${error instanceof Error ? error.message : 'Unknown error occurred'}`);
-    }
-  }
-
-  // ✅ UPDATED: Handle Real Scan via n8n - Opens in NEW WINDOW
-  async function handleRealScan(sites: Site[], pageCount: number) {
-    if (sites.length === 0) {
-      alert('Please select at least one site');
-      return;
-    }
-
-    setIsRealScanRunning(true);
-    setRealScanMessage(`⏳ Triggering n8n scan for ${pageCount} pages...`);
-
-    try {
-      // Collect all pages
-      const allPages: Array<{ url: string; title: string; site: string }> = [];
-      for (const site of sites) {
-        for (const page of site.pages) {
-          allPages.push({ 
-            url: page.url, 
-            title: page.title,
-            site: site.title 
-          });
-        }
-      }
-
-      console.log('🚀 Triggering n8n scan for', allPages.length, 'pages');
-
-      const estimatedTime = estimateScanTime(allPages.length);
-      setRealScanMessage(`⏳ Scanning ${allPages.length} pages... (est. ${estimatedTime})`);
-
-      // Trigger n8n
-      const result = await triggerN8nScan(allPages);
-
-      console.log('✅ n8n scan completed successfully!', result);
-      console.log('   - Scanned:', result.totalScanned, 'pages');
-      console.log('   - Found:', result.totalIssues, 'issues');
-      console.log('   - Critical:', result.criticalCount);
-
-      setRealScanMessage(`✅ ${result.message} - Opening results...`);
-      
-      // ✅ NEW: Save results to localStorage and open in new window
-      localStorage.setItem('scanResults', JSON.stringify(result));
-      
-      // Open results in new window/tab
-      window.open('/scan-results', '_blank');
-
-      // Clear message after a delay
-      setTimeout(() => {
-        setRealScanMessage('');
-      }, 3000);
-
-      return result;
-
-    } catch (error) {
-      console.error('❌ Real scan failed:', error);
-      setRealScanMessage(`❌ Scan failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
-    } finally {
-      setIsRealScanRunning(false);
     }
   }
 
@@ -381,13 +188,24 @@ export default function Home() {
               📊 Status Check
             </button>
           </div>
-          <button
-            onClick={loadHistory}
-            className="flex items-center gap-2 px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-lg font-semibold transition"
-          >
-            <History size={20} />
-            View History
-          </button>
+          <div className="flex gap-2">
+            {currentAuditRun && (
+              <button
+                onClick={() => openResultsInNewTab(currentAuditRun)}
+                className="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-semibold transition"
+              >
+                <ExternalLink size={20} />
+                View Last Results
+              </button>
+            )}
+            <button
+              onClick={loadHistory}
+              className="flex items-center gap-2 px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-lg font-semibold transition"
+            >
+              <History size={20} />
+              View History
+            </button>
+          </div>
         </div>
 
         {/* Tab Content */}
@@ -436,29 +254,22 @@ export default function Home() {
                         <p className="text-sm text-gray-600 mt-2">{Math.floor(progress)}% complete</p>
                       </div>
                     )}
+                    {auditStatus === 'success' && (
+                      <p className="text-sm text-green-700 mt-2">
+                        Results opened in a new tab. <button onClick={() => currentAuditRun && openResultsInNewTab(currentAuditRun)} className="underline hover:no-underline">Click here to view again</button>
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>
             )}
-            <SiteSelector 
-              onSelectSites={handleSelectSites}
-              onRealScan={handleRealScan}
-              isRealScanRunning={isRealScanRunning}
-              realScanMessage={realScanMessage}
-            />
+            <SiteSelector onSelectSites={handleSelectSites} />
           </>
         ) : (
           <StatusCheckPage sites={allSites} />
         )}
 
-        {showResults && currentAuditRun && (
-          <ResultsModal
-            auditRun={currentAuditRun}
-            previousRun={previousRun}
-            onClose={() => setShowResults(false)}
-          />
-        )}
-
+        {/* History Modal */}
         {showHistory && (
           <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-50 overflow-y-auto">
             <div className="bg-white rounded-lg shadow-2xl max-w-4xl w-full my-8">
@@ -480,8 +291,24 @@ export default function Home() {
                 ) : (
                   <div className="space-y-4">
                     {auditHistory.map((run, idx) => {
-                      const errorCount = run.results.reduce((sum, r) => sum + r.issues.filter(i => i.type === 'error').length, 0);
-                      const warningCount = run.results.reduce((sum, r) => sum + r.issues.filter(i => i.type === 'warning').length, 0);
+                      // Calculate severity counts
+                      let criticalCount = 0, seriousCount = 0;
+                      run.results.forEach(r => {
+                        if (r.summary) {
+                          criticalCount += r.summary.critical || 0;
+                          seriousCount += r.summary.serious || 0;
+                        } else if (r.lighthouseAccessibilityIssues) {
+                          r.lighthouseAccessibilityIssues.forEach((issue: any) => {
+                            if (issue.impact === 'critical') criticalCount++;
+                            if (issue.impact === 'serious') seriousCount++;
+                          });
+                        }
+                      });
+
+                      // Calculate avg score
+                      const avgScore = run.results.length > 0
+                        ? Math.round(run.results.reduce((acc, r) => acc + (r.lighthouseScores?.accessibility || 0), 0) / run.results.length)
+                        : 0;
 
                       return (
                         <div key={run.id} className="border rounded-lg p-4 hover:shadow-md transition">
@@ -494,13 +321,13 @@ export default function Home() {
                             </div>
                             <button
                               onClick={() => {
-                                setCurrentAuditRun(run);
-                                setShowResults(true);
+                                openResultsInNewTab(run);
                                 setShowHistory(false);
                               }}
-                              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+                              className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition flex items-center gap-2"
                             >
-                              View Details
+                              <ExternalLink size={16} />
+                              View in New Tab
                             </button>
                           </div>
                           <div className="grid grid-cols-4 gap-4">
@@ -512,13 +339,13 @@ export default function Home() {
                               <div className="text-xl font-bold text-purple-600">{run.pageCount}</div>
                               <div className="text-xs text-gray-600">Pages</div>
                             </div>
-                            <div className="bg-red-50 p-3 rounded">
-                              <div className="text-xl font-bold text-red-600">{errorCount}</div>
-                              <div className="text-xs text-gray-600">Errors</div>
+                            <div className="bg-green-50 p-3 rounded">
+                              <div className="text-xl font-bold text-green-600">{avgScore}</div>
+                              <div className="text-xs text-gray-600">Avg Score</div>
                             </div>
-                            <div className="bg-yellow-50 p-3 rounded">
-                              <div className="text-xl font-bold text-yellow-600">{warningCount}</div>
-                              <div className="text-xs text-gray-600">Warnings</div>
+                            <div className="bg-red-50 p-3 rounded">
+                              <div className="text-xl font-bold text-red-600">{criticalCount + seriousCount}</div>
+                              <div className="text-xs text-gray-600">Critical+Serious</div>
                             </div>
                           </div>
                         </div>
