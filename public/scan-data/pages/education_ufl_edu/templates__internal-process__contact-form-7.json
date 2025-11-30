@@ -1,0 +1,79 @@
+{
+  "url": "https://education.ufl.edu/templates/internal-process/contact-form-7/",
+  "title": "Contact Form 7",
+  "site": "UF College of Education",
+  "scannedAt": "2025-11-30T04:44:16.888Z",
+  "scannedBy": "Saignaneswar",
+  "issues": [
+    {
+      "id": "color-contrast",
+      "impact": "serious",
+      "description": "Ensures the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "help": "Elements must meet minimum color contrast ratio thresholds",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/color-contrast?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<input name=\"post_password\" id=\"pwbox-173877261\" type=\"password\" size=\"20\" maxlength=\"20\">",
+          "target": [
+            "#pwbox-173877261"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.45 (foreground color: #999999, background color: #eeeeee, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        }
+      ]
+    },
+    {
+      "id": "heading-order",
+      "impact": "moderate",
+      "description": "Ensures the order of headings is semantically correct",
+      "help": "Heading levels should only increase by one",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/heading-order?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h3>Resources</h3>",
+          "target": [
+            ".et_pb_text_1_tb_footer > .et_pb_text_inner > h3"
+          ],
+          "failureSummary": "Fix any of the following:\n  Heading order invalid"
+        }
+      ]
+    },
+    {
+      "id": "label",
+      "impact": "critical",
+      "description": "Ensures every form element has a label",
+      "help": "Form elements must have labels",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/label?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<input name=\"post_password\" id=\"pwbox-173877261\" type=\"password\" size=\"20\" maxlength=\"20\">",
+          "target": [
+            "#pwbox-173877261"
+          ],
+          "failureSummary": "Fix all of the following:\n  Form element has explicit <label> that is hidden"
+        }
+      ]
+    },
+    {
+      "id": "label",
+      "impact": "critical",
+      "description": "Ensures every form element has a label",
+      "help": "Form elements must have labels",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/label?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<input type=\"email\" value=\"Email Address\" name=\"EMAIL\" class=\"required email\" id=\"mce-EMAIL\" required=\"\">",
+          "target": [
+            ".et_pb_code_2_tb_footer > .et_pb_code_inner > div > .validate[name=\"mc-embedded-subscribe-form\"][target=\"_self\"] > div > .mc-field-group > div[aria-label=\"Email Address\"] > .required.email[type=\"email\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Form element does not have an implicit (wrapped) <label>\n  Form element does not have an explicit <label>\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element has no placeholder attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "critical": 2,
+    "serious": 1,
+    "moderate": 1,
+    "minor": 0
+  }
+}
