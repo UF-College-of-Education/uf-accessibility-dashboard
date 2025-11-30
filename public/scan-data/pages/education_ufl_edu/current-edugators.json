@@ -1,0 +1,335 @@
+{
+  "url": "https://education.ufl.edu/current-edugators/",
+  "title": "Current EduGators",
+  "site": "UF College of Education",
+  "scannedAt": "2025-11-30T04:48:30.820Z",
+  "scannedBy": "Saignaneswar",
+  "issues": [
+    {
+      "id": "color-contrast",
+      "impact": "serious",
+      "description": "Ensures the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "help": "Elements must meet minimum color contrast ratio thresholds",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/color-contrast?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<span class=\"fc-day-number\" style=\"font-size: 24px;\">26</span>",
+          "target": [
+            ".fc-sun.fc-other-month[data-date=\"2025-10-26\"] > .fc-day-number"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.02 (foreground color: #b6b6b6, background color: #ffffff, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1"
+        }
+      ]
+    },
+    {
+      "id": "color-contrast",
+      "impact": "serious",
+      "description": "Ensures the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "help": "Elements must meet minimum color contrast ratio thresholds",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/color-contrast?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<span class=\"fc-day-number\" style=\"font-size: 24px;\">27</span>",
+          "target": [
+            ".fc-mon.fc-other-month[data-date=\"2025-10-27\"] > .fc-day-number"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.02 (foreground color: #b6b6b6, background color: #ffffff, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1"
+        }
+      ]
+    },
+    {
+      "id": "color-contrast",
+      "impact": "serious",
+      "description": "Ensures the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "help": "Elements must meet minimum color contrast ratio thresholds",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/color-contrast?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<span class=\"fc-day-number\" style=\"font-size: 24px;\">28</span>",
+          "target": [
+            ".fc-tue.fc-other-month[data-date=\"2025-10-28\"] > .fc-day-number"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.02 (foreground color: #b6b6b6, background color: #ffffff, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1"
+        }
+      ]
+    },
+    {
+      "id": "color-contrast",
+      "impact": "serious",
+      "description": "Ensures the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "help": "Elements must meet minimum color contrast ratio thresholds",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/color-contrast?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<span class=\"fc-day-number\" style=\"font-size: 24px;\">29</span>",
+          "target": [
+            ".fc-wed.fc-other-month[data-date=\"2025-10-29\"] > .fc-day-number"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.02 (foreground color: #b6b6b6, background color: #ffffff, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1"
+        }
+      ]
+    },
+    {
+      "id": "color-contrast",
+      "impact": "serious",
+      "description": "Ensures the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "help": "Elements must meet minimum color contrast ratio thresholds",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/color-contrast?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<span class=\"fc-day-number\" style=\"font-size: 24px;\">30</span>",
+          "target": [
+            ".fc-thu.fc-other-month[data-date=\"2025-10-30\"] > .fc-day-number"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.02 (foreground color: #b6b6b6, background color: #ffffff, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1"
+        }
+      ]
+    },
+    {
+      "id": "color-contrast",
+      "impact": "serious",
+      "description": "Ensures the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "help": "Elements must meet minimum color contrast ratio thresholds",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/color-contrast?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<span class=\"fc-day-number\" style=\"font-size: 24px;\">31</span>",
+          "target": [
+            ".fc-fri.fc-other-month[data-date=\"2025-10-31\"] > .fc-day-number"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.02 (foreground color: #b6b6b6, background color: #ffffff, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1"
+        }
+      ]
+    },
+    {
+      "id": "color-contrast",
+      "impact": "serious",
+      "description": "Ensures the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "help": "Elements must meet minimum color contrast ratio thresholds",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/color-contrast?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a class=\"twitter-timeline\" href=\"https://twitter.com/UF_COE?ref_src=twsrc%5Etfw\" data-width=\"500\" data-height=\"600\" data-link-color=\"#00529b\" role=\"link\">",
+          "target": [
+            ".et_pb_code_inner > .twitter-timeline[data-width=\"500\"][data-height=\"600\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.02 (foreground color: #cc4927, background color: #194588, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1"
+        }
+      ]
+    },
+    {
+      "id": "color-contrast",
+      "impact": "serious",
+      "description": "Ensures the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "help": "Elements must meet minimum color contrast ratio thresholds",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/color-contrast?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<div style=\"color:#3897f0;font-family:Arial,sans-serif;font-size:14px;font-style:normal;font-weight:550;line-height:18px\"> View this post on Instagram</div>",
+          "target": [
+            "a[target=\"_blank\"][rel=\"noopener\"] > div:nth-child(4) > div"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.06 (foreground color: #3897f0, background color: #ffffff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        }
+      ]
+    },
+    {
+      "id": "color-contrast",
+      "impact": "serious",
+      "description": "Ensures the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "help": "Elements must meet minimum color contrast ratio thresholds",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/color-contrast?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<p style=\"color:#c9c8cd;font-family:Arial,sans-serif;font-size:14px;line-height:17px;margin-bottom:0;margin-top:8px;overflow:hidden;padding:8px 0 7px;text-align:center\">",
+          "target": [
+            "blockquote > div > p"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.66 (foreground color: #c9c8cd, background color: #ffffff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        }
+      ]
+    },
+    {
+      "id": "color-contrast",
+      "impact": "serious",
+      "description": "Ensures the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "help": "Elements must meet minimum color contrast ratio thresholds",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/color-contrast?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a href=\"https://www.instagram.com/p/Bu6_QxAg1qX/\" style=\"color:#c9c8cd;font-family:Arial,sans-serif;font-size:14px;font-style:normal;font-weight:normal;line-height:17px;text-decoration:none\" target=\"",
+          "target": [
+            "blockquote > div > p > a[target=\"_blank\"][rel=\"noopener\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.66 (foreground color: #c9c8cd, background color: #ffffff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        }
+      ]
+    },
+    {
+      "id": "label",
+      "impact": "critical",
+      "description": "Ensures every form element has a label",
+      "help": "Form elements must have labels",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/label?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<input type=\"email\" value=\"Email Address\" name=\"EMAIL\" class=\"required email\" id=\"mce-EMAIL\" required=\"\">",
+          "target": [
+            ".et_pb_code_2_tb_footer > .et_pb_code_inner > div > .validate[method=\"post\"][name=\"mc-embedded-subscribe-form\"] > div > .mc-field-group > div[aria-label=\"Email Address\"] > .required.email[type=\"email\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Form element does not have an implicit (wrapped) <label>\n  Form element does not have an explicit <label>\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element has no placeholder attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a href=\"https://www.facebook.com/UF.COE\" target=\"_blank\" rel=\"noopener\" role=\"link\">\n    <span class=\"fb-icon\">\n  </span></a>",
+          "target": [
+            ".follow-icons > li:nth-child(1) > a[target=\"_blank\"][rel=\"noopener\"]"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a href=\"https://twitter.com/UF_COE\" target=\"_blank\" rel=\"noopener\" role=\"link\">\n    <span class=\"twitter-icon\">\n  </span></a>",
+          "target": [
+            "li:nth-child(2) > a[href$=\"UF_COE\"][target=\"_blank\"][rel=\"noopener\"]"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a href=\"https://www.instagram.com/uf_coe/\" target=\"_blank\" rel=\"noopener\" role=\"link\">\n    <span class=\"insta-icon\">\n  </span></a>",
+          "target": [
+            ".follow-icons > li:nth-child(3) > a[target=\"_blank\"][rel=\"noopener\"]"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a class=\"twitter-timeline\" href=\"https://twitter.com/UF_COE?ref_src=twsrc%5Etfw\" data-width=\"500\" data-height=\"600\" data-link-color=\"#00529b\" role=\"link\">\n\t\t\t</a>",
+          "target": [
+            ".et_pb_code_2 > .twitter-timeline[data-width=\"500\"][data-height=\"600\"]"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a class=\"twitter-timeline\" href=\"https://twitter.com/UF_COE?ref_src=twsrc%5Etfw\" data-width=\"500\" data-height=\"600\" data-link-color=\"#00529b\" role=\"link\">\n\t\t\t</a>",
+          "target": [
+            ".et_pb_column_26 > .twitter-timeline[data-width=\"500\"][data-height=\"600\"]"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a class=\"twitter-timeline\" href=\"https://twitter.com/UF_COE?ref_src=twsrc%5Etfw\" data-width=\"500\" data-height=\"600\" data-link-color=\"#00529b\" role=\"link\">\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t</a>",
+          "target": [
+            ".et_pb_column_27 > .twitter-timeline[data-width=\"500\"][data-height=\"600\"]"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a class=\"twitter-timeline\" href=\"https://twitter.com/UF_COE?ref_src=twsrc%5Etfw\" data-width=\"500\" data-height=\"600\" data-link-color=\"#00529b\" role=\"link\">\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t</a>",
+          "target": [
+            ".et_pb_text_23 > .twitter-timeline[data-width=\"500\"][data-height=\"600\"]"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a class=\"twitter-timeline\" href=\"https://twitter.com/UF_COE?ref_src=twsrc%5Etfw\" data-width=\"500\" data-height=\"600\" data-link-color=\"#00529b\" role=\"link\"></a>",
+          "target": [
+            ".et_pb_text_inner > .twitter-timeline[data-width=\"500\"][data-height=\"600\"]"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute"
+        }
+      ]
+    },
+    {
+      "id": "link-name",
+      "impact": "serious",
+      "description": "Ensures links have discernible text",
+      "help": "Links must have discernible text",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<a class=\"twitter-timeline\" href=\"https://twitter.com/UF_COE?ref_src=twsrc%5Etfw\" data-width=\"500\" data-height=\"600\" data-link-color=\"#00529b\" role=\"link\"></a>",
+          "target": [
+            "h3 > .twitter-timeline[data-width=\"500\"][data-height=\"600\"]"
+          ],
+          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute"
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "critical": 1,
+    "serious": 19,
+    "moderate": 0,
+    "minor": 0
+  }
+}
