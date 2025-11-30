@@ -1,14 +1,40 @@
 {
-  "lastUpdated": "2025-11-30T05:33:23.867Z",
-  "totalPages": 4,
-  "totalIssues": 222,
+  "lastUpdated": "2025-11-30T05:34:15.681Z",
+  "totalPages": 6,
+  "totalIssues": 224,
   "summary": {
     "critical": 12,
     "serious": 69,
-    "moderate": 141,
+    "moderate": 143,
     "minor": 0
   },
   "pages": [
+    {
+      "url": "https://education.ufl.edu/ai/ai-in-education-fair/ai-fair-2025-full-interviews/",
+      "title": "AI Fair 2025: Full Interviews",
+      "filePath": "pages/education_ufl_edu/ai__ai-in-education-fair__ai-fair-2025-full-interviews.json",
+      "scannedAt": "2025-11-30T05:34:15.681Z",
+      "scannedBy": "Saignaneswar",
+      "summary": {
+        "critical": 0,
+        "serious": 0,
+        "moderate": 1,
+        "minor": 0
+      }
+    },
+    {
+      "url": "https://education.ufl.edu/ai/ai-in-education-fair/",
+      "title": "AI in Education Fair",
+      "filePath": "pages/education_ufl_edu/ai__ai-in-education-fair.json",
+      "scannedAt": "2025-11-30T05:34:15.681Z",
+      "scannedBy": "Saignaneswar",
+      "summary": {
+        "critical": 0,
+        "serious": 0,
+        "moderate": 1,
+        "minor": 0
+      }
+    },
     {
       "url": "https://education.ufl.edu/riel/riel-resources/",
       "title": "Resources",
