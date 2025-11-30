@@ -1,0 +1,31 @@
+{
+  "url": "https://education.ufl.edu/ai/ai-in-education-fair/",
+  "title": "AI in Education Fair",
+  "site": "UF College of Education",
+  "scannedAt": "2025-11-30T05:34:15.681Z",
+  "scannedBy": "Saignaneswar",
+  "issues": [
+    {
+      "id": "page-has-heading-one",
+      "impact": "moderate",
+      "description": "Ensure that the page, or at least one of its frames contains a level-one heading",
+      "help": "Page should contain a level-one heading",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/page-has-heading-one?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<html lang=\"en-US\" class=\"js\">",
+          "target": [
+            "html"
+          ],
+          "failureSummary": "Fix all of the following:\n  Page must have a level-one heading"
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "critical": 0,
+    "serious": 0,
+    "moderate": 1,
+    "minor": 0
+  }
+}
