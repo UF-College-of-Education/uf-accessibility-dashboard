@@ -1,5 +1,5 @@
 // app/components/SiteSelector.tsx
-// Updated to add "View Latest Data" button while keeping existing interface
+// Updated to use enhanced PreScannedDataModal with filters like scan-results page
 
 'use client';
 
@@ -17,8 +17,16 @@ import {
   Loader2,
   Calendar
 } from 'lucide-react';
-import { hasScanData, getLastScanDate } from './LatestDataService';
-import LatestDataModal from './LatestDataModal';
+import { 
+  hasScanData, 
+  getLastScanDate, 
+  loadPreScannedData, 
+  filterResultsByUrls, 
+  checkDataAvailability,
+  PageScanResult,
+  ScanMetadata
+} from './LatestDataService';
+import PreScannedDataModal from './PreScannedDataModal';
 
 interface Props {
   onSelectSites: (sites: Site[], pageCount: number) => void;
@@ -42,7 +50,14 @@ export default function SiteSelector({
   const [hasLatestData, setHasLatestData] = useState<boolean>(false);
   const [lastScanDate, setLastScanDate] = useState<string | null>(null);
   const [checkingData, setCheckingData] = useState<boolean>(true);
+  
+  // NEW: Enhanced modal state
   const [showLatestDataModal, setShowLatestDataModal] = useState(false);
+  const [preScannedMetadata, setPreScannedMetadata] = useState<ScanMetadata | null>(null);
+  const [filteredResults, setFilteredResults] = useState<PageScanResult[]>([]);
+  const [missingPages, setMissingPages] = useState<string[]>([]);
+  const [totalScannedInData, setTotalScannedInData] = useState<number>(0);
+  const [isLoadingModal, setIsLoadingModal] = useState(false);
 
   useEffect(() => {
     async function loadData() {
@@ -151,25 +166,13 @@ export default function SiteSelector({
     return result;
   };
 
-  const getSelectedDataWithDetails = () => {
-    const result: { siteId: string; siteBaseUrl: string; pages: { url: string; title: string }[] }[] = [];
-    
-    sites.forEach(site => {
-      const selectedPageUrls = selectedPages.get(site.id);
-      if (selectedPageUrls && selectedPageUrls.size > 0) {
-        const pages = site.pages
-          .filter(p => selectedPageUrls.has(p.url))
-          .map(p => ({ url: p.url, title: p.title }));
-        
-        result.push({ 
-          siteId: site.id, 
-          siteBaseUrl: site.baseUrl,
-          pages 
-        });
-      }
+  // Get all selected URLs as a flat array
+  const getSelectedUrls = (): string[] => {
+    const urls: string[] = [];
+    selectedPages.forEach((pageUrls) => {
+      pageUrls.forEach(url => urls.push(url));
     });
-    
-    return result;
+    return urls;
   };
 
   const handleRunLighthouse = () => {
@@ -184,8 +187,44 @@ export default function SiteSelector({
     onRealScan(selectedSites, pageCount);
   };
 
-  const handleViewLatestData = () => {
-    setShowLatestDataModal(true);
+  // NEW: Enhanced View Latest Data handler
+  const handleViewLatestData = async () => {
+    setIsLoadingModal(true);
+    
+    try {
+      // Load pre-scanned data
+      const data = await loadPreScannedData();
+      
+      if (!data) {
+        alert('No pre-scanned data found. Run a Real Scan first to generate data.');
+        setIsLoadingModal(false);
+        return;
+      }
+      
+      // Get all selected URLs
+      const selectedUrls = getSelectedUrls();
+      
+      // Check which pages have data and which are missing
+      const { available, missing } = checkDataAvailability(data.results, selectedUrls);
+      
+      // Filter results to only selected pages
+      const filtered = filterResultsByUrls(data.results, selectedUrls);
+      
+      // Set modal state
+      setPreScannedMetadata(data.metadata);
+      setFilteredResults(filtered);
+      setMissingPages(missing);
+      setTotalScannedInData(data.results.length);
+      
+      // Show modal
+      setShowLatestDataModal(true);
+      
+    } catch (error) {
+      console.error('Error loading pre-scanned data:', error);
+      alert('Failed to load pre-scanned data. Please try again.');
+    } finally {
+      setIsLoadingModal(false);
+    }
   };
 
   const selectedCount = getSelectedCount();
@@ -405,27 +444,34 @@ export default function SiteSelector({
             </div>
           </button>
 
-          {/* View Latest Data - NEW */}
+          {/* View Latest Data - UPDATED to use new modal */}
           <button
             onClick={handleViewLatestData}
-            disabled={selectedCount === 0 || isRealScanRunning || checkingData}
+            disabled={selectedCount === 0 || isRealScanRunning || checkingData || isLoadingModal}
             className={`flex-1 min-w-[200px] flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-medium transition ${
-              selectedCount === 0 || isRealScanRunning || checkingData
+              selectedCount === 0 || isRealScanRunning || checkingData || isLoadingModal
                 ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
                 : hasLatestData
                   ? 'bg-purple-600 text-white hover:bg-purple-700'
                   : 'bg-purple-100 text-purple-700 hover:bg-purple-200'
             }`}
           >
-            {checkingData ? (
+            {checkingData || isLoadingModal ? (
               <Loader2 size={20} className="animate-spin" />
             ) : (
               <Database size={20} />
             )}
             <div className="text-left">
-              <div>{checkingData ? 'Checking...' : 'View Latest Data'}</div>
-              <div className="text-xs font-normal opacity-75">
+              <div>
                 {checkingData 
+                  ? 'Checking...' 
+                  : isLoadingModal 
+                    ? 'Loading...' 
+                    : 'View Latest Data'
+                }
+              </div>
+              <div className="text-xs font-normal opacity-75">
+                {checkingData || isLoadingModal
                   ? 'Please wait' 
                   : hasLatestData 
                     ? 'Pre-scanned results' 
@@ -455,11 +501,14 @@ export default function SiteSelector({
         </div>
       </div>
 
-      {/* Latest Data Modal */}
-      <LatestDataModal
+      {/* NEW: Enhanced Pre-Scanned Data Modal */}
+      <PreScannedDataModal
         isOpen={showLatestDataModal}
         onClose={() => setShowLatestDataModal(false)}
-        selectedPages={getSelectedDataWithDetails()}
+        metadata={preScannedMetadata}
+        results={filteredResults}
+        missingPages={missingPages}
+        totalScannedInData={totalScannedInData}
       />
     </div>
   );
