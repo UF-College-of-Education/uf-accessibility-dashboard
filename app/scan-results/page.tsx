@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Download, FileText, FileSpreadsheet, ChevronDown, ChevronUp, ExternalLink, CheckCircle, Filter, Tag } from 'lucide-react';
+import { Download, FileText, FileSpreadsheet, ChevronDown, ChevronUp, ExternalLink, CheckCircle, Filter, Tag, Github, Loader2 } from 'lucide-react';
 
 interface IssueNode {
   html: string;
@@ -114,6 +114,11 @@ export default function ScanResultsPage() {
   const [filterPage, setFilterPage] = useState<string>('all');
   const [filterCategory, setFilterCategory] = useState<string>('all');
   const [isDownloading, setIsDownloading] = useState<string | null>(null);
+  
+  // GitHub save state - NEW!
+  const [isSavingToGitHub, setIsSavingToGitHub] = useState(false);
+  const [gitHubSaveStatus, setGitHubSaveStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [gitHubSaveMessage, setGitHubSaveMessage] = useState('');
 
   // Load results from localStorage on mount
   useEffect(() => {
@@ -128,6 +133,87 @@ export default function ScanResultsPage() {
       }
     }
   }, []);
+
+  // 🚀 Save to GitHub - NEW FUNCTION!
+  const saveToGitHub = async () => {
+    if (!result || !result.issues || result.issues.length === 0) {
+      setGitHubSaveStatus('error');
+      setGitHubSaveMessage('❌ No scan results to save');
+      return;
+    }
+
+    setIsSavingToGitHub(true);
+    setGitHubSaveStatus('idle');
+    setGitHubSaveMessage('Saving to GitHub...');
+
+    try {
+      // Group issues by page URL
+      const issuesByUrl = new Map<string, { pageTitle: string; issues: Issue[] }>();
+      
+      result.issues.forEach((issue) => {
+        const url = issue.pageUrl || 'unknown';
+        const title = issue.pageTitle || 'Unknown Page';
+        
+        if (!issuesByUrl.has(url)) {
+          issuesByUrl.set(url, { pageTitle: title, issues: [] });
+        }
+        issuesByUrl.get(url)!.issues.push(issue);
+      });
+
+      // Format results for GitHub
+      const formattedResults: any[] = [];
+      issuesByUrl.forEach((data, url) => {
+        formattedResults.push({
+          url: url,
+          title: data.pageTitle,
+          site: 'UF College of Education',
+          issues: data.issues.map(issue => ({
+            id: issue.id || 'unknown',
+            impact: issue.impact || 'moderate',
+            description: issue.description || '',
+            help: issue.help || '',
+            helpUrl: issue.helpUrl || '',
+            nodes: (issue.nodes || []).map(node => ({
+              html: node.html || '',
+              target: node.target || [],
+              failureSummary: node.failureSummary || ''
+            }))
+          })),
+          summary: {
+            critical: data.issues.filter(i => i.impact === 'critical').length,
+            serious: data.issues.filter(i => i.impact === 'serious').length,
+            moderate: data.issues.filter(i => i.impact === 'moderate').length,
+            minor: data.issues.filter(i => i.impact === 'minor').length
+          }
+        });
+      });
+
+      const response = await fetch('/api/save-scan-to-github', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          results: formattedResults,
+          scannedBy: 'Saignaneswar',
+          note: `Scan of ${result.totalScanned} pages - ${result.totalIssues} issues found`
+        })
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        setGitHubSaveStatus('success');
+        setGitHubSaveMessage(`✅ Saved ${data.savedFiles?.length || formattedResults.length} pages to GitHub!`);
+      } else {
+        setGitHubSaveStatus('error');
+        setGitHubSaveMessage(`❌ ${data.error || 'Failed to save to GitHub'}`);
+      }
+    } catch (error) {
+      setGitHubSaveStatus('error');
+      setGitHubSaveMessage(`❌ Error: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    } finally {
+      setIsSavingToGitHub(false);
+    }
+  };
 
   if (!result) {
     return (
@@ -420,6 +506,27 @@ export default function ScanResultsPage() {
               <FileSpreadsheet size={20} />
               {isDownloading === 'excel' ? 'Downloading...' : 'Download Excel'}
             </button>
+            {/* 🚀 NEW: Save to GitHub Button */}
+            <button
+              onClick={saveToGitHub}
+              disabled={isSavingToGitHub}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition ${
+                isSavingToGitHub 
+                  ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
+                  : gitHubSaveStatus === 'success'
+                  ? 'bg-green-100 text-green-800'
+                  : 'bg-purple-600 text-white hover:bg-purple-700'
+              }`}
+            >
+              {isSavingToGitHub ? (
+                <Loader2 size={20} className="animate-spin" />
+              ) : gitHubSaveStatus === 'success' ? (
+                <CheckCircle size={20} />
+              ) : (
+                <Github size={20} />
+              )}
+              {isSavingToGitHub ? 'Saving...' : gitHubSaveStatus === 'success' ? 'Saved!' : 'Save to GitHub'}
+            </button>
             <a
               href="/"
               className="flex items-center gap-2 px-4 py-2 bg-green-800 text-white rounded-lg hover:bg-green-900 transition"
@@ -429,6 +536,19 @@ export default function ScanResultsPage() {
           </div>
         </div>
       </div>
+
+      {/* GitHub Save Status Message - NEW! */}
+      {gitHubSaveMessage && (
+        <div className="max-w-7xl mx-auto mt-4 px-6">
+          <div className={`p-4 rounded-lg ${
+            gitHubSaveStatus === 'success' ? 'bg-green-100 text-green-800 border border-green-200' :
+            gitHubSaveStatus === 'error' ? 'bg-red-100 text-red-800 border border-red-200' :
+            'bg-blue-100 text-blue-800 border border-blue-200'
+          }`}>
+            {gitHubSaveMessage}
+          </div>
+        </div>
+      )}
 
       <div className="max-w-7xl mx-auto p-6">
         {/* Tabs */}
