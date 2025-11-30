@@ -1,5 +1,8 @@
 // app/components/LatestDataService.ts
-// Service to load and filter pre-scanned accessibility data
+// OPTION A: Compatible with both LatestDataModal and PreScannedDataModal
+// Uses lightweight index.json + fetches individual pages on demand
+
+// ============ TYPES ============
 
 export interface ScanIssueNode {
   html: string;
@@ -21,6 +24,7 @@ export interface PageScanResult {
   title: string;
   site: string;
   scannedAt?: string;
+  scannedBy?: string;
   issues: ScanIssue[];
   summary: {
     critical: number;
@@ -30,201 +34,423 @@ export interface PageScanResult {
   };
 }
 
+export interface PageIndexEntry {
+  url: string;
+  title: string;
+  filePath: string;
+  scannedAt: string;
+  scannedBy: string;
+  summary: {
+    critical: number;
+    serious: number;
+    moderate: number;
+    minor: number;
+  };
+}
+
+export interface ScanIndex {
+  lastUpdated: string;
+  totalPages: number;
+  totalIssues: number;
+  summary: {
+    critical: number;
+    serious: number;
+    moderate: number;
+    minor: number;
+  };
+  pages: PageIndexEntry[];
+}
+
 export interface ScanMetadata {
   scanDate: string;
   scannedBy: string;
   totalPages: number;
+  totalIssues?: number;
   note?: string;
+  summary?: {
+    critical: number;
+    serious: number;
+    moderate: number;
+    minor: number;
+  };
 }
 
-export interface PreScannedData {
-  metadata: ScanMetadata;
-  results: PageScanResult[];
+// ============ LEGACY TYPES (for LatestDataModal compatibility) ============
+
+export interface LighthouseScores {
+  performance: number;
+  accessibility: number;
+  bestPractices: number;
+  seo: number;
 }
 
-// Cache the loaded data to avoid multiple fetches
-let cachedData: PreScannedData | null = null;
-let lastFetchTime: number = 0;
-const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
-
-// Load pre-scanned data from the public folder
-export async function loadPreScannedData(): Promise<PreScannedData | null> {
-  // Use cached data if available and fresh
-  const now = Date.now();
-  if (cachedData && (now - lastFetchTime) < CACHE_DURATION) {
-    return cachedData;
-  }
-
-  try {
-    const response = await fetch('/scan-data/latest-scan.json', {
-      cache: 'no-store' // Always get fresh data
-    });
-    
-    if (!response.ok) {
-      console.error('Failed to load pre-scanned data:', response.status);
-      return null;
-    }
-    
-    const data: PreScannedData = await response.json();
-    cachedData = data;
-    lastFetchTime = now;
-    return data;
-  } catch (error) {
-    console.error('Error loading pre-scanned data:', error);
-    return null;
-  }
+export interface IssueDetail {
+  id: string;
+  impact: string;
+  description: string;
+  help?: string;
+  message?: string;
+  helpUrl?: string;
+  nodes?: ScanIssueNode[];
 }
 
-// Check if scan data exists
+export interface PageScanData {
+  url: string;
+  title: string;
+  lastScanned: string;
+  lighthouse: LighthouseScores;
+  issues: {
+    total: number;
+    critical: number;
+    serious: number;
+    moderate: number;
+    minor: number;
+  };
+  issueDetails?: IssueDetail[];
+}
+
+// ============ CACHE ============
+
+let indexCache: ScanIndex | null = null;
+let indexCacheTime = 0;
+const CACHE_TTL = 30000; // 30 seconds
+
+// ============ CORE FUNCTIONS ============
+
+/**
+ * Check if scan data exists
+ */
 export async function hasScanData(): Promise<boolean> {
   try {
-    const response = await fetch('/scan-data/latest-scan.json', {
-      method: 'HEAD'
+    // Try new index first
+    let response = await fetch('/scan-data/index.json', { 
+      cache: 'no-store',
+      headers: { 'Cache-Control': 'no-cache' }
     });
+    if (response.ok) return true;
+    
+    // Fallback to legacy
+    response = await fetch('/scan-data/latest-scan.json', { cache: 'no-store' });
     return response.ok;
   } catch {
     return false;
   }
 }
 
-// Get last scan date
+/**
+ * Get the last scan date
+ */
 export async function getLastScanDate(): Promise<string | null> {
   try {
-    const data = await loadPreScannedData();
-    return data?.metadata?.scanDate || null;
+    const index = await loadIndex();
+    return index?.lastUpdated || null;
   } catch {
     return null;
   }
 }
 
-// Get scan metadata
-export async function getScanMetadata(): Promise<ScanMetadata | null> {
-  try {
-    const data = await loadPreScannedData();
-    return data?.metadata || null;
-  } catch {
-    return null;
+/**
+ * Load the lightweight index
+ */
+export async function loadIndex(): Promise<ScanIndex | null> {
+  // Return cached if fresh
+  if (indexCache && Date.now() - indexCacheTime < CACHE_TTL) {
+    return indexCache;
   }
-}
-
-// Filter results to only show selected pages
-export function filterResultsByUrls(
-  allResults: PageScanResult[],
-  selectedUrls: string[]
-): PageScanResult[] {
-  // Normalize URLs for comparison (remove trailing slashes, lowercase)
-  const normalizeUrl = (url: string) => {
-    return url.toLowerCase().replace(/\/$/, '');
-  };
-
-  const normalizedSelectedUrls = selectedUrls.map(normalizeUrl);
-
-  return allResults.filter(result => 
-    normalizedSelectedUrls.includes(normalizeUrl(result.url))
-  );
-}
-
-// Calculate totals for filtered results
-export function calculateTotals(results: PageScanResult[]): {
-  critical: number;
-  serious: number;
-  moderate: number;
-  minor: number;
-  total: number;
-} {
-  const totals = {
-    critical: 0,
-    serious: 0,
-    moderate: 0,
-    minor: 0,
-    total: 0
-  };
-
-  results.forEach(page => {
-    totals.critical += page.summary?.critical || 0;
-    totals.serious += page.summary?.serious || 0;
-    totals.moderate += page.summary?.moderate || 0;
-    totals.minor += page.summary?.minor || 0;
-  });
-
-  totals.total = totals.critical + totals.serious + totals.moderate + totals.minor;
-
-  return totals;
-}
-
-// Format date for display
-export function formatScanDate(dateString: string): string {
+  
   try {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
+    const response = await fetch('/scan-data/index.json', {
+      cache: 'no-store',
+      headers: { 'Cache-Control': 'no-cache' }
     });
-  } catch {
-    return dateString;
+    
+    if (response.ok) {
+      const index: ScanIndex = await response.json();
+      indexCache = index;
+      indexCacheTime = Date.now();
+      return index;
+    }
+    
+    // Fallback to legacy
+    return await loadLegacyAsIndex();
+  } catch (error) {
+    console.error('Error loading index:', error);
+    return await loadLegacyAsIndex();
   }
 }
 
-// Check if pre-scanned data exists for given URLs
+/**
+ * Load legacy latest-scan.json and convert to index format
+ */
+async function loadLegacyAsIndex(): Promise<ScanIndex | null> {
+  try {
+    const response = await fetch('/scan-data/latest-scan.json', { cache: 'no-store' });
+    if (!response.ok) return null;
+    
+    const data = await response.json();
+    
+    const pages: PageIndexEntry[] = (data.results || []).map((r: any) => ({
+      url: r.url,
+      title: r.title,
+      filePath: '', // Legacy doesn't have file paths
+      scannedAt: r.scannedAt || data.metadata?.scanDate,
+      scannedBy: data.metadata?.scannedBy || 'Unknown',
+      summary: r.summary,
+    }));
+    
+    let critical = 0, serious = 0, moderate = 0, minor = 0;
+    for (const p of pages) {
+      critical += p.summary?.critical || 0;
+      serious += p.summary?.serious || 0;
+      moderate += p.summary?.moderate || 0;
+      minor += p.summary?.minor || 0;
+    }
+    
+    const index: ScanIndex = {
+      lastUpdated: data.metadata?.scanDate || new Date().toISOString(),
+      totalPages: pages.length,
+      totalIssues: critical + serious + moderate + minor,
+      summary: { critical, serious, moderate, minor },
+      pages,
+    };
+    
+    indexCache = index;
+    indexCacheTime = Date.now();
+    return index;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Load a single page's full data
+ */
+export async function loadPageData(filePath: string): Promise<PageScanResult | null> {
+  if (!filePath) return null;
+  
+  try {
+    const response = await fetch(`/scan-data/${filePath}`, { cache: 'no-store' });
+    if (!response.ok) return null;
+    return await response.json();
+  } catch (error) {
+    console.error(`Error loading page ${filePath}:`, error);
+    return null;
+  }
+}
+
+/**
+ * Load multiple pages in parallel
+ */
+export async function loadMultiplePages(filePaths: string[]): Promise<PageScanResult[]> {
+  const validPaths = filePaths.filter(fp => fp && fp.length > 0);
+  const promises = validPaths.map(fp => loadPageData(fp));
+  const results = await Promise.all(promises);
+  return results.filter((r): r is PageScanResult => r !== null);
+}
+
+/**
+ * Load page details by URL
+ */
+export async function loadPageDetails(url: string): Promise<PageScanResult | null> {
+  const index = await loadIndex();
+  if (!index) return null;
+  
+  const pageEntry = index.pages.find(p => p.url === url);
+  if (!pageEntry) return null;
+  
+  // If has file path (new format), load from file
+  if (pageEntry.filePath) {
+    return await loadPageData(pageEntry.filePath);
+  }
+  
+  // Fallback: try legacy format
+  try {
+    const response = await fetch('/scan-data/latest-scan.json', { cache: 'no-store' });
+    if (response.ok) {
+      const data = await response.json();
+      return (data.results || []).find((r: any) => r.url === url) || null;
+    }
+  } catch {}
+  
+  return null;
+}
+
+/**
+ * Check which URLs have scan data
+ */
 export function checkDataAvailability(
-  allResults: PageScanResult[],
-  selectedUrls: string[]
-): {
-  available: string[];
-  missing: string[];
-} {
-  const normalizeUrl = (url: string) => url.toLowerCase().replace(/\/$/, '');
-  
-  const availableUrls = allResults.map(r => normalizeUrl(r.url));
-  
+  results: PageScanResult[], 
+  urls: string[]
+): { available: string[]; missing: string[] } {
+  const scannedUrls = new Set(results.map(r => r.url));
   const available: string[] = [];
   const missing: string[] = [];
-
-  selectedUrls.forEach(url => {
-    if (availableUrls.includes(normalizeUrl(url))) {
+  
+  for (const url of urls) {
+    if (scannedUrls.has(url)) {
       available.push(url);
     } else {
       missing.push(url);
     }
-  });
-
+  }
+  
   return { available, missing };
 }
 
-// Get scan data for specific URLs
-export async function getScanDataForUrls(
-  urls: string[]
-): Promise<{
-  metadata: ScanMetadata | null;
-  results: PageScanResult[];
-  missing: string[];
-}> {
-  const data = await loadPreScannedData();
-  
-  if (!data) {
-    return {
-      metadata: null,
-      results: [],
-      missing: urls
-    };
-  }
-
-  const { available, missing } = checkDataAvailability(data.results, urls);
-  const results = filterResultsByUrls(data.results, urls);
-
-  return {
-    metadata: data.metadata,
-    results,
-    missing
-  };
+/**
+ * Filter results by URLs
+ */
+export function filterResultsByUrls(results: PageScanResult[], urls: string[]): PageScanResult[] {
+  const urlSet = new Set(urls);
+  return results.filter(r => urlSet.has(r.url));
 }
 
-// Clear cache (useful after saving new scan data)
+/**
+ * Clear cache
+ */
 export function clearCache(): void {
-  cachedData = null;
-  lastFetchTime = 0;
+  indexCache = null;
+  indexCacheTime = 0;
+}
+
+/**
+ * MAIN FUNCTION: Load pre-scanned data for PreScannedDataModal
+ */
+export async function loadPreScannedData(): Promise<{
+  metadata: ScanMetadata;
+  results: PageScanResult[];
+} | null> {
+  const index = await loadIndex();
+  if (!index || index.pages.length === 0) return null;
+  
+  const metadata: ScanMetadata = {
+    scanDate: index.lastUpdated,
+    scannedBy: index.pages[0]?.scannedBy || 'Unknown',
+    totalPages: index.totalPages,
+    totalIssues: index.totalIssues,
+    note: `${index.totalPages} pages scanned`,
+    summary: index.summary,
+  };
+  
+  // Separate pages with file paths (new) vs without (legacy)
+  const pagesWithFiles = index.pages.filter(p => p.filePath && p.filePath.length > 0);
+  const pagesWithoutFiles = index.pages.filter(p => !p.filePath || p.filePath.length === 0);
+  
+  const results: PageScanResult[] = [];
+  
+  // Load new format pages (parallel fetch)
+  if (pagesWithFiles.length > 0) {
+    const loaded = await loadMultiplePages(pagesWithFiles.map(p => p.filePath));
+    results.push(...loaded);
+  }
+  
+  // Load legacy format pages
+  if (pagesWithoutFiles.length > 0) {
+    try {
+      const response = await fetch('/scan-data/latest-scan.json', { cache: 'no-store' });
+      if (response.ok) {
+        const data = await response.json();
+        const legacyUrls = new Set(pagesWithoutFiles.map(p => p.url));
+        const legacyResults = (data.results || []).filter((r: any) => legacyUrls.has(r.url));
+        results.push(...legacyResults);
+      }
+    } catch {}
+  }
+  
+  return { metadata, results };
+}
+
+// ============ LEGACY FUNCTIONS (for LatestDataModal compatibility) ============
+
+/**
+ * Fetch page scan data by URL (for LatestDataModal)
+ * Converts new format to old PageScanData format
+ */
+export async function fetchPageScanDataByUrl(url: string, siteBaseUrl?: string): Promise<PageScanData | null> {
+  try {
+    // First try to load from index
+    const pageResult = await loadPageDetails(url);
+    
+    if (pageResult) {
+      // Convert PageScanResult to PageScanData format
+      const totalIssues = (pageResult.summary?.critical || 0) + 
+                          (pageResult.summary?.serious || 0) + 
+                          (pageResult.summary?.moderate || 0) + 
+                          (pageResult.summary?.minor || 0);
+      
+      return {
+        url: pageResult.url,
+        title: pageResult.title,
+        lastScanned: pageResult.scannedAt || new Date().toISOString(),
+        lighthouse: {
+          performance: 0, // Not available in new format
+          accessibility: Math.max(0, 100 - (pageResult.summary.critical * 10 + pageResult.summary.serious * 5 + pageResult.summary.moderate * 2 + pageResult.summary.minor)),
+          bestPractices: 0,
+          seo: 0,
+        },
+        issues: {
+          total: totalIssues,
+          critical: pageResult.summary?.critical || 0,
+          serious: pageResult.summary?.serious || 0,
+          moderate: pageResult.summary?.moderate || 0,
+          minor: pageResult.summary?.minor || 0,
+        },
+        issueDetails: (pageResult.issues || []).map(issue => ({
+          id: issue.id,
+          impact: issue.impact,
+          description: issue.description,
+          help: issue.help,
+          helpUrl: issue.helpUrl,
+          nodes: issue.nodes,
+        })),
+      };
+    }
+    
+    return null;
+  } catch (error) {
+    console.error(`Error fetching page data for ${url}:`, error);
+    return null;
+  }
+}
+
+/**
+ * Get all available scan data (for LatestDataModal)
+ */
+export async function getAllScanData(): Promise<PageScanData[]> {
+  const data = await loadPreScannedData();
+  if (!data) return [];
+  
+  return data.results.map(r => {
+    const totalIssues = (r.summary?.critical || 0) + 
+                        (r.summary?.serious || 0) + 
+                        (r.summary?.moderate || 0) + 
+                        (r.summary?.minor || 0);
+    
+    return {
+      url: r.url,
+      title: r.title,
+      lastScanned: r.scannedAt || new Date().toISOString(),
+      lighthouse: {
+        performance: 0,
+        accessibility: Math.max(0, 100 - (r.summary.critical * 10 + r.summary.serious * 5 + r.summary.moderate * 2 + r.summary.minor)),
+        bestPractices: 0,
+        seo: 0,
+      },
+      issues: {
+        total: totalIssues,
+        critical: r.summary?.critical || 0,
+        serious: r.summary?.serious || 0,
+        moderate: r.summary?.moderate || 0,
+        minor: r.summary?.minor || 0,
+      },
+      issueDetails: (r.issues || []).map(issue => ({
+        id: issue.id,
+        impact: issue.impact,
+        description: issue.description,
+        help: issue.help,
+        helpUrl: issue.helpUrl,
+        nodes: issue.nodes,
+      })),
+    };
+  });
 }

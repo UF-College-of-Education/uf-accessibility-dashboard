@@ -1,10 +1,10 @@
 // app/components/PreScannedDataModal.tsx
-// Enhanced modal to match Real Scan page.tsx UI EXACTLY
+// OPTION A: Matches Real Scan UI exactly with all filters
 
 'use client';
 
 import { useState, useMemo } from 'react';
-import { X, ChevronDown, ChevronUp, ExternalLink, Calendar, User, FileText, Filter, Tag, AlertTriangle, CheckCircle } from 'lucide-react';
+import { X, ChevronDown, ChevronUp, ExternalLink, FileText, Filter, Tag, AlertTriangle, CheckCircle } from 'lucide-react';
 
 // Types
 interface ScanIssueNode {
@@ -27,6 +27,7 @@ interface PageScanResult {
   title: string;
   site: string;
   scannedAt?: string;
+  scannedBy?: string;
   issues: ScanIssue[];
   summary: {
     critical: number;
@@ -40,7 +41,14 @@ interface ScanMetadata {
   scanDate: string;
   scannedBy: string;
   totalPages: number;
+  totalIssues?: number;
   note?: string;
+  summary?: {
+    critical: number;
+    serious: number;
+    moderate: number;
+    minor: number;
+  };
 }
 
 interface Props {
@@ -53,49 +61,47 @@ interface Props {
 }
 
 // Category mapping (same as scan-results page)
-const ISSUE_CATEGORIES: Record<string, { name: string; icon: string; description: string }> = {
-  'color-contrast': { name: 'Color Contrast', icon: '🎨', description: 'Text and background color contrast issues' },
-  'image-alt': { name: 'Image Alt Text', icon: '🖼️', description: 'Missing or improper image descriptions' },
-  'input-image-alt': { name: 'Image Alt Text', icon: '🖼️', description: 'Missing or improper image descriptions' },
-  'label': { name: 'Form Labels', icon: '📝', description: 'Form inputs without proper labels' },
-  'label-title-only': { name: 'Form Labels', icon: '📝', description: 'Form field label issues' },
-  'form-field-multiple-labels': { name: 'Form Labels', icon: '📝', description: 'Form field label issues' },
-  'select-name': { name: 'Form Labels', icon: '📝', description: 'Select elements need accessible names' },
-  'button-name': { name: 'Button/Link Names', icon: '🔘', description: 'Buttons without accessible names' },
-  'link-name': { name: 'Button/Link Names', icon: '🔗', description: 'Links without accessible names' },
-  'link-in-text-block': { name: 'Button/Link Names', icon: '🔗', description: 'Links must be distinguishable' },
-  'aria-allowed-attr': { name: 'ARIA Attributes', icon: '♿', description: 'ARIA attribute issues' },
-  'aria-hidden-body': { name: 'ARIA Attributes', icon: '♿', description: 'ARIA hidden on body' },
-  'aria-hidden-focus': { name: 'ARIA Attributes', icon: '♿', description: 'ARIA hidden with focusable elements' },
-  'aria-required-attr': { name: 'ARIA Attributes', icon: '♿', description: 'Missing required ARIA attributes' },
-  'aria-required-children': { name: 'ARIA Attributes', icon: '♿', description: 'Missing required ARIA children' },
-  'aria-required-parent': { name: 'ARIA Attributes', icon: '♿', description: 'Missing required ARIA parent' },
-  'aria-roles': { name: 'ARIA Attributes', icon: '♿', description: 'Invalid ARIA roles' },
-  'aria-valid-attr': { name: 'ARIA Attributes', icon: '♿', description: 'Invalid ARIA attributes' },
-  'aria-valid-attr-value': { name: 'ARIA Attributes', icon: '♿', description: 'Invalid ARIA attribute values' },
-  'heading-order': { name: 'Heading Structure', icon: '📑', description: 'Heading levels should increase by one' },
-  'empty-heading': { name: 'Heading Structure', icon: '📑', description: 'Empty heading elements' },
-  'page-has-heading-one': { name: 'Heading Structure', icon: '📑', description: 'Page should have h1' },
-  'focus-order-semantics': { name: 'Keyboard/Focus', icon: '⌨️', description: 'Focus order issues' },
-  'tabindex': { name: 'Keyboard/Focus', icon: '⌨️', description: 'Tab index issues' },
-  'accesskeys': { name: 'Keyboard/Focus', icon: '⌨️', description: 'Access key issues' },
-  'landmark-one-main': { name: 'Landmarks', icon: '🗺️', description: 'Page should have main landmark' },
-  'region': { name: 'Landmarks', icon: '🗺️', description: 'Content should be in landmarks' },
-  'bypass': { name: 'Landmarks', icon: '🗺️', description: 'Skip navigation links' },
-  'duplicate-id': { name: 'HTML Validity', icon: '🔧', description: 'Duplicate ID attributes' },
-  'duplicate-id-active': { name: 'HTML Validity', icon: '🔧', description: 'Duplicate ID on active elements' },
-  'duplicate-id-aria': { name: 'HTML Validity', icon: '🔧', description: 'Duplicate ID for ARIA' },
-  'meta-viewport': { name: 'Zoom/Scaling', icon: '🔍', description: 'Viewport zoom issues' },
-  'html-has-lang': { name: 'Page Structure', icon: '🌐', description: 'HTML language attribute' },
-  'html-lang-valid': { name: 'Page Structure', icon: '🌐', description: 'Valid language code' },
-  'document-title': { name: 'Page Structure', icon: '📄', description: 'Page title missing' },
+const ISSUE_CATEGORIES: Record<string, { name: string; icon: string }> = {
+  'color-contrast': { name: 'Color Contrast', icon: '🎨' },
+  'image-alt': { name: 'Image Alt Text', icon: '🖼️' },
+  'input-image-alt': { name: 'Image Alt Text', icon: '🖼️' },
+  'label': { name: 'Form Labels', icon: '📝' },
+  'label-title-only': { name: 'Form Labels', icon: '📝' },
+  'form-field-multiple-labels': { name: 'Form Labels', icon: '📝' },
+  'select-name': { name: 'Form Labels', icon: '📝' },
+  'button-name': { name: 'Button/Link Names', icon: '🔘' },
+  'link-name': { name: 'Button/Link Names', icon: '🔗' },
+  'link-in-text-block': { name: 'Button/Link Names', icon: '🔗' },
+  'aria-allowed-attr': { name: 'ARIA Attributes', icon: '♿' },
+  'aria-hidden-body': { name: 'ARIA Attributes', icon: '♿' },
+  'aria-hidden-focus': { name: 'ARIA Attributes', icon: '♿' },
+  'aria-required-attr': { name: 'ARIA Attributes', icon: '♿' },
+  'aria-required-children': { name: 'ARIA Attributes', icon: '♿' },
+  'aria-required-parent': { name: 'ARIA Attributes', icon: '♿' },
+  'aria-roles': { name: 'ARIA Attributes', icon: '♿' },
+  'aria-valid-attr': { name: 'ARIA Attributes', icon: '♿' },
+  'aria-valid-attr-value': { name: 'ARIA Attributes', icon: '♿' },
+  'heading-order': { name: 'Heading Structure', icon: '📑' },
+  'empty-heading': { name: 'Heading Structure', icon: '📑' },
+  'page-has-heading-one': { name: 'Heading Structure', icon: '📑' },
+  'focus-order-semantics': { name: 'Keyboard/Focus', icon: '⌨️' },
+  'tabindex': { name: 'Keyboard/Focus', icon: '⌨️' },
+  'accesskeys': { name: 'Keyboard/Focus', icon: '⌨️' },
+  'landmark-one-main': { name: 'Landmarks', icon: '🗺️' },
+  'region': { name: 'Landmarks', icon: '🗺️' },
+  'bypass': { name: 'Landmarks', icon: '🗺️' },
+  'duplicate-id': { name: 'HTML Validity', icon: '🔧' },
+  'duplicate-id-active': { name: 'HTML Validity', icon: '🔧' },
+  'duplicate-id-aria': { name: 'HTML Validity', icon: '🔧' },
+  'meta-viewport': { name: 'Zoom/Scaling', icon: '🔍' },
+  'html-has-lang': { name: 'Page Structure', icon: '🌐' },
+  'html-lang-valid': { name: 'Page Structure', icon: '🌐' },
+  'document-title': { name: 'Page Structure', icon: '📄' },
 };
 
 function getCategoryForIssue(issueId: string): { name: string; icon: string } {
   const category = ISSUE_CATEGORIES[issueId];
-  if (category) {
-    return { name: category.name, icon: category.icon };
-  }
+  if (category) return category;
   if (issueId.startsWith('aria-')) return { name: 'ARIA Attributes', icon: '♿' };
   if (issueId.includes('color') || issueId.includes('contrast')) return { name: 'Color Contrast', icon: '🎨' };
   if (issueId.includes('label') || issueId.includes('form')) return { name: 'Form Labels', icon: '📝' };
@@ -131,7 +137,7 @@ export default function PreScannedDataModal({
   const [filterCategory, setFilterCategory] = useState<string>('all');
   const [expandedIssues, setExpandedIssues] = useState<Set<number>>(new Set());
 
-  // Calculate totals
+  // Calculate totals from results
   const totals = useMemo(() => {
     return results.reduce((acc, page) => {
       acc.critical += page.summary?.critical || 0;
@@ -148,7 +154,7 @@ export default function PreScannedDataModal({
   const allIssues = useMemo(() => {
     const issues: Array<ScanIssue & { pageUrl: string; pageTitle: string }> = [];
     results.forEach(page => {
-      page.issues.forEach(issue => {
+      (page.issues || []).forEach(issue => {
         issues.push({
           ...issue,
           pageUrl: page.url,
@@ -159,7 +165,7 @@ export default function PreScannedDataModal({
     return issues;
   }, [results]);
 
-  // Get unique pages from issues
+  // Get unique pages
   const uniquePages = [...new Set(results.map(r => r.url))];
 
   // Get unique categories with counts
@@ -172,7 +178,7 @@ export default function PreScannedDataModal({
     .sort((a, b) => b[1] - a[1])
     .map(([name, count]) => ({ name, count }));
 
-  // Filter issues by page, severity, AND category
+  // Filter issues
   const filteredIssues = allIssues.filter(issue => {
     const matchesImpact = filterImpact === 'all' || issue.impact === filterImpact;
     const matchesPage = filterPage === 'all' || issue.pageUrl === filterPage;
@@ -181,26 +187,27 @@ export default function PreScannedDataModal({
   });
 
   // Group issues by type
-  const issuesByType = filteredIssues.reduce((acc, issue) => {
-    if (!acc[issue.id]) {
-      acc[issue.id] = {
-        id: issue.id,
-        impact: issue.impact,
-        description: issue.description,
-        help: issue.help,
-        helpUrl: issue.helpUrl,
-        category: getCategoryForIssue(issue.id),
-        instances: []
-      };
-    }
-    acc[issue.id].instances.push(issue);
-    return acc;
-  }, {} as Record<string, any>);
-
-  const groupedIssues = Object.values(issuesByType).sort((a: any, b: any) => {
-    const order = { critical: 0, serious: 1, moderate: 2, minor: 3 };
-    return (order[a.impact as keyof typeof order] || 4) - (order[b.impact as keyof typeof order] || 4);
-  });
+  const groupedIssues = useMemo(() => {
+    const groups: Record<string, any> = {};
+    filteredIssues.forEach(issue => {
+      if (!groups[issue.id]) {
+        groups[issue.id] = {
+          id: issue.id,
+          impact: issue.impact,
+          description: issue.description,
+          help: issue.help,
+          helpUrl: issue.helpUrl,
+          category: getCategoryForIssue(issue.id),
+          instances: []
+        };
+      }
+      groups[issue.id].instances.push(issue);
+    });
+    return Object.values(groups).sort((a: any, b: any) => {
+      const order = { critical: 0, serious: 1, moderate: 2, minor: 3 };
+      return (order[a.impact as keyof typeof order] || 4) - (order[b.impact as keyof typeof order] || 4);
+    });
+  }, [filteredIssues]);
 
   const toggleIssue = (index: number) => {
     const newExpanded = new Set(expandedIssues);
@@ -260,7 +267,7 @@ export default function PreScannedDataModal({
           </div>
         </div>
 
-        {/* GitHub Save Status - like Real Scan */}
+        {/* Status Bar */}
         {metadata && (
           <div className="bg-green-100 border-b border-green-200 px-6 py-3 flex-shrink-0">
             <div className="flex items-center gap-2 text-green-800">
@@ -270,6 +277,7 @@ export default function PreScannedDataModal({
                 <strong>{new Date(metadata.scanDate).toLocaleDateString('en-US', { 
                   month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' 
                 })}</strong>
+                {' '}• <strong>{totalScannedInData}</strong> total pages in database
               </span>
             </div>
           </div>
@@ -280,7 +288,7 @@ export default function PreScannedDataModal({
           <div className="bg-amber-50 border-b border-amber-200 px-6 py-3 flex-shrink-0">
             <div className="flex items-center gap-2 text-amber-800">
               <AlertTriangle size={18} />
-              <span><strong>{missingPages.length}</strong> selected page(s) not in pre-scanned data. Use "Real Scan" for those.</span>
+              <span><strong>{missingPages.length}</strong> selected page(s) not in database. Use "Real Scan" for those.</span>
             </div>
           </div>
         )}
@@ -312,7 +320,7 @@ export default function PreScannedDataModal({
               </button>
             </div>
 
-            {/* Content */}
+            {/* Tab Content */}
             <div className="bg-white rounded-b-lg shadow-lg p-6">
               {activeTab === 'summary' ? (
                 <>
@@ -364,10 +372,7 @@ export default function PreScannedDataModal({
                           <div 
                             key={name} 
                             className="bg-indigo-50 border border-indigo-200 rounded-lg p-3 flex items-center gap-3 cursor-pointer hover:bg-indigo-100 transition"
-                            onClick={() => {
-                              setFilterCategory(name);
-                              setActiveTab('issues');
-                            }}
+                            onClick={() => { setFilterCategory(name); setActiveTab('issues'); }}
                           >
                             <span className="text-2xl">{categoryInfo.icon}</span>
                             <div>
@@ -397,7 +402,6 @@ export default function PreScannedDataModal({
                 <>
                   {/* Filters */}
                   <div className="mb-6 p-4 bg-gray-50 rounded-lg border space-y-4">
-                    
                     {/* Category Filter */}
                     <div>
                       <div className="flex items-center gap-2 mb-2">
@@ -408,9 +412,7 @@ export default function PreScannedDataModal({
                         <button
                           onClick={() => setFilterCategory('all')}
                           className={`px-3 py-1.5 rounded-lg text-sm font-medium transition ${
-                            filterCategory === 'all'
-                              ? 'bg-indigo-600 text-white'
-                              : 'bg-white border text-gray-700 hover:bg-gray-100'
+                            filterCategory === 'all' ? 'bg-indigo-600 text-white' : 'bg-white border text-gray-700 hover:bg-gray-100'
                           }`}
                         >
                           All Categories
@@ -422,9 +424,7 @@ export default function PreScannedDataModal({
                               key={name}
                               onClick={() => setFilterCategory(name)}
                               className={`px-3 py-1.5 rounded-lg text-sm font-medium transition ${
-                                filterCategory === name
-                                  ? 'bg-indigo-600 text-white'
-                                  : 'bg-white border text-gray-700 hover:bg-gray-100'
+                                filterCategory === name ? 'bg-indigo-600 text-white' : 'bg-white border text-gray-700 hover:bg-gray-100'
                               }`}
                             >
                               {categoryInfo.icon} {name} ({count})
@@ -444,9 +444,7 @@ export default function PreScannedDataModal({
                         <button
                           onClick={() => setFilterPage('all')}
                           className={`px-3 py-1.5 rounded-lg text-sm font-medium transition ${
-                            filterPage === 'all'
-                              ? 'bg-blue-600 text-white'
-                              : 'bg-white border text-gray-700 hover:bg-gray-100'
+                            filterPage === 'all' ? 'bg-blue-600 text-white' : 'bg-white border text-gray-700 hover:bg-gray-100'
                           }`}
                         >
                           All Pages
@@ -456,14 +454,12 @@ export default function PreScannedDataModal({
                           return (
                             <button
                               key={idx}
-                              onClick={() => setFilterPage(pageUrl || 'all')}
+                              onClick={() => setFilterPage(pageUrl)}
                               className={`px-3 py-1.5 rounded-lg text-sm font-medium transition ${
-                                filterPage === pageUrl
-                                  ? 'bg-blue-600 text-white'
-                                  : 'bg-white border text-gray-700 hover:bg-gray-100'
+                                filterPage === pageUrl ? 'bg-blue-600 text-white' : 'bg-white border text-gray-700 hover:bg-gray-100'
                               }`}
                             >
-                              {getPageName(pageUrl || '')} ({pageIssueCount})
+                              {getPageName(pageUrl)} ({pageIssueCount})
                             </button>
                           );
                         })}
@@ -481,9 +477,7 @@ export default function PreScannedDataModal({
                             key={impact}
                             onClick={() => setFilterImpact(impact)}
                             className={`px-3 py-1.5 rounded-lg text-sm font-medium transition ${
-                              filterImpact === impact
-                                ? 'bg-blue-600 text-white'
-                                : 'bg-white border text-gray-700 hover:bg-gray-100'
+                              filterImpact === impact ? 'bg-blue-600 text-white' : 'bg-white border text-gray-700 hover:bg-gray-100'
                             }`}
                           >
                             {impact === 'all' ? 'All Severities' : getImpactBadge(impact)}
@@ -505,22 +499,17 @@ export default function PreScannedDataModal({
                   {filteredIssues.length === 0 ? (
                     <div className="text-center py-12 text-gray-500">
                       <p className="text-lg">No issues match the current filters.</p>
-                      <p className="text-sm mt-2">Try adjusting your filter selections.</p>
                     </div>
                   ) : (
                     <div className="space-y-4">
                       {groupedIssues.map((issueGroup: any, idx: number) => (
-                        <div 
-                          key={idx} 
-                          className={`border-2 rounded-lg overflow-hidden ${getImpactColor(issueGroup.impact)}`}
-                        >
+                        <div key={idx} className={`border-2 rounded-lg overflow-hidden ${getImpactColor(issueGroup.impact)}`}>
                           <div 
                             className="p-4 cursor-pointer flex justify-between items-start hover:bg-opacity-80 transition"
                             onClick={() => toggleIssue(idx)}
                           >
                             <div className="flex-1">
                               <div className="flex items-center gap-3 mb-2 flex-wrap">
-                                {/* Category Badge */}
                                 <span className="px-2 py-1 bg-indigo-100 text-indigo-800 rounded text-xs font-medium">
                                   {issueGroup.category.icon} {issueGroup.category.name}
                                 </span>
@@ -535,11 +524,7 @@ export default function PreScannedDataModal({
                               <p className="text-gray-700 mt-1">{issueGroup.help}</p>
                             </div>
                             <div className="ml-4">
-                              {expandedIssues.has(idx) ? (
-                                <ChevronUp size={24} className="text-gray-500" />
-                              ) : (
-                                <ChevronDown size={24} className="text-gray-500" />
-                              )}
+                              {expandedIssues.has(idx) ? <ChevronUp size={24} className="text-gray-500" /> : <ChevronDown size={24} className="text-gray-500" />}
                             </div>
                           </div>
                           
@@ -548,14 +533,9 @@ export default function PreScannedDataModal({
                               <p className="text-gray-600 mb-4">{issueGroup.description}</p>
                               
                               {issueGroup.helpUrl && (
-                                <a 
-                                  href={issueGroup.helpUrl} 
-                                  target="_blank" 
-                                  rel="noopener noreferrer"
-                                  className="inline-flex items-center gap-2 text-blue-600 hover:underline mb-4 font-medium"
-                                >
-                                  <ExternalLink size={16} />
-                                  Learn more about this issue
+                                <a href={issueGroup.helpUrl} target="_blank" rel="noopener noreferrer"
+                                  className="inline-flex items-center gap-2 text-blue-600 hover:underline mb-4 font-medium">
+                                  <ExternalLink size={16} /> Learn more about this issue
                                 </a>
                               )}
 
@@ -564,9 +544,7 @@ export default function PreScannedDataModal({
                                 {issueGroup.instances.map((instance: any, iIdx: number) => (
                                   <div key={iIdx} className="bg-gray-50 rounded-lg p-4 border">
                                     {instance.pageUrl && (
-                                      <div className="text-sm text-blue-600 mb-2 font-medium">
-                                        📄 {instance.pageUrl}
-                                      </div>
+                                      <div className="text-sm text-blue-600 mb-2 font-medium">📄 {instance.pageUrl}</div>
                                     )}
                                     {instance.nodes && instance.nodes[0] && (
                                       <>
