@@ -2,7 +2,7 @@
   "url": "https://education.ufl.edu/riel/",
   "title": "Home",
   "site": "UF College of Education",
-  "scannedAt": "2025-11-30T04:54:22.133Z",
+  "scannedAt": "2025-11-30T05:33:23.867Z",
   "scannedBy": "Saignaneswar",
   "issues": [
     {
@@ -557,7 +557,7 @@
       "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
       "nodes": [
         {
-          "html": "<a class=\"twitter-timeline\" data-height=\"600\" href=\"https://twitter.com/RIELBiology?ref_src=twsrc%5Etfw\" data-twitter-extracted-i1764478451807678235=\"true\">Tweets by RIELBiology</a>",
+          "html": "<a class=\"twitter-timeline\" data-height=\"600\" href=\"https://twitter.com/RIELBiology?ref_src=twsrc%5Etfw\" data-twitter-extracted-i1764480793990696355=\"true\">Tweets by RIELBiology</a>",
           "target": [
             "a[data-height=\"600\"]"
           ],
