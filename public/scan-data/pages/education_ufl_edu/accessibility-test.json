@@ -1,0 +1,63 @@
+{
+  "url": "https://education.ufl.edu/accessibility-test/",
+  "title": "Accessibility Test",
+  "site": "UF College of Education",
+  "scannedAt": "2025-11-30T04:44:16.888Z",
+  "scannedBy": "Saignaneswar",
+  "issues": [
+    {
+      "id": "color-contrast",
+      "impact": "serious",
+      "description": "Ensures the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "help": "Elements must meet minimum color contrast ratio thresholds",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/color-contrast?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<button aria-label=\"Search\" class=\"wp-block-search__button wp-element-button\" type=\"submit\">Search</button>",
+          "target": [
+            ".wp-block-search__button"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.22 (foreground color: #666666, background color: #dddddd, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+        }
+      ]
+    },
+    {
+      "id": "label",
+      "impact": "critical",
+      "description": "Ensures every form element has a label",
+      "help": "Form elements must have labels",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/label?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<input class=\"wp-block-search__input\" id=\"wp-block-search__input-1\" placeholder=\"\" value=\"\" type=\"search\" name=\"s\" required=\"\">",
+          "target": [
+            "#wp-block-search__input-1"
+          ],
+          "failureSummary": "Fix all of the following:\n  Form element has explicit <label> that is hidden"
+        }
+      ]
+    },
+    {
+      "id": "label",
+      "impact": "critical",
+      "description": "Ensures every form element has a label",
+      "help": "Form elements must have labels",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/label?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<input type=\"email\" value=\"Email Address\" name=\"EMAIL\" class=\"required email\" id=\"mce-EMAIL\" required=\"\">",
+          "target": [
+            ".et_pb_code_2_tb_footer > .et_pb_code_inner > div > .validate[method=\"post\"][name=\"mc-embedded-subscribe-form\"] > div > .mc-field-group > div[aria-label=\"Email Address\"] > .required.email[type=\"email\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Form element does not have an implicit (wrapped) <label>\n  Form element does not have an explicit <label>\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element has no placeholder attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "critical": 2,
+    "serious": 1,
+    "moderate": 0,
+    "minor": 0
+  }
+}
