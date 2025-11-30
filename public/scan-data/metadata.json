@@ -1,8 +1,8 @@
 {
-  "lastScanDate": "2025-11-30T04:48:30.820Z",
+  "lastScanDate": "2025-11-30T04:54:22.133Z",
   "lastScannedBy": "Saignaneswar",
-  "lastScanNote": "Scan of 20 pages - 165 issues found",
-  "totalPagesScanned": 72,
+  "lastScanNote": "Scan of 4 pages - 222 issues found",
+  "totalPagesScanned": 76,
   "scannedPages": [
     "https://education.ufl.edu/capes/specialists/",
     "https://education.ufl.edu/capes/services/",
@@ -75,9 +75,19 @@
     "https://education.ufl.edu/templates/",
     "https://education.ufl.edu/about/",
     "https://education.ufl.edu/",
-    "https://education.ufl.edu/templates/header-templates/"
+    "https://education.ufl.edu/templates/header-templates/",
+    "https://education.ufl.edu/riel/riel-resources/",
+    "https://education.ufl.edu/riel/fall-institute-photo/",
+    "https://education.ufl.edu/riel/application-information/",
+    "https://education.ufl.edu/riel/"
   ],
   "scanHistory": [
+    {
+      "date": "2025-11-30T04:54:22.133Z",
+      "scannedBy": "Saignaneswar",
+      "pagesScanned": 4,
+      "note": "Scan of 4 pages - 222 issues found"
+    },
     {
       "date": "2025-11-30T04:48:30.820Z",
       "scannedBy": "Saignaneswar",
