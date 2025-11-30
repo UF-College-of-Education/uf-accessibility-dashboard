@@ -4,7 +4,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
-const REPO_OWNER = 'ufaboratories'; // UF organization
+const REPO_OWNER = 'UF-College-of-Education'; // UF organization - FIXED!
 const REPO_NAME = 'uf-accessibility-dashboard'; // Repository name
 const BRANCH = 'main';
 
