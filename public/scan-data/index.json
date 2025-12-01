@@ -1,11 +1,11 @@
 {
-  "lastUpdated": "2025-12-01T04:20:15.581Z",
-  "totalPages": 11,
-  "totalIssues": 470,
+  "lastUpdated": "2025-12-01T04:37:47.834Z",
+  "totalPages": 14,
+  "totalIssues": 516,
   "summary": {
-    "critical": 28,
-    "serious": 91,
-    "moderate": 351,
+    "critical": 31,
+    "serious": 98,
+    "moderate": 387,
     "minor": 0
   },
   "pages": [
@@ -13,7 +13,7 @@
       "url": "https://education.ufl.edu/capes/specialists/",
       "title": "Specialists",
       "filePath": "pages/education_ufl_edu/capes__specialists.json",
-      "scannedAt": "2025-12-01T04:20:15.581Z",
+      "scannedAt": "2025-12-01T04:37:47.834Z",
       "scannedBy": "Saignaneswar",
       "summary": {
         "critical": 3,
@@ -26,12 +26,12 @@
       "url": "https://education.ufl.edu/capes/services/",
       "title": "Services",
       "filePath": "pages/education_ufl_edu/capes__services.json",
-      "scannedAt": "2025-12-01T04:20:15.581Z",
+      "scannedAt": "2025-12-01T04:37:47.834Z",
       "scannedBy": "Saignaneswar",
       "summary": {
         "critical": 3,
         "serious": 3,
-        "moderate": 37,
+        "moderate": 34,
         "minor": 0
       }
     },
@@ -39,7 +39,7 @@
       "url": "https://education.ufl.edu/capes/portfolio/",
       "title": "Portfolio",
       "filePath": "pages/education_ufl_edu/capes__portfolio.json",
-      "scannedAt": "2025-12-01T04:20:15.581Z",
+      "scannedAt": "2025-12-01T04:37:47.834Z",
       "scannedBy": "Saignaneswar",
       "summary": {
         "critical": 3,
@@ -52,7 +52,7 @@
       "url": "https://education.ufl.edu/capes/contact-us/",
       "title": "Contact Us",
       "filePath": "pages/education_ufl_edu/capes__contact-us.json",
-      "scannedAt": "2025-12-01T04:20:15.581Z",
+      "scannedAt": "2025-12-01T04:37:47.834Z",
       "scannedBy": "Saignaneswar",
       "summary": {
         "critical": 4,
@@ -65,12 +65,51 @@
       "url": "https://education.ufl.edu/capes/",
       "title": "Home",
       "filePath": "pages/education_ufl_edu/capes.json",
-      "scannedAt": "2025-12-01T04:20:15.581Z",
+      "scannedAt": "2025-12-01T04:37:47.834Z",
       "scannedBy": "Saignaneswar",
       "summary": {
         "critical": 3,
         "serious": 3,
         "moderate": 33,
+        "minor": 0
+      }
+    },
+    {
+      "url": "https://education.ufl.edu/news/all-news/",
+      "title": "All News",
+      "filePath": "pages/education_ufl_edu/news__all-news.json",
+      "scannedAt": "2025-12-01T04:37:47.834Z",
+      "scannedBy": "Saignaneswar",
+      "summary": {
+        "critical": 1,
+        "serious": 2,
+        "moderate": 4,
+        "minor": 0
+      }
+    },
+    {
+      "url": "https://education.ufl.edu/news/contact/",
+      "title": "Share your news",
+      "filePath": "pages/education_ufl_edu/news__contact.json",
+      "scannedAt": "2025-12-01T04:37:47.834Z",
+      "scannedBy": "Saignaneswar",
+      "summary": {
+        "critical": 1,
+        "serious": 2,
+        "moderate": 6,
+        "minor": 0
+      }
+    },
+    {
+      "url": "https://education.ufl.edu/news/",
+      "title": "COE News- UF College of Education",
+      "filePath": "pages/education_ufl_edu/news.json",
+      "scannedAt": "2025-12-01T04:37:47.834Z",
+      "scannedBy": "Saignaneswar",
+      "summary": {
+        "critical": 1,
+        "serious": 3,
+        "moderate": 29,
         "minor": 0
       }
     },
