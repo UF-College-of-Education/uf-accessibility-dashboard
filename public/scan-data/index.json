@@ -1,14 +1,79 @@
 {
-  "lastUpdated": "2025-11-30T05:34:15.681Z",
-  "totalPages": 6,
-  "totalIssues": 224,
+  "lastUpdated": "2025-12-01T04:20:15.581Z",
+  "totalPages": 11,
+  "totalIssues": 470,
   "summary": {
-    "critical": 12,
-    "serious": 69,
-    "moderate": 143,
+    "critical": 28,
+    "serious": 91,
+    "moderate": 351,
     "minor": 0
   },
   "pages": [
+    {
+      "url": "https://education.ufl.edu/capes/specialists/",
+      "title": "Specialists",
+      "filePath": "pages/education_ufl_edu/capes__specialists.json",
+      "scannedAt": "2025-12-01T04:20:15.581Z",
+      "scannedBy": "Saignaneswar",
+      "summary": {
+        "critical": 3,
+        "serious": 3,
+        "moderate": 39,
+        "minor": 0
+      }
+    },
+    {
+      "url": "https://education.ufl.edu/capes/services/",
+      "title": "Services",
+      "filePath": "pages/education_ufl_edu/capes__services.json",
+      "scannedAt": "2025-12-01T04:20:15.581Z",
+      "scannedBy": "Saignaneswar",
+      "summary": {
+        "critical": 3,
+        "serious": 3,
+        "moderate": 37,
+        "minor": 0
+      }
+    },
+    {
+      "url": "https://education.ufl.edu/capes/portfolio/",
+      "title": "Portfolio",
+      "filePath": "pages/education_ufl_edu/capes__portfolio.json",
+      "scannedAt": "2025-12-01T04:20:15.581Z",
+      "scannedBy": "Saignaneswar",
+      "summary": {
+        "critical": 3,
+        "serious": 10,
+        "moderate": 69,
+        "minor": 0
+      }
+    },
+    {
+      "url": "https://education.ufl.edu/capes/contact-us/",
+      "title": "Contact Us",
+      "filePath": "pages/education_ufl_edu/capes__contact-us.json",
+      "scannedAt": "2025-12-01T04:20:15.581Z",
+      "scannedBy": "Saignaneswar",
+      "summary": {
+        "critical": 4,
+        "serious": 3,
+        "moderate": 30,
+        "minor": 0
+      }
+    },
+    {
+      "url": "https://education.ufl.edu/capes/",
+      "title": "Home",
+      "filePath": "pages/education_ufl_edu/capes.json",
+      "scannedAt": "2025-12-01T04:20:15.581Z",
+      "scannedBy": "Saignaneswar",
+      "summary": {
+        "critical": 3,
+        "serious": 3,
+        "moderate": 33,
+        "minor": 0
+      }
+    },
     {
       "url": "https://education.ufl.edu/ai/ai-in-education-fair/ai-fair-2025-full-interviews/",
       "title": "AI Fair 2025: Full Interviews",
