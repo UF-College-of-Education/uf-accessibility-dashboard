@@ -17,6 +17,10 @@ export default function Home() {
   const [currentAuditRun, setCurrentAuditRun] = useState<AuditRun | null>(null);
   const [showHistory, setShowHistory] = useState(false);
   const [auditHistory, setAuditHistory] = useState<AuditRun[]>([]);
+  
+  // Real Scan state
+  const [isRealScanRunning, setIsRealScanRunning] = useState(false);
+  const [realScanMessage, setRealScanMessage] = useState('');
 
   const previousRun = auditManager.getPreviousRun();
 
@@ -28,11 +32,9 @@ export default function Home() {
     loadSites();
   }, []);
 
-  // Function to open results in a new browser tab
+  // Function to open Lighthouse results in a new browser tab
   function openResultsInNewTab(auditRun: AuditRun) {
-    // Store results in sessionStorage so the new tab can access them
     sessionStorage.setItem('auditResults', JSON.stringify(auditRun));
-    // Open the results page in a new tab
     window.open('/results', '_blank');
   }
 
@@ -42,6 +44,7 @@ export default function Home() {
     setShowHistory(true);
   }
 
+  // Lighthouse Score handler (Google PageSpeed API)
   async function handleSelectSites(sites: Site[], pageCount: number) {
     if (sites.length === 0) {
       alert('Please select at least one site');
@@ -50,7 +53,7 @@ export default function Home() {
 
     setSelectedSites(sites);
     setAuditStatus('running');
-    setStatusMessage(`Starting audit for ${sites.length} site(s) and ${pageCount} page(s)...`);
+    setStatusMessage(`Starting Lighthouse audit for ${sites.length} site(s) and ${pageCount} page(s)...`);
     setProgress(0);
 
     try {
@@ -65,16 +68,13 @@ export default function Home() {
       }, 500);
 
       const results: AuditPageResult[] = [];
-
       const totalPages = sites.reduce((sum, site) => sum + site.pages.length, 0);
       let completedPages = 0;
 
-      // Process each page
       for (const site of sites) {
         for (const page of site.pages) {
           setStatusMessage(`Auditing ${page.title}... (${completedPages + 1}/${totalPages})`);
           
-          // Try to get REAL Lighthouse scores
           let lighthouseData = null;
           try {
             console.log(`🔍 Calling Lighthouse API for: ${page.url}`);
@@ -94,7 +94,6 @@ export default function Home() {
             console.log(`⚠️ Lighthouse error for ${page.url}:`, error);
           }
 
-          // Use real Lighthouse data if available
           const lighthouseScores = lighthouseData?.scores || {
             performance: 0,
             accessibility: lighthouseData?.accessibility || 0,
@@ -102,7 +101,6 @@ export default function Home() {
             seo: 0,
           };
 
-          // Get real accessibility issues from Lighthouse
           const lighthouseAccessibilityIssues = lighthouseData?.accessibilityIssues || [];
           const summary = lighthouseData?.summary || null;
 
@@ -110,7 +108,7 @@ export default function Home() {
             url: page.url,
             title: page.title,
             status: 'success',
-            issues: [], // Legacy field - kept for compatibility
+            issues: [],
             timestamp: Date.now(),
             lighthouseScores,
             lighthouseAccessibilityIssues,
@@ -119,8 +117,6 @@ export default function Home() {
 
           completedPages++;
           setProgress(Math.floor((completedPages / totalPages) * 100));
-          
-          // Small delay to prevent rate limiting
           await new Promise(resolve => setTimeout(resolve, 500));
         }
       }
@@ -131,11 +127,8 @@ export default function Home() {
 
       const auditRun = auditManager.saveAuditRun(results, sites.length);
       setCurrentAuditRun(auditRun);
-
       setAuditStatus('success');
-      setStatusMessage(`✅ Audit completed! Scanned ${pageCount} pages.`);
-
-      // OPEN RESULTS IN NEW TAB
+      setStatusMessage(`✅ Lighthouse audit completed! Scanned ${pageCount} pages.`);
       openResultsInNewTab(auditRun);
 
       try {
@@ -146,6 +139,136 @@ export default function Home() {
     } catch (error) {
       setAuditStatus('error');
       setStatusMessage(`❌ Error: ${error instanceof Error ? error.message : 'Unknown error occurred'}`);
+    }
+  }
+
+  // ✅ FIXED: Real Scan handler (n8n + Playwright + axe-core)
+  // Now saves to localStorage with 'scanResults' key and opens /scan-results page
+  async function handleRealScan(sites: Site[], pageCount: number) {
+    if (sites.length === 0) {
+      alert('Please select at least one site');
+      return;
+    }
+
+    setIsRealScanRunning(true);
+    setRealScanMessage(`🚀 Starting Real Scan for ${pageCount} pages...`);
+
+    try {
+      const n8nWebhookUrl = process.env.NEXT_PUBLIC_N8N_WEBHOOK_URL || 'http://localhost:5678/webhook/accessibility-scan';
+      
+      // Collect ALL issues from all pages
+      const allIssues: Array<{
+        id: string;
+        impact: string;
+        description: string;
+        help: string;
+        helpUrl: string;
+        tags: string[];
+        nodes: Array<{ html: string; target: string[]; failureSummary: string }>;
+        pageUrl: string;
+        pageTitle: string;
+      }> = [];
+      
+      const scannedFiles: string[] = [];
+      const totalPages = sites.reduce((sum, site) => sum + site.pages.length, 0);
+      let completedPages = 0;
+      
+      let criticalCount = 0;
+      let seriousCount = 0;
+      let moderateCount = 0;
+      let minorCount = 0;
+
+      for (const site of sites) {
+        for (const page of site.pages) {
+          setRealScanMessage(`🔍 Scanning ${page.title}... (${completedPages + 1}/${totalPages})`);
+
+          try {
+            const response = await fetch(n8nWebhookUrl, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ url: page.url }),
+            });
+
+            if (response.ok) {
+              const scanData = await response.json();
+              
+              // Process violations from axe-core
+              const violations = scanData.violations || [];
+              
+              violations.forEach((v: any) => {
+                // Count by severity
+                if (v.impact === 'critical') criticalCount++;
+                else if (v.impact === 'serious') seriousCount++;
+                else if (v.impact === 'moderate') moderateCount++;
+                else if (v.impact === 'minor') minorCount++;
+                
+                // Add to allIssues with page info
+                allIssues.push({
+                  id: v.id || 'unknown',
+                  impact: v.impact || 'moderate',
+                  description: v.description || '',
+                  help: v.help || '',
+                  helpUrl: v.helpUrl || '',
+                  tags: v.tags || [],
+                  nodes: (v.nodes || []).map((n: any) => ({
+                    html: n.html || '',
+                    target: Array.isArray(n.target) ? n.target : [n.target || ''],
+                    failureSummary: n.failureSummary || ''
+                  })),
+                  pageUrl: page.url,
+                  pageTitle: page.title
+                });
+              });
+              
+              scannedFiles.push(page.title);
+              console.log(`✅ Scanned ${page.title}: ${violations.length} issues`);
+            } else {
+              console.error(`❌ Failed to scan ${page.url}: ${response.status}`);
+              scannedFiles.push(`${page.title} (error)`);
+            }
+          } catch (error) {
+            console.error(`❌ Error scanning ${page.url}:`, error);
+            scannedFiles.push(`${page.title} (error)`);
+          }
+
+          completedPages++;
+          await new Promise(resolve => setTimeout(resolve, 300));
+        }
+      }
+
+      // ✅ Create result in the format scan-results/page.tsx expects
+      const scanResult = {
+        success: true,
+        totalScanned: completedPages,
+        totalIssues: allIssues.length,
+        criticalCount,
+        seriousCount,
+        moderateCount,
+        minorCount,
+        message: `✅ Scanned ${completedPages} pages, found ${allIssues.length} accessibility issues`,
+        files: scannedFiles,
+        timestamp: new Date().toISOString(),
+        issues: allIssues  // ✅ This is what scan-results page needs!
+      };
+
+      // ✅ Save to localStorage (NOT sessionStorage) with key 'scanResults' (NOT 'auditResults')
+      localStorage.setItem('scanResults', JSON.stringify(scanResult));
+      
+      console.log('📊 Scan complete:', scanResult);
+      setRealScanMessage(`✅ ${scanResult.message} - Opening results...`);
+      
+      // ✅ Open /scan-results (NOT /results)
+      window.open('/scan-results', '_blank');
+
+      setTimeout(() => {
+        setRealScanMessage('');
+      }, 3000);
+
+    } catch (error) {
+      console.error('❌ Real Scan failed:', error);
+      setRealScanMessage(`❌ Real Scan Error: ${error instanceof Error ? error.message : 'Is n8n running locally?'}`);
+    } finally {
+      setIsRealScanRunning(false);
     }
   }
 
@@ -256,14 +379,27 @@ export default function Home() {
                     )}
                     {auditStatus === 'success' && (
                       <p className="text-sm text-green-700 mt-2">
-                        Results opened in a new tab. <button onClick={() => currentAuditRun && openResultsInNewTab(currentAuditRun)} className="underline hover:no-underline">Click here to view again</button>
+                        Results opened in a new tab.{' '}
+                        <button 
+                          onClick={() => currentAuditRun && openResultsInNewTab(currentAuditRun)} 
+                          className="underline hover:no-underline"
+                        >
+                          Click here to view again
+                        </button>
                       </p>
                     )}
                   </div>
                 </div>
               </div>
             )}
-            <SiteSelector onSelectSites={handleSelectSites} />
+            
+            {/* SiteSelector with ALL required props */}
+            <SiteSelector 
+              onSelectSites={handleSelectSites} 
+              onRealScan={handleRealScan}
+              isRealScanRunning={isRealScanRunning}
+              realScanMessage={realScanMessage}
+            />
           </>
         ) : (
           <StatusCheckPage sites={allSites} />
@@ -291,7 +427,6 @@ export default function Home() {
                 ) : (
                   <div className="space-y-4">
                     {auditHistory.map((run, idx) => {
-                      // Calculate severity counts
                       let criticalCount = 0, seriousCount = 0;
                       run.results.forEach(r => {
                         if (r.summary) {
@@ -305,7 +440,6 @@ export default function Home() {
                         }
                       });
 
-                      // Calculate avg score
                       const avgScore = run.results.length > 0
                         ? Math.round(run.results.reduce((acc, r) => acc + (r.lighthouseScores?.accessibility || 0), 0) / run.results.length)
                         : 0;
