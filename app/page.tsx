@@ -143,7 +143,7 @@ export default function Home() {
   }
 
   // ✅ FIXED: Real Scan handler (n8n + Playwright + axe-core)
-  // Now saves to localStorage with 'scanResults' key and opens /scan-results page
+  // Now handles empty responses gracefully and provides better error messages
   async function handleRealScan(sites: Site[], pageCount: number) {
     if (sites.length === 0) {
       alert('Please select at least one site');
@@ -155,6 +155,8 @@ export default function Home() {
 
     try {
       const n8nWebhookUrl = process.env.NEXT_PUBLIC_N8N_WEBHOOK_URL || 'http://localhost:5678/webhook/accessibility-scan';
+      
+      console.log(`🔗 n8n Webhook URL: ${n8nWebhookUrl}`);
       
       // Collect ALL issues from all pages
       const allIssues: Array<{
@@ -183,17 +185,46 @@ export default function Home() {
           setRealScanMessage(`🔍 Scanning ${page.title}... (${completedPages + 1}/${totalPages})`);
 
           try {
+            console.log(`📤 Sending to n8n: ${page.url}`);
+            
             const response = await fetch(n8nWebhookUrl, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ url: page.url }),
             });
 
+            console.log(`📡 n8n Response status: ${response.status}`);
+
             if (response.ok) {
-              const scanData = await response.json();
+              // ✅ FIX: Get response as text first, then parse
+              const responseText = await response.text();
+              console.log(`📄 n8n Response body (${responseText.length} chars):`, responseText.substring(0, 200));
+              
+              // Check if response is empty
+              if (!responseText || responseText.trim() === '') {
+                console.error(`❌ Empty response from n8n for ${page.url}`);
+                console.error('⚠️ Your n8n workflow needs a "Respond to Webhook" node!');
+                scannedFiles.push(`${page.title} (empty response - check n8n workflow)`);
+                completedPages++;
+                continue;
+              }
+              
+              // Try to parse JSON
+              let scanData;
+              try {
+                scanData = JSON.parse(responseText);
+                console.log(`✅ Parsed n8n response:`, scanData);
+              } catch (parseError) {
+                console.error(`❌ Failed to parse n8n response as JSON:`, parseError);
+                console.error(`Response was:`, responseText.substring(0, 500));
+                scannedFiles.push(`${page.title} (invalid JSON response)`);
+                completedPages++;
+                continue;
+              }
               
               // Process violations from axe-core
               const violations = scanData.violations || [];
+              console.log(`📊 Found ${violations.length} violations for ${page.url}`);
               
               violations.forEach((v: any) => {
                 // Count by severity
@@ -223,11 +254,20 @@ export default function Home() {
               scannedFiles.push(page.title);
               console.log(`✅ Scanned ${page.title}: ${violations.length} issues`);
             } else {
-              console.error(`❌ Failed to scan ${page.url}: ${response.status}`);
-              scannedFiles.push(`${page.title} (error)`);
+              const errorText = await response.text();
+              console.error(`❌ n8n returned error ${response.status}: ${errorText.substring(0, 200)}`);
+              scannedFiles.push(`${page.title} (error ${response.status})`);
             }
           } catch (error) {
             console.error(`❌ Error scanning ${page.url}:`, error);
+            
+            // Check if it's a network error (n8n not running)
+            if (error instanceof TypeError && error.message.includes('fetch')) {
+              setRealScanMessage(`❌ Cannot connect to n8n. Is it running at ${n8nWebhookUrl}?`);
+              setIsRealScanRunning(false);
+              return;
+            }
+            
             scannedFiles.push(`${page.title} (error)`);
           }
 
@@ -255,14 +295,19 @@ export default function Home() {
       localStorage.setItem('scanResults', JSON.stringify(scanResult));
       
       console.log('📊 Scan complete:', scanResult);
-      setRealScanMessage(`✅ ${scanResult.message} - Opening results...`);
+      
+      if (allIssues.length === 0 && completedPages > 0) {
+        setRealScanMessage(`⚠️ Scanned ${completedPages} pages but found 0 issues. Check n8n workflow.`);
+      } else {
+        setRealScanMessage(`✅ ${scanResult.message} - Opening results...`);
+      }
       
       // ✅ Open /scan-results (NOT /results)
       window.open('/scan-results', '_blank');
 
       setTimeout(() => {
         setRealScanMessage('');
-      }, 3000);
+      }, 5000);
 
     } catch (error) {
       console.error('❌ Real Scan failed:', error);
