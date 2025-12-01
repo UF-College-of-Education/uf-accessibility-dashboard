@@ -1,71 +1,23 @@
 {
-  "url": "https://education.ufl.edu/capes/contact-us/",
-  "title": "Contact Us",
+  "url": "https://education.ufl.edu/news/",
+  "title": "COE News- UF College of Education",
   "site": "UF College of Education",
   "scannedAt": "2025-12-01T04:37:47.834Z",
   "scannedBy": "Saignaneswar",
   "issues": [
     {
-      "id": "button-name",
-      "impact": "critical",
-      "description": "Ensures buttons have discernible text",
-      "help": "Buttons must have discernible text",
-      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/button-name?application=axeAPI",
-      "nodes": [
-        {
-          "html": "<button type=\"submit\" class=\"COET-sa\">",
-          "target": [
-            "button"
-          ],
-          "failureSummary": "Fix any of the following:\n  Element does not have inner text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
-        }
-      ]
-    },
-    {
-      "id": "heading-order",
-      "impact": "moderate",
-      "description": "Ensures the order of headings is semantically correct",
-      "help": "Heading levels should only increase by one",
-      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/heading-order?application=axeAPI",
-      "nodes": [
-        {
-          "html": "<h4>Resources</h4>",
-          "target": [
-            ".footer-resources > h4"
-          ],
-          "failureSummary": "Fix any of the following:\n  Heading order invalid"
-        }
-      ]
-    },
-    {
-      "id": "image-alt",
-      "impact": "critical",
-      "description": "Ensures <img> elements have alternate text or a role of none or presentation",
-      "help": "Images must have alternate text",
-      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/image-alt?application=axeAPI",
-      "nodes": [
-        {
-          "html": "<img src=\"https://education.ufl.edu/old_coeio/enf/CAEP-Accredited-Logo-white.png\" width=\"80%\" height=\"80%\" style=\"max-width:300px;\">",
-          "target": [
-            "img[width=\"80%\"]"
-          ],
-          "failureSummary": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
-        }
-      ]
-    },
-    {
-      "id": "label-title-only",
+      "id": "frame-title",
       "impact": "serious",
-      "description": "Ensures that every form element has a visible label and is not solely labeled using hidden labels, or the title or aria-describedby attributes",
-      "help": "Form elements should have a visible label",
-      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/label-title-only?application=axeAPI",
+      "description": "Ensures <iframe> and <frame> elements have an accessible name",
+      "help": "Frames must have an accessible name",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/frame-title?application=axeAPI",
       "nodes": [
         {
-          "html": "<input id=\"COET-searchinput\" type=\"text\" name=\"q\" title=\"Search the College of Education\" value=\"\" placeholder=\"Search\">",
+          "html": "<iframe class=\"instagram-media instagram-media-rendered\" id=\"instagram-embed-0\" src=\"https://www.instagram.com/uf_coe/embed/?cr=1&amp;v=14&amp;wp=482&amp;rd=https%3A%2F%2Feducation.ufl.edu&amp;rp=%2Fn",
           "target": [
-            "#COET-searchinput"
+            "#instagram-embed-0"
           ],
-          "failureSummary": "Fix all of the following:\n  Only title used to generate label for form element"
+          "failureSummary": "Fix any of the following:\n  Element has no title attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
         }
       ]
     },
@@ -77,59 +29,91 @@
       "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/label?application=axeAPI",
       "nodes": [
         {
-          "html": "<input type=\"text\" name=\"captcha-905\" value=\"\" size=\"40\" class=\"wpcf7-form-control wpcf7-captchar\" aria-invalid=\"false\">",
+          "html": "<input type=\"email\" value=\"Email Address\" name=\"EMAIL\" class=\"required email\" id=\"mce-EMAIL\" required=\"\">",
           "target": [
-            ".wpcf7-captchar"
+            ".et_pb_code_2_tb_footer > .et_pb_code_inner > div > form > div > .mc-field-group > div[aria-label=\"Email Address\"] > .required.email[type=\"email\"]"
           ],
           "failureSummary": "Fix any of the following:\n  Form element does not have an implicit (wrapped) <label>\n  Form element does not have an explicit <label>\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element has no placeholder attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
         }
       ]
     },
     {
-      "id": "link-name",
+      "id": "landmark-one-main",
+      "impact": "moderate",
+      "description": "Ensures the document has a main landmark",
+      "help": "Document should have one main landmark",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/landmark-one-main?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<html lang=\"en-US\" class=\"js\">",
+          "target": [
+            "html"
+          ],
+          "failureSummary": "Fix all of the following:\n  Document does not have a main landmark"
+        }
+      ]
+    },
+    {
+      "id": "landmark-unique",
+      "impact": "moderate",
+      "description": "Landmarks should have a unique role or role/label/title (i.e. accessible name) combination",
+      "help": "Ensures landmarks are unique",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/landmark-unique?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<nav class=\"et-menu-nav\">",
+          "target": [
+            ".et_pb_menu_1_tb_header > .et_pb_menu_inner_container.clearfix > .et_pb_menu__wrap > .et_pb_menu__menu > nav"
+          ],
+          "failureSummary": "Fix any of the following:\n  The landmark must have a unique aria-label, aria-labelledby, or title to make landmarks distinguishable"
+        }
+      ]
+    },
+    {
+      "id": "listitem",
       "impact": "serious",
-      "description": "Ensures links have discernible text",
-      "help": "Links must have discernible text",
-      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "description": "Ensures <li> elements are used semantically",
+      "help": "<li> elements must be contained in a <ul> or <ol>",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/listitem?application=axeAPI",
       "nodes": [
         {
-          "html": "<a class=\"coe-head-logo\" href=\"https://education.ufl.edu\"><span></span></a>",
+          "html": "<li><a href=\"https://www.it.ufl.edu/policies/acceptable-use/acceptable-use-policy/\">Acceptable Use</a></li>",
           "target": [
-            ".coe-head-logo"
+            ".et_pb_code_1_tb_footer > .et_pb_code_inner > .footer-links > li:nth-child(1)"
           ],
-          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute"
+          "failureSummary": "Fix any of the following:\n  List item does not have a <ul>, <ol> parent element"
         }
       ]
     },
     {
-      "id": "link-name",
+      "id": "listitem",
       "impact": "serious",
-      "description": "Ensures links have discernible text",
-      "help": "Links must have discernible text",
-      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/link-name?application=axeAPI",
+      "description": "Ensures <li> elements are used semantically",
+      "help": "<li> elements must be contained in a <ul> or <ol>",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/listitem?application=axeAPI",
       "nodes": [
         {
-          "html": "<a href=\"#\" class=\"coe-search-trigger\">",
+          "html": "<li><a href=\"https://privacy.ufl.edu/privacy-policies-and-procedures/onlineinternet-privacy-statement/\">Privacy Policy</a></li>",
           "target": [
-            ".coe-search-trigger"
+            ".et_pb_code_1_tb_footer > .et_pb_code_inner > .footer-links > li:nth-child(2)"
           ],
-          "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute"
+          "failureSummary": "Fix any of the following:\n  List item does not have a <ul>, <ol> parent element"
         }
       ]
     },
     {
-      "id": "meta-viewport",
-      "impact": "critical",
-      "description": "Ensures <meta name=\"viewport\"> does not disable text scaling and zooming",
-      "help": "Zooming and scaling must not be disabled",
-      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/meta-viewport?application=axeAPI",
+      "id": "page-has-heading-one",
+      "impact": "moderate",
+      "description": "Ensure that the page, or at least one of its frames contains a level-one heading",
+      "help": "Page should contain a level-one heading",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/page-has-heading-one?application=axeAPI",
       "nodes": [
         {
-          "html": "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1\">",
+          "html": "<html lang=\"en-US\" class=\"js\">",
           "target": [
-            "meta[name=\"viewport\"]"
+            "html"
           ],
-          "failureSummary": "Fix any of the following:\n  maximum-scale on <meta> tag disables zooming on mobile devices"
+          "failureSummary": "Fix all of the following:\n  Page must have a level-one heading"
         }
       ]
     },
@@ -141,9 +125,9 @@
       "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
       "nodes": [
         {
-          "html": "<div class=\"top-uf-links-wrap\">",
+          "html": "<div class=\"et_pb_section et_pb_section_2 hero-post et_pb_fullwidth_section et_section_regular\">",
           "target": [
-            ".top-uf-links-wrap"
+            ".et_pb_section_2"
           ],
           "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
         }
@@ -157,9 +141,9 @@
       "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
       "nodes": [
         {
-          "html": "<a class=\"COEMM-0 submenu-trigger\" href=\"#\">Academics</a>",
+          "html": "<h2 class=\"entry-title\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t<a href=\"https://education.ufl.edu/news/2025/01/19/uf-demonstrates-a-decade-of-distinction-in-enhancing-education-through-online-offerings/\">UF demonstrates a dec",
           "target": [
-            ".COEMM-Academics.COEMM-0 > .submenu-trigger.COEMM-0[href=\"#\"]"
+            ".et_pb_blog_item_1_0 > h2"
           ],
           "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
         }
@@ -173,9 +157,9 @@
       "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
       "nodes": [
         {
-          "html": "<a class=\"COEMM-0 submenu-trigger\" href=\"#\">Student Services</a>",
+          "html": "<h2 class=\"entry-title\">",
           "target": [
-            ".COEMM-StudentServices.COEMM-0 > .submenu-trigger.COEMM-0[href=\"#\"]"
+            ".et_pb_blog_item_2_0 > h2"
           ],
           "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
         }
@@ -189,9 +173,9 @@
       "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
       "nodes": [
         {
-          "html": "<a class=\"COEMM-0 submenu-trigger\" href=\"#\">Research</a>",
+          "html": "<h2 class=\"entry-title\">",
           "target": [
-            ".COEMM-About.COEMM-0:nth-child(3) > .submenu-trigger.COEMM-0[href=\"#\"]"
+            ".et_pb_blog_item_3_0 > h2"
           ],
           "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
         }
@@ -205,9 +189,9 @@
       "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
       "nodes": [
         {
-          "html": "<a id=\"megamenu-news\" class=\"COEMM-0 submenu-trigger\" href=\"#\">News</a>",
+          "html": "<div class=\"et_pb_section et_pb_section_4 et_section_regular\">",
           "target": [
-            ".COEMM-News.COEMM-0 > .submenu-trigger.COEMM-0[href=\"#\"]"
+            ".et_pb_section_4"
           ],
           "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
         }
@@ -221,9 +205,9 @@
       "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
       "nodes": [
         {
-          "html": "<a id=\"megamenu-alumni\" class=\"COEMM-0 submenu-trigger\" href=\"/alumni/\">Alumni / Giving</a>",
+          "html": "<div class=\"et_pb_module et_pb_text et_pb_text_2  et_pb_text_align_left et_pb_bg_layout_light\">\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t<div class=\"et_pb_text_inner\"><h2>Latest Posts</h2></div>\n\t\t\t</div>",
           "target": [
-            ".submenu-trigger.COEMM-0[href$=\"alumni/\"]"
+            ".et_pb_text_2"
           ],
           "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
         }
@@ -237,9 +221,9 @@
       "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
       "nodes": [
         {
-          "html": "<a title=\"About the College\" class=\"COEMM-0 submenu-trigger\" href=\"/about-the-college/\">About the College</a>",
+          "html": "<div id=\"all\" class=\"et_pb_module et_pb_blog_8 blog-card active et_pb_posts et_pb_bg_layout_light \">",
           "target": [
-            ".submenu-trigger[title=\"About the College\"][href$=\"about-the-college/\"]"
+            "#all"
           ],
           "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
         }
@@ -253,9 +237,9 @@
       "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
       "nodes": [
         {
-          "html": "<ul id=\"uf-menu-nav\">\n\t\t\t\t\t\t\t\t<li><a class=\"uf-head-logo\" href=\"https://education.ufl.edu\"><span>UF</span></a></li>\n\t\t\t\t\t\t\t\t<li><a class=\"coe-head-logo\" href=\"https://education.ufl.edu\"><span></span><",
+          "html": "<div class=\"et_pb_module et_pb_text et_pb_text_3  et_pb_text_align_left et_pb_bg_layout_light screen-reader-text\">\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t<div class=\"et_pb_text_inner\"><h2>Alumni Accolades</h2></div>",
           "target": [
-            "#uf-menu-nav"
+            ".et_pb_text_3"
           ],
           "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
         }
@@ -269,9 +253,9 @@
       "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
       "nodes": [
         {
-          "html": "<a class=\"right-menu-item hide-mobile\" href=\"/student-services/contacts/\">Ask Us</a>",
+          "html": "<div class=\"et_pb_module et_pb_text et_pb_text_4  et_pb_text_align_left et_pb_bg_layout_light screen-reader-text\">\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t<div class=\"et_pb_text_inner\"><h2>Alumni Accolades</h2></div>",
           "target": [
-            "a[href$=\"contacts/\"]"
+            ".et_pb_text_4"
           ],
           "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
         }
@@ -285,9 +269,9 @@
       "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
       "nodes": [
         {
-          "html": "<a class=\"right-menu-item hide-mobile login-menu-trigger\">Login</a>",
+          "html": "<div class=\"et_pb_module et_pb_text et_pb_text_5  et_pb_text_align_left et_pb_bg_layout_light screen-reader-text\">\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t<div class=\"et_pb_text_inner\"><h2>Awards</h2></div>\n\t\t\t</div>",
           "target": [
-            ".login-menu-trigger"
+            ".et_pb_text_5"
           ],
           "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
         }
@@ -301,9 +285,9 @@
       "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
       "nodes": [
         {
-          "html": "<input id=\"COET-searchinput\" type=\"text\" name=\"q\" title=\"Search the College of Education\" value=\"\" placeholder=\"Search\">",
+          "html": "<div class=\"et_pb_module et_pb_text et_pb_text_6  et_pb_text_align_left et_pb_bg_layout_light screen-reader-text\">\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t<div class=\"et_pb_text_inner\"><h2>COE In the News</h2></div>\n",
           "target": [
-            "#COET-searchinput"
+            ".et_pb_text_6"
           ],
           "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
         }
@@ -317,9 +301,9 @@
       "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
       "nodes": [
         {
-          "html": "<a class=\"COEMM-0\" href=\"#\">Academics</a>",
+          "html": "<div class=\"et_pb_module et_pb_text et_pb_text_7  et_pb_text_align_left et_pb_bg_layout_light screen-reader-text\">\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t<div class=\"et_pb_text_inner\"><h2>Community Outreach</h2></di",
           "target": [
-            "#COET-menu2 > .COEMM-0 > .COEMM-Academics.COEMM-0 > .COEMM-0[href=\"#\"]"
+            ".et_pb_text_7"
           ],
           "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
         }
@@ -333,9 +317,9 @@
       "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
       "nodes": [
         {
-          "html": "<a class=\"COEMM-0\" href=\"#\">Student Services</a>",
+          "html": "<div class=\"et_pb_module et_pb_text et_pb_text_8  et_pb_text_align_left et_pb_bg_layout_light screen-reader-text\">\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t<div class=\"et_pb_text_inner\"><h2>Dean’s Messages</h2></div>\n",
           "target": [
-            "#COET-menu2 > .COEMM-0 > .COEMM-StudentServices.COEMM-0 > .COEMM-0[href=\"#\"]"
+            ".et_pb_text_8"
           ],
           "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
         }
@@ -349,9 +333,9 @@
       "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
       "nodes": [
         {
-          "html": "<a class=\"COEMM-0\" href=\"#\">Research</a>",
+          "html": "<div class=\"et_pb_module et_pb_text et_pb_text_9  et_pb_text_align_left et_pb_bg_layout_light screen-reader-text\">\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t<div class=\"et_pb_text_inner\"><h2>Events</h2></div>\n\t\t\t</div>",
           "target": [
-            "#COET-menu2 > .COEMM-0 > .COEMM-About.COEMM-0:nth-child(3) > .COEMM-0[href=\"#\"]"
+            ".et_pb_text_9"
           ],
           "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
         }
@@ -365,9 +349,9 @@
       "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
       "nodes": [
         {
-          "html": "<a id=\"megamenu-news\" class=\"COEMM-0\" href=\"#\">News</a>",
+          "html": "<div class=\"et_pb_module et_pb_text et_pb_text_10  et_pb_text_align_left et_pb_bg_layout_light screen-reader-text\">\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t<div class=\"et_pb_text_inner\"><h2>Faculty Laurels</h2></div>",
           "target": [
-            "#COET-menu2 > .COEMM-0 > .COEMM-News.COEMM-0 > .COEMM-0[href=\"#\"]"
+            ".et_pb_text_10"
           ],
           "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
         }
@@ -381,9 +365,9 @@
       "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
       "nodes": [
         {
-          "html": "<a id=\"megamenu-alumni\" class=\"COEMM-0\" href=\"/alumni/\">Alumni / Giving</a>",
+          "html": "<div class=\"et_pb_module et_pb_text et_pb_text_11  et_pb_text_align_left et_pb_bg_layout_light screen-reader-text\">\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t<div class=\"et_pb_text_inner\"><h2>Featured News</h2></div>\n\t",
           "target": [
-            "#COET-menu2 > .COEMM-0 > .COEMM-Alumni.COEMM-0 > .COEMM-0[href$=\"alumni/\"]"
+            ".et_pb_text_11"
           ],
           "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
         }
@@ -397,9 +381,9 @@
       "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
       "nodes": [
         {
-          "html": "<a title=\"About the College\" class=\"COEMM-0\" href=\"/about-the-college/\">About the College</a>",
+          "html": "<div class=\"et_pb_module et_pb_text et_pb_text_12  et_pb_text_align_left et_pb_bg_layout_light screen-reader-text\">\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t<div class=\"et_pb_text_inner\"><h2>Giving</h2></div>\n\t\t\t</div",
           "target": [
-            "#COET-menu2 > .COEMM-0 > .COEMM-About.COEMM-0:nth-child(6) > .COEMM-0[title=\"About the College\"][href$=\"about-the-college/\"]"
+            ".et_pb_text_12"
           ],
           "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
         }
@@ -413,9 +397,9 @@
       "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
       "nodes": [
         {
-          "html": "<section class=\"av_textblock_section\" itemscope=\"itemscope\" itemtype=\"https://schema.org/CreativeWork\"><div class=\"avia_textblock \" itemprop=\"text\"><p><strong>Research out to a program director to sch",
+          "html": "<div class=\"et_pb_module et_pb_text et_pb_text_13  et_pb_text_align_left et_pb_bg_layout_light screen-reader-text\">\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t<div class=\"et_pb_text_inner\"><h2>Headlines</h2></div>\n\t\t\t</",
           "target": [
-            ".avia-builder-el-4 > .av_textblock_section[itemscope=\"itemscope\"]"
+            ".et_pb_text_13"
           ],
           "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
         }
@@ -429,9 +413,9 @@
       "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
       "nodes": [
         {
-          "html": "<img title=\"campus map\" src=\"https://education.ufl.edu/old_coeio/enf/campus-map.png\" alt=\"campus map\" height=\"50\">",
+          "html": "<div class=\"et_pb_module et_pb_text et_pb_text_14  et_pb_text_align_left et_pb_bg_layout_light screen-reader-text\">\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t<div class=\"et_pb_text_inner\"><h2>Insider News</h2></div>\n\t\t",
           "target": [
-            "img[title=\"campus map\"]"
+            ".et_pb_text_14"
           ],
           "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
         }
@@ -445,9 +429,9 @@
       "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
       "nodes": [
         {
-          "html": "<img src=\"https://education.ufl.edu/old_coeio/enf/CAEP-Accredited-Logo-white.png\" width=\"80%\" height=\"80%\" style=\"max-width:300px;\">",
+          "html": "<div class=\"et_pb_module et_pb_text et_pb_text_15  et_pb_text_align_left et_pb_bg_layout_light screen-reader-text\">\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t<div class=\"et_pb_text_inner\"><h2>News and Notes</h2></div>\n",
           "target": [
-            "img[width=\"80%\"]"
+            ".et_pb_text_15"
           ],
           "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
         }
@@ -461,9 +445,9 @@
       "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
       "nodes": [
         {
-          "html": "<div class=\"flex_column av_one_fourth  el_after_av_one_fourth  el_before_av_one_fourth \">",
+          "html": "<div class=\"et_pb_module et_pb_text et_pb_text_16  et_pb_text_align_left et_pb_bg_layout_light screen-reader-text\">\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t<div class=\"et_pb_text_inner\"><h2>P.K. Yonge</h2></div>\n\t\t\t<",
           "target": [
-            ".el_after_av_one_fourth.av_one_fourth.el_before_av_one_fourth:nth-child(2)"
+            ".et_pb_text_16"
           ],
           "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
         }
@@ -477,9 +461,9 @@
       "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
       "nodes": [
         {
-          "html": "<div class=\"flex_column av_one_fourth  el_after_av_one_fourth  el_before_av_one_fourth \">",
+          "html": "<div class=\"et_pb_module et_pb_text et_pb_text_17  et_pb_text_align_left et_pb_bg_layout_light screen-reader-text\">\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t<div class=\"et_pb_text_inner\"><h2>Press Releases</h2></div>\n",
           "target": [
-            ".el_after_av_one_fourth.av_one_fourth.el_before_av_one_fourth:nth-child(3)"
+            ".et_pb_text_17"
           ],
           "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
         }
@@ -493,9 +477,9 @@
       "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
       "nodes": [
         {
-          "html": "<img title=\"Facebook\" src=\"https://education.ufl.edu/old_coeio/enf/facebook-2.png\" alt=\"Facebook\" width=\"30\" height=\"30\" style=\"margin: 2px; \">",
+          "html": "<div class=\"et_pb_module et_pb_text et_pb_text_18  et_pb_text_align_left et_pb_bg_layout_light screen-reader-text\">\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t<div class=\"et_pb_text_inner\"><h2>Research News</h2></div>\n\t",
           "target": [
-            "img[title=\"Facebook\"]"
+            ".et_pb_text_18"
           ],
           "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
         }
@@ -509,9 +493,9 @@
       "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
       "nodes": [
         {
-          "html": "<img title=\"Twitter\" src=\"https://education.ufl.edu/old_coeio/enf/twitter-1.png\" alt=\"Twitter\" width=\"30\" height=\"30\" style=\"margin: 2px; \">",
+          "html": "<div class=\"et_pb_module et_pb_text et_pb_text_19  et_pb_text_align_left et_pb_bg_layout_light screen-reader-text\">\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t<div class=\"et_pb_text_inner\"><h2>Spotlights</h2></div>\n\t\t\t<",
           "target": [
-            "img[title=\"Twitter\"]"
+            ".et_pb_text_19"
           ],
           "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
         }
@@ -525,9 +509,9 @@
       "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
       "nodes": [
         {
-          "html": "<img title=\"LinkedIn\" src=\"https://education.ufl.edu/old_coeio/enf/linkedin-2.png\" alt=\"LinkedIn\" width=\"30\" height=\"30\" style=\"margin: 2px; \">",
+          "html": "<div class=\"et_pb_module et_pb_text et_pb_text_20  et_pb_text_align_left et_pb_bg_layout_light screen-reader-text\">\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t<div class=\"et_pb_text_inner\"><h2>Student Laurels</h2></div>",
           "target": [
-            "img[title=\"LinkedIn\"]"
+            ".et_pb_text_20"
           ],
           "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
         }
@@ -541,57 +525,9 @@
       "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
       "nodes": [
         {
-          "html": "<img title=\"Youtube\" src=\"https://education.ufl.edu/old_coeio/enf/youtube-2.png\" alt=\"Youtube\" width=\"30\" height=\"30\" style=\"margin: 2px; \">",
+          "html": "<div class=\"et_pb_module et_pb_text et_pb_text_21  et_pb_text_align_left et_pb_bg_layout_dark\">\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t<div class=\"et_pb_text_inner\"><h2 style=\"text-align: center;\">Follow us on Socia",
           "target": [
-            "img[title=\"Youtube\"]"
-          ],
-          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
-        }
-      ]
-    },
-    {
-      "id": "region",
-      "impact": "moderate",
-      "description": "Ensures all page content is contained by landmarks",
-      "help": "All page content should be contained by landmarks",
-      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
-      "nodes": [
-        {
-          "html": "<img title=\"Instagram\" src=\"https://education.ufl.edu/old_coeio/enf/instagram-2.png\" alt=\"Instagram\" width=\"30\" height=\"30\" style=\"margin: 2px; \">",
-          "target": [
-            "img[title=\"Instagram\"]"
-          ],
-          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
-        }
-      ]
-    },
-    {
-      "id": "region",
-      "impact": "moderate",
-      "description": "Ensures all page content is contained by landmarks",
-      "help": "All page content should be contained by landmarks",
-      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
-      "nodes": [
-        {
-          "html": "<img title=\"UF\" src=\"https://education.ufl.edu/old_coeio/enf/uf-logo.png\" alt=\"University of Florida\" height=\"50\" style=\"max-width:250px;\">",
-          "target": [
-            "img[title=\"UF\"]"
-          ],
-          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
-        }
-      ]
-    },
-    {
-      "id": "region",
-      "impact": "moderate",
-      "description": "Ensures all page content is contained by landmarks",
-      "help": "All page content should be contained by landmarks",
-      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
-      "nodes": [
-        {
-          "html": "<section id=\"text-7\" class=\"widget clearfix widget_text\" style=\"overflow: visible !important\">",
-          "target": [
-            "#text-7"
+            ".et_pb_text_21"
           ],
           "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
         }
@@ -599,9 +535,9 @@
     }
   ],
   "summary": {
-    "critical": 4,
+    "critical": 1,
     "serious": 3,
-    "moderate": 30,
+    "moderate": 29,
     "minor": 0
   }
 }
