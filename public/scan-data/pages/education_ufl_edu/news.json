@@ -1,0 +1,543 @@
+{
+  "url": "https://education.ufl.edu/news/",
+  "title": "COE News- UF College of Education",
+  "site": "UF College of Education",
+  "scannedAt": "2025-12-01T04:37:47.834Z",
+  "scannedBy": "Saignaneswar",
+  "issues": [
+    {
+      "id": "frame-title",
+      "impact": "serious",
+      "description": "Ensures <iframe> and <frame> elements have an accessible name",
+      "help": "Frames must have an accessible name",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/frame-title?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<iframe class=\"instagram-media instagram-media-rendered\" id=\"instagram-embed-0\" src=\"https://www.instagram.com/uf_coe/embed/?cr=1&amp;v=14&amp;wp=482&amp;rd=https%3A%2F%2Feducation.ufl.edu&amp;rp=%2Fn",
+          "target": [
+            "#instagram-embed-0"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element has no title attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+        }
+      ]
+    },
+    {
+      "id": "label",
+      "impact": "critical",
+      "description": "Ensures every form element has a label",
+      "help": "Form elements must have labels",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/label?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<input type=\"email\" value=\"Email Address\" name=\"EMAIL\" class=\"required email\" id=\"mce-EMAIL\" required=\"\">",
+          "target": [
+            ".et_pb_code_2_tb_footer > .et_pb_code_inner > div > form > div > .mc-field-group > div[aria-label=\"Email Address\"] > .required.email[type=\"email\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Form element does not have an implicit (wrapped) <label>\n  Form element does not have an explicit <label>\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element has no placeholder attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+        }
+      ]
+    },
+    {
+      "id": "landmark-one-main",
+      "impact": "moderate",
+      "description": "Ensures the document has a main landmark",
+      "help": "Document should have one main landmark",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/landmark-one-main?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<html lang=\"en-US\" class=\"js\">",
+          "target": [
+            "html"
+          ],
+          "failureSummary": "Fix all of the following:\n  Document does not have a main landmark"
+        }
+      ]
+    },
+    {
+      "id": "landmark-unique",
+      "impact": "moderate",
+      "description": "Landmarks should have a unique role or role/label/title (i.e. accessible name) combination",
+      "help": "Ensures landmarks are unique",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/landmark-unique?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<nav class=\"et-menu-nav\">",
+          "target": [
+            ".et_pb_menu_1_tb_header > .et_pb_menu_inner_container.clearfix > .et_pb_menu__wrap > .et_pb_menu__menu > nav"
+          ],
+          "failureSummary": "Fix any of the following:\n  The landmark must have a unique aria-label, aria-labelledby, or title to make landmarks distinguishable"
+        }
+      ]
+    },
+    {
+      "id": "listitem",
+      "impact": "serious",
+      "description": "Ensures <li> elements are used semantically",
+      "help": "<li> elements must be contained in a <ul> or <ol>",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/listitem?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<li><a href=\"https://www.it.ufl.edu/policies/acceptable-use/acceptable-use-policy/\">Acceptable Use</a></li>",
+          "target": [
+            ".et_pb_code_1_tb_footer > .et_pb_code_inner > .footer-links > li:nth-child(1)"
+          ],
+          "failureSummary": "Fix any of the following:\n  List item does not have a <ul>, <ol> parent element"
+        }
+      ]
+    },
+    {
+      "id": "listitem",
+      "impact": "serious",
+      "description": "Ensures <li> elements are used semantically",
+      "help": "<li> elements must be contained in a <ul> or <ol>",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/listitem?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<li><a href=\"https://privacy.ufl.edu/privacy-policies-and-procedures/onlineinternet-privacy-statement/\">Privacy Policy</a></li>",
+          "target": [
+            ".et_pb_code_1_tb_footer > .et_pb_code_inner > .footer-links > li:nth-child(2)"
+          ],
+          "failureSummary": "Fix any of the following:\n  List item does not have a <ul>, <ol> parent element"
+        }
+      ]
+    },
+    {
+      "id": "page-has-heading-one",
+      "impact": "moderate",
+      "description": "Ensure that the page, or at least one of its frames contains a level-one heading",
+      "help": "Page should contain a level-one heading",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/page-has-heading-one?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<html lang=\"en-US\" class=\"js\">",
+          "target": [
+            "html"
+          ],
+          "failureSummary": "Fix all of the following:\n  Page must have a level-one heading"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<div class=\"et_pb_section et_pb_section_2 hero-post et_pb_fullwidth_section et_section_regular\">",
+          "target": [
+            ".et_pb_section_2"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h2 class=\"entry-title\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t<a href=\"https://education.ufl.edu/news/2025/01/19/uf-demonstrates-a-decade-of-distinction-in-enhancing-education-through-online-offerings/\">UF demonstrates a dec",
+          "target": [
+            ".et_pb_blog_item_1_0 > h2"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h2 class=\"entry-title\">",
+          "target": [
+            ".et_pb_blog_item_2_0 > h2"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<h2 class=\"entry-title\">",
+          "target": [
+            ".et_pb_blog_item_3_0 > h2"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<div class=\"et_pb_section et_pb_section_4 et_section_regular\">",
+          "target": [
+            ".et_pb_section_4"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<div class=\"et_pb_module et_pb_text et_pb_text_2  et_pb_text_align_left et_pb_bg_layout_light\">\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t<div class=\"et_pb_text_inner\"><h2>Latest Posts</h2></div>\n\t\t\t</div>",
+          "target": [
+            ".et_pb_text_2"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<div id=\"all\" class=\"et_pb_module et_pb_blog_8 blog-card active et_pb_posts et_pb_bg_layout_light \">",
+          "target": [
+            "#all"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<div class=\"et_pb_module et_pb_text et_pb_text_3  et_pb_text_align_left et_pb_bg_layout_light screen-reader-text\">\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t<div class=\"et_pb_text_inner\"><h2>Alumni Accolades</h2></div>",
+          "target": [
+            ".et_pb_text_3"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<div class=\"et_pb_module et_pb_text et_pb_text_4  et_pb_text_align_left et_pb_bg_layout_light screen-reader-text\">\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t<div class=\"et_pb_text_inner\"><h2>Alumni Accolades</h2></div>",
+          "target": [
+            ".et_pb_text_4"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<div class=\"et_pb_module et_pb_text et_pb_text_5  et_pb_text_align_left et_pb_bg_layout_light screen-reader-text\">\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t<div class=\"et_pb_text_inner\"><h2>Awards</h2></div>\n\t\t\t</div>",
+          "target": [
+            ".et_pb_text_5"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<div class=\"et_pb_module et_pb_text et_pb_text_6  et_pb_text_align_left et_pb_bg_layout_light screen-reader-text\">\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t<div class=\"et_pb_text_inner\"><h2>COE In the News</h2></div>\n",
+          "target": [
+            ".et_pb_text_6"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<div class=\"et_pb_module et_pb_text et_pb_text_7  et_pb_text_align_left et_pb_bg_layout_light screen-reader-text\">\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t<div class=\"et_pb_text_inner\"><h2>Community Outreach</h2></di",
+          "target": [
+            ".et_pb_text_7"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<div class=\"et_pb_module et_pb_text et_pb_text_8  et_pb_text_align_left et_pb_bg_layout_light screen-reader-text\">\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t<div class=\"et_pb_text_inner\"><h2>Dean’s Messages</h2></div>\n",
+          "target": [
+            ".et_pb_text_8"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<div class=\"et_pb_module et_pb_text et_pb_text_9  et_pb_text_align_left et_pb_bg_layout_light screen-reader-text\">\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t<div class=\"et_pb_text_inner\"><h2>Events</h2></div>\n\t\t\t</div>",
+          "target": [
+            ".et_pb_text_9"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<div class=\"et_pb_module et_pb_text et_pb_text_10  et_pb_text_align_left et_pb_bg_layout_light screen-reader-text\">\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t<div class=\"et_pb_text_inner\"><h2>Faculty Laurels</h2></div>",
+          "target": [
+            ".et_pb_text_10"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<div class=\"et_pb_module et_pb_text et_pb_text_11  et_pb_text_align_left et_pb_bg_layout_light screen-reader-text\">\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t<div class=\"et_pb_text_inner\"><h2>Featured News</h2></div>\n\t",
+          "target": [
+            ".et_pb_text_11"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<div class=\"et_pb_module et_pb_text et_pb_text_12  et_pb_text_align_left et_pb_bg_layout_light screen-reader-text\">\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t<div class=\"et_pb_text_inner\"><h2>Giving</h2></div>\n\t\t\t</div",
+          "target": [
+            ".et_pb_text_12"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<div class=\"et_pb_module et_pb_text et_pb_text_13  et_pb_text_align_left et_pb_bg_layout_light screen-reader-text\">\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t<div class=\"et_pb_text_inner\"><h2>Headlines</h2></div>\n\t\t\t</",
+          "target": [
+            ".et_pb_text_13"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<div class=\"et_pb_module et_pb_text et_pb_text_14  et_pb_text_align_left et_pb_bg_layout_light screen-reader-text\">\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t<div class=\"et_pb_text_inner\"><h2>Insider News</h2></div>\n\t\t",
+          "target": [
+            ".et_pb_text_14"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<div class=\"et_pb_module et_pb_text et_pb_text_15  et_pb_text_align_left et_pb_bg_layout_light screen-reader-text\">\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t<div class=\"et_pb_text_inner\"><h2>News and Notes</h2></div>\n",
+          "target": [
+            ".et_pb_text_15"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<div class=\"et_pb_module et_pb_text et_pb_text_16  et_pb_text_align_left et_pb_bg_layout_light screen-reader-text\">\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t<div class=\"et_pb_text_inner\"><h2>P.K. Yonge</h2></div>\n\t\t\t<",
+          "target": [
+            ".et_pb_text_16"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<div class=\"et_pb_module et_pb_text et_pb_text_17  et_pb_text_align_left et_pb_bg_layout_light screen-reader-text\">\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t<div class=\"et_pb_text_inner\"><h2>Press Releases</h2></div>\n",
+          "target": [
+            ".et_pb_text_17"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<div class=\"et_pb_module et_pb_text et_pb_text_18  et_pb_text_align_left et_pb_bg_layout_light screen-reader-text\">\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t<div class=\"et_pb_text_inner\"><h2>Research News</h2></div>\n\t",
+          "target": [
+            ".et_pb_text_18"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<div class=\"et_pb_module et_pb_text et_pb_text_19  et_pb_text_align_left et_pb_bg_layout_light screen-reader-text\">\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t<div class=\"et_pb_text_inner\"><h2>Spotlights</h2></div>\n\t\t\t<",
+          "target": [
+            ".et_pb_text_19"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<div class=\"et_pb_module et_pb_text et_pb_text_20  et_pb_text_align_left et_pb_bg_layout_light screen-reader-text\">\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t<div class=\"et_pb_text_inner\"><h2>Student Laurels</h2></div>",
+          "target": [
+            ".et_pb_text_20"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    },
+    {
+      "id": "region",
+      "impact": "moderate",
+      "description": "Ensures all page content is contained by landmarks",
+      "help": "All page content should be contained by landmarks",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
+      "nodes": [
+        {
+          "html": "<div class=\"et_pb_module et_pb_text et_pb_text_21  et_pb_text_align_left et_pb_bg_layout_dark\">\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t<div class=\"et_pb_text_inner\"><h2 style=\"text-align: center;\">Follow us on Socia",
+          "target": [
+            ".et_pb_text_21"
+          ],
+          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "critical": 1,
+    "serious": 3,
+    "moderate": 29,
+    "minor": 0
+  }
+}
