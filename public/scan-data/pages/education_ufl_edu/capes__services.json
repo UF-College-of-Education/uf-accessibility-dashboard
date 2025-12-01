@@ -2,7 +2,7 @@
   "url": "https://education.ufl.edu/capes/services/",
   "title": "Services",
   "site": "UF College of Education",
-  "scannedAt": "2025-12-01T04:20:15.581Z",
+  "scannedAt": "2025-12-01T04:37:47.834Z",
   "scannedBy": "Saignaneswar",
   "issues": [
     {
@@ -413,57 +413,9 @@
       "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
       "nodes": [
         {
-          "html": "<p data-fake-id=\"#toggle-id-1\" class=\"toggler \" itemprop=\"headline\">Preparing Grant Applications<span class=\"toggle_icon\">        <span class=\"vert_icon\"></span><span class=\"hor_icon\"></span></span></",
+          "html": "<div class=\"flex_column av_two_third  flex_column_div av-zero-column-padding first  avia-builder-el-6  el_after_av_one_full  el_before_av_one_third  column-top-margin\" style=\"border-radius:0px; \">",
           "target": [
-            "p[data-fake-id=\"#toggle-id-1\"]"
-          ],
-          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
-        }
-      ]
-    },
-    {
-      "id": "region",
-      "impact": "moderate",
-      "description": "Ensures all page content is contained by landmarks",
-      "help": "All page content should be contained by landmarks",
-      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
-      "nodes": [
-        {
-          "html": "<p data-fake-id=\"#toggle-id-2\" class=\"toggler \" itemprop=\"headline\">Program Evaluation<span class=\"toggle_icon\">        <span class=\"vert_icon\"></span><span class=\"hor_icon\"></span></span></p>",
-          "target": [
-            "p[data-fake-id=\"#toggle-id-2\"]"
-          ],
-          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
-        }
-      ]
-    },
-    {
-      "id": "region",
-      "impact": "moderate",
-      "description": "Ensures all page content is contained by landmarks",
-      "help": "All page content should be contained by landmarks",
-      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
-      "nodes": [
-        {
-          "html": "<p data-fake-id=\"#toggle-id-3\" class=\"toggler \" itemprop=\"headline\">Consulting Services<span class=\"toggle_icon\">        <span class=\"vert_icon\"></span><span class=\"hor_icon\"></span></span></p>",
-          "target": [
-            "p[data-fake-id=\"#toggle-id-3\"]"
-          ],
-          "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
-        }
-      ]
-    },
-    {
-      "id": "region",
-      "impact": "moderate",
-      "description": "Ensures all page content is contained by landmarks",
-      "help": "All page content should be contained by landmarks",
-      "helpUrl": "https://dequeuniversity.com/rules/axe/4.8/region?application=axeAPI",
-      "nodes": [
-        {
-          "html": "<p data-fake-id=\"#toggle-id-4\" class=\"toggler \" itemprop=\"headline\">Additional Information on Services<span class=\"toggle_icon\">        <span class=\"vert_icon\"></span><span class=\"hor_icon\"></span></s",
-          "target": [
-            "p[data-fake-id=\"#toggle-id-4\"]"
+            ".av_two_third"
           ],
           "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
         }
@@ -697,7 +649,7 @@
   "summary": {
     "critical": 3,
     "serious": 3,
-    "moderate": 37,
+    "moderate": 34,
     "minor": 0
   }
 }
