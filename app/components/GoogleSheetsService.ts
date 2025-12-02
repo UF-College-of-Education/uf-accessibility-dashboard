@@ -52,7 +52,7 @@ const STATUS_MAP_FROM_SHEET: Record<string, PageStatusType> = {
 };
 
 export const STATUS_OPTIONS: { value: PageStatusType; label: string; color: string; bgColor: string }[] = [
-  { value: 'not-started', label: 'Not Started', color: 'text-gray-600', bgColor: 'bg-gray-100' },
+  { value: 'not-started', label: 'Not Started', color: 'text-gray-900', bgColor: 'bg-gray-100' },
   { value: 'working', label: 'Working on it', color: 'text-blue-600', bgColor: 'bg-blue-100' },
   { value: 'issues', label: 'Facing Issues', color: 'text-orange-600', bgColor: 'bg-orange-100' },
   { value: 'completed', label: 'Completed', color: 'text-green-600', bgColor: 'bg-green-100' },
