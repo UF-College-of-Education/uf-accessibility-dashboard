@@ -1,0 +1,44 @@
+{
+  "description": "Custom sites to ADD to Noah's data. These are sites missing from the web mapper.",
+  "lastUpdated": "2025-12-02",
+  "subsites": [
+    {
+      "id": "education-ufl-edu-dimes",
+      "baseUrl": "https://education.ufl.edu/dimes/",
+      "title": "DIMES - UF College of Education",
+      "isLive": true,
+      "pages": [
+        {
+          "path": "/",
+          "title": "DIMES Home",
+          "url": "https://education.ufl.edu/dimes/"
+        },
+        {
+          "path": "/wordchomp/",
+          "title": "WordChomp",
+          "url": "https://education.ufl.edu/dimes/wordchomp/"
+        },
+        {
+          "path": "/funding/",
+          "title": "Funding",
+          "url": "https://education.ufl.edu/dimes/funding/"
+        },
+        {
+          "path": "/goals/",
+          "title": "Goals",
+          "url": "https://education.ufl.edu/dimes/goals/"
+        },
+        {
+          "path": "/dissemination/",
+          "title": "Dissemination",
+          "url": "https://education.ufl.edu/dimes/dissemination/"
+        },
+        {
+          "path": "/team/",
+          "title": "Team",
+          "url": "https://education.ufl.edu/dimes/team/"
+        }
+      ]
+    }
+  ]
+}
