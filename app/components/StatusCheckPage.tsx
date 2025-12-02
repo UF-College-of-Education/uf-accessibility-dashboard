@@ -595,6 +595,7 @@ export default function StatusCheckPage({ sites }: Props) {
                                 </button>
                               )}
                               
+                              {/* FIXED: Added text-gray-900 for darker, more visible text */}
                               <select
                                 value={status.assignedTo}
                                 onChange={(e) => {
@@ -602,14 +603,15 @@ export default function StatusCheckPage({ sites }: Props) {
                                   updateAssignedTo(page.url, e.target.value);
                                 }}
                                 onClick={(e) => e.stopPropagation()}
-                                className="text-xs border rounded px-2 py-1.5 bg-white cursor-pointer hover:bg-gray-50 w-24"
+                                className="text-xs border rounded px-2 py-1.5 bg-white cursor-pointer hover:bg-gray-50 w-24 text-gray-900 font-medium"
                               >
-                                <option value="">Assign to</option>
+                                <option value="" className="text-gray-900">Assign to</option>
                                 {teamMembers.map((member, mIdx) => (
-                                  <option key={mIdx} value={member.name}>{member.name}</option>
+                                  <option key={mIdx} value={member.name} className="text-gray-900">{member.name}</option>
                                 ))}
                               </select>
 
+                              {/* FIXED: Added text-gray-900 for darker, more visible text */}
                               <select
                                 value={status.status}
                                 onChange={(e) => {
@@ -617,10 +619,10 @@ export default function StatusCheckPage({ sites }: Props) {
                                   updateStatus(page.url, e.target.value as PageStatusType);
                                 }}
                                 onClick={(e) => e.stopPropagation()}
-                                className="text-xs border rounded px-2 py-1.5 bg-white cursor-pointer hover:bg-gray-50 w-28"
+                                className="text-xs border rounded px-2 py-1.5 bg-white cursor-pointer hover:bg-gray-50 w-28 text-gray-900 font-medium"
                               >
                                 {STATUS_OPTIONS.map(option => (
-                                  <option key={option.value} value={option.value}>
+                                  <option key={option.value} value={option.value} className="text-gray-900">
                                     {option.label}
                                   </option>
                                 ))}
@@ -782,7 +784,7 @@ export default function StatusCheckPage({ sites }: Props) {
           {STATUS_OPTIONS.map(option => (
             <div key={option.value} className="flex items-center gap-2">
               <div className={`w-3 h-3 rounded-full ${option.bgColor} border`}></div>
-              <span className={option.color}>{option.label}</span>
+              <span className="text-gray-900 font-medium">{option.label}</span>
             </div>
           ))}
         </div>
