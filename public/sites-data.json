@@ -1,6 +1,6 @@
 {
   "description": "Custom sites to ADD to Noah's data. These are sites missing from the web mapper.",
-  "lastUpdated": "2025-12-02",
+  "lastUpdated": "2026-01-12",
   "subsites": [
     {
       "id": "education-ufl-edu-dimes",
@@ -37,6 +37,1323 @@
           "path": "/team/",
           "title": "Team",
           "url": "https://education.ufl.edu/dimes/team/"
+        }
+      ]
+    },
+    {
+      "id": "education-ufl-edu-verse",
+      "baseUrl": "https://education.ufl.edu/verse/",
+      "title": "VERSE - UF College of Education",
+      "isLive": true,
+      "pages": [
+        {
+          "path": "/",
+          "title": "VERSE Home",
+          "url": "https://education.ufl.edu/verse/"
+        },
+        {
+          "path": "/experience/",
+          "title": "Experience",
+          "url": "https://education.ufl.edu/verse/experience/"
+        },
+        {
+          "path": "/experience/restaurant/",
+          "title": "Restaurant",
+          "url": "https://education.ufl.edu/verse/experience/restaurant/"
+        },
+        {
+          "path": "/experience/museum/",
+          "title": "Museum",
+          "url": "https://education.ufl.edu/verse/experience/museum/"
+        },
+        {
+          "path": "/experience/butterfly-rainforest/",
+          "title": "Butterfly Rainforest",
+          "url": "https://education.ufl.edu/verse/experience/butterfly-rainforest/"
+        },
+        {
+          "path": "/experience/water-shapes-florida/",
+          "title": "Water Shapes Florida",
+          "url": "https://education.ufl.edu/verse/experience/water-shapes-florida/"
+        },
+        {
+          "path": "/about/",
+          "title": "About",
+          "url": "https://education.ufl.edu/verse/about/"
+        },
+        {
+          "path": "/contact/",
+          "title": "Contact",
+          "url": "https://education.ufl.edu/verse/contact/"
+        }
+      ]
+    },
+    {
+      "id": "education-ufl-edu-sustain",
+      "baseUrl": "https://education.ufl.edu/sustain/",
+      "title": "SUSTAIN - UF College of Education",
+      "isLive": true,
+      "pages": [
+        {
+          "path": "/",
+          "title": "SUSTAIN Home",
+          "url": "https://education.ufl.edu/sustain/"
+        },
+        {
+          "path": "/about/",
+          "title": "About",
+          "url": "https://education.ufl.edu/sustain/about/"
+        },
+        {
+          "path": "/research/",
+          "title": "Research",
+          "url": "https://education.ufl.edu/sustain/research/"
+        },
+        {
+          "path": "/team/",
+          "title": "Team",
+          "url": "https://education.ufl.edu/sustain/team/"
+        },
+        {
+          "path": "/contact-us/",
+          "title": "Contact Us",
+          "url": "https://education.ufl.edu/sustain/contact-us/"
+        }
+      ]
+    },
+    {
+      "id": "education-ufl-edu-stakeholders-day",
+      "baseUrl": "https://education.ufl.edu/stakeholders-day/",
+      "title": "Stakeholders Day - UF College of Education",
+      "isLive": true,
+      "pages": [
+        {
+          "path": "/",
+          "title": "Stakeholders Day Home",
+          "url": "https://education.ufl.edu/stakeholders-day/"
+        }
+      ]
+    },
+    {
+      "id": "education-ufl-edu-sharkai",
+      "baseUrl": "https://education.ufl.edu/sharkai/",
+      "title": "SharkAI - UF College of Education",
+      "isLive": true,
+      "pages": [
+        {
+          "path": "/",
+          "title": "SharkAI Home",
+          "url": "https://education.ufl.edu/sharkai/"
+        },
+        {
+          "path": "/curriculum/",
+          "title": "Curriculum",
+          "url": "https://education.ufl.edu/sharkai/curriculum/"
+        },
+        {
+          "path": "/research/",
+          "title": "Research",
+          "url": "https://education.ufl.edu/sharkai/research/"
+        },
+        {
+          "path": "/professional-development/",
+          "title": "Professional Development",
+          "url": "https://education.ufl.edu/sharkai/professional-development/"
+        },
+        {
+          "path": "/team/",
+          "title": "Team",
+          "url": "https://education.ufl.edu/sharkai/team/"
+        },
+        {
+          "path": "/contact/",
+          "title": "Contact",
+          "url": "https://education.ufl.edu/sharkai/contact/"
+        }
+      ]
+    },
+    {
+      "id": "education-ufl-edu-sceic",
+      "baseUrl": "https://education.ufl.edu/sceic/",
+      "title": "SCEIC - UF College of Education",
+      "isLive": true,
+      "pages": [
+        {
+          "path": "/",
+          "title": "SCEIC Home",
+          "url": "https://education.ufl.edu/sceic/"
+        },
+        {
+          "path": "/about/",
+          "title": "About",
+          "url": "https://education.ufl.edu/sceic/about/"
+        },
+        {
+          "path": "/team/",
+          "title": "Team",
+          "url": "https://education.ufl.edu/sceic/team/"
+        },
+        {
+          "path": "/academic-exchange/",
+          "title": "Academic Exchange",
+          "url": "https://education.ufl.edu/sceic/academic-exchange/"
+        },
+        {
+          "path": "/contact/",
+          "title": "Contact",
+          "url": "https://education.ufl.edu/sceic/contact/"
+        }
+      ]
+    },
+    {
+      "id": "education-ufl-edu-reach",
+      "baseUrl": "https://education.ufl.edu/reach/",
+      "title": "REACH - UF College of Education",
+      "isLive": true,
+      "pages": [
+        {
+          "path": "/",
+          "title": "REACH Home",
+          "url": "https://education.ufl.edu/reach/"
+        },
+        {
+          "path": "/about/",
+          "title": "About",
+          "url": "https://education.ufl.edu/reach/about/"
+        },
+        {
+          "path": "/events/",
+          "title": "Events",
+          "url": "https://education.ufl.edu/reach/events/"
+        },
+        {
+          "path": "/all-resources/",
+          "title": "All Resources",
+          "url": "https://education.ufl.edu/reach/all-resources/"
+        },
+        {
+          "path": "/contact/",
+          "title": "Contact",
+          "url": "https://education.ufl.edu/reach/contact/"
+        },
+        {
+          "path": "/popular-grounding-activities-and-techniques/",
+          "title": "Grounding Activities",
+          "url": "https://education.ufl.edu/reach/popular-grounding-activities-and-techniques/"
+        },
+        {
+          "path": "/mindfulness-meditation-apps-and-techniques/",
+          "title": "Mindfulness Meditation",
+          "url": "https://education.ufl.edu/reach/mindfulness-meditation-apps-and-techniques/"
+        },
+        {
+          "path": "/body-and-mind-physical-and-mental-fitness/",
+          "title": "Body and Mind Fitness",
+          "url": "https://education.ufl.edu/reach/body-and-mind-physical-and-mental-fitness/"
+        },
+        {
+          "path": "/event/ymhfa-training-monday-june-16-2025-tuesday-june-17-2025/",
+          "title": "YMHFA Training June 2025",
+          "url": "https://education.ufl.edu/reach/event/ymhfa-training-monday-june-16-2025-tuesday-june-17-2025/"
+        },
+        {
+          "path": "/event/ymhfa-training-tuesday-may-20-2025-and-thursday-may-22-2025/",
+          "title": "YMHFA Training May 2025",
+          "url": "https://education.ufl.edu/reach/event/ymhfa-training-tuesday-may-20-2025-and-thursday-may-22-2025/"
+        },
+        {
+          "path": "/event/ymhfa-training-saturday-march-3-2025-at-victory-christian-center/",
+          "title": "YMHFA Training March 2025",
+          "url": "https://education.ufl.edu/reach/event/ymhfa-training-saturday-march-3-2025-at-victory-christian-center/"
+        },
+        {
+          "path": "/event/ymhfa-online-training-3/",
+          "title": "YMHFA Online Training 3",
+          "url": "https://education.ufl.edu/reach/event/ymhfa-online-training-3/"
+        },
+        {
+          "path": "/event/ymhfa-online-training-march-7-2025/",
+          "title": "YMHFA Online Training March 7",
+          "url": "https://education.ufl.edu/reach/event/ymhfa-online-training-march-7-2025/"
+        },
+        {
+          "path": "/event/ymhfa-online-training-february-11th-february-13th-2025/",
+          "title": "YMHFA Online Training Feb",
+          "url": "https://education.ufl.edu/reach/event/ymhfa-online-training-february-11th-february-13th-2025/"
+        },
+        {
+          "path": "/event/ymhfa-online-training-january-24-2025/",
+          "title": "YMHFA Online Training Jan",
+          "url": "https://education.ufl.edu/reach/event/ymhfa-online-training-january-24-2025/"
+        },
+        {
+          "path": "/event/ymhfa-hybrid-training-november-13th-november-20th-2024/",
+          "title": "YMHFA Hybrid Nov 13-20",
+          "url": "https://education.ufl.edu/reach/event/ymhfa-hybrid-training-november-13th-november-20th-2024/"
+        },
+        {
+          "path": "/event/ymhfa-hybrid-training-november-2nd-2024/",
+          "title": "YMHFA Hybrid Nov 2",
+          "url": "https://education.ufl.edu/reach/event/ymhfa-hybrid-training-november-2nd-2024/"
+        },
+        {
+          "path": "/event/ymhfa-hybrid-training-october-22-october-24-2024/",
+          "title": "YMHFA Hybrid Oct 22-24",
+          "url": "https://education.ufl.edu/reach/event/ymhfa-hybrid-training-october-22-october-24-2024/"
+        },
+        {
+          "path": "/event/ymhfa-hybrid-training-october-3th-october-4th-2024/",
+          "title": "YMHFA Hybrid Oct 3-4",
+          "url": "https://education.ufl.edu/reach/event/ymhfa-hybrid-training-october-3th-october-4th-2024/"
+        },
+        {
+          "path": "/event/ymhfa-hybrid-training-october-4th-2024/",
+          "title": "YMHFA Hybrid Oct 4",
+          "url": "https://education.ufl.edu/reach/event/ymhfa-hybrid-training-october-4th-2024/"
+        },
+        {
+          "path": "/events/page/2/",
+          "title": "Events Page 2",
+          "url": "https://education.ufl.edu/reach/events/page/2/"
+        },
+        {
+          "path": "/events/page/3/",
+          "title": "Events Page 3",
+          "url": "https://education.ufl.edu/reach/events/page/3/"
+        },
+        {
+          "path": "/the-home-free-program/",
+          "title": "Home Free Program",
+          "url": "https://education.ufl.edu/reach/the-home-free-program/"
+        },
+        {
+          "path": "/florida-sheriffs-youth-camp/",
+          "title": "FL Sheriffs Youth Camp",
+          "url": "https://education.ufl.edu/reach/florida-sheriffs-youth-camp/"
+        },
+        {
+          "path": "/the-florida-abuse-hotline/",
+          "title": "FL Abuse Hotline",
+          "url": "https://education.ufl.edu/reach/the-florida-abuse-hotline/"
+        },
+        {
+          "path": "/national-alliance-for-mental-illness/",
+          "title": "NAMI",
+          "url": "https://education.ufl.edu/reach/national-alliance-for-mental-illness/"
+        },
+        {
+          "path": "/mental-health-america/",
+          "title": "Mental Health America",
+          "url": "https://education.ufl.edu/reach/mental-health-america/"
+        },
+        {
+          "path": "/national-domestic-violence-hotline/",
+          "title": "Domestic Violence Hotline",
+          "url": "https://education.ufl.edu/reach/national-domestic-violence-hotline/"
+        },
+        {
+          "path": "/crisis-text-line/",
+          "title": "Crisis Text Line",
+          "url": "https://education.ufl.edu/reach/crisis-text-line/"
+        },
+        {
+          "path": "/self-care-and-wellness-youth/",
+          "title": "Self Care Youth",
+          "url": "https://education.ufl.edu/reach/self-care-and-wellness-youth/"
+        },
+        {
+          "path": "/national-human-trafficking/",
+          "title": "Human Trafficking",
+          "url": "https://education.ufl.edu/reach/national-human-trafficking/"
+        },
+        {
+          "path": "/substance-abuse-and-mental-health-services-administration-samhsa-national-hotline/",
+          "title": "SAMHSA Hotline",
+          "url": "https://education.ufl.edu/reach/substance-abuse-and-mental-health-services-administration-samhsa-national-hotline/"
+        },
+        {
+          "path": "/988-suicide-crisis-lifeline/",
+          "title": "988 Lifeline",
+          "url": "https://education.ufl.edu/reach/988-suicide-crisis-lifeline/"
+        },
+        {
+          "path": "/childhelp-national-child-abuse-hotline/",
+          "title": "Childhelp Hotline",
+          "url": "https://education.ufl.edu/reach/childhelp-national-child-abuse-hotline/"
+        },
+        {
+          "path": "/floridas-community-of-mindfulness/",
+          "title": "FL Mindfulness",
+          "url": "https://education.ufl.edu/reach/floridas-community-of-mindfulness/"
+        },
+        {
+          "path": "/the-early-learning-coalition-of-the-nature-coast-3/",
+          "title": "Early Learning 3",
+          "url": "https://education.ufl.edu/reach/the-early-learning-coalition-of-the-nature-coast-3/"
+        },
+        {
+          "path": "/access-florida-department-of-children-and-families-3/",
+          "title": "Access FL DCF 3",
+          "url": "https://education.ufl.edu/reach/access-florida-department-of-children-and-families-3/"
+        },
+        {
+          "path": "/the-florida-diagnostic-learning-resources-system-fdlrs-3/",
+          "title": "FDLRS 3",
+          "url": "https://education.ufl.edu/reach/the-florida-diagnostic-learning-resources-system-fdlrs-3/"
+        },
+        {
+          "path": "/safe-kids-north-central-florida-3/",
+          "title": "Safe Kids NCF 3",
+          "url": "https://education.ufl.edu/reach/safe-kids-north-central-florida-3/"
+        },
+        {
+          "path": "/northstar-family-resource-center-nsfrc-3/",
+          "title": "Northstar 3",
+          "url": "https://education.ufl.edu/reach/northstar-family-resource-center-nsfrc-3/"
+        },
+        {
+          "path": "/palms-medical-group-3/",
+          "title": "Palms Medical 3",
+          "url": "https://education.ufl.edu/reach/palms-medical-group-3/"
+        },
+        {
+          "path": "/lutheran-services-florida-3/",
+          "title": "Lutheran Services 3",
+          "url": "https://education.ufl.edu/reach/lutheran-services-florida-3/"
+        },
+        {
+          "path": "/childrens-home-society-greater-northeast-florida-3/",
+          "title": "Children Home 3",
+          "url": "https://education.ufl.edu/reach/childrens-home-society-greater-northeast-florida-3/"
+        },
+        {
+          "path": "/district-108-yoga-wellness/",
+          "title": "District 108 Yoga",
+          "url": "https://education.ufl.edu/reach/district-108-yoga-wellness/"
+        },
+        {
+          "path": "/body-mind-spirit-wellness/",
+          "title": "Body Mind Spirit",
+          "url": "https://education.ufl.edu/reach/body-mind-spirit-wellness/"
+        },
+        {
+          "path": "/4-h-dixie-county/",
+          "title": "4-H Dixie",
+          "url": "https://education.ufl.edu/reach/4-h-dixie-county/"
+        },
+        {
+          "path": "/access-florida-department-of-children-and-families-2/",
+          "title": "Access FL DCF 2",
+          "url": "https://education.ufl.edu/reach/access-florida-department-of-children-and-families-2/"
+        },
+        {
+          "path": "/the-early-learning-coalition-of-the-nature-coast-2/",
+          "title": "Early Learning 2",
+          "url": "https://education.ufl.edu/reach/the-early-learning-coalition-of-the-nature-coast-2/"
+        },
+        {
+          "path": "/safe-kids-north-central-florida-2/",
+          "title": "Safe Kids NCF 2",
+          "url": "https://education.ufl.edu/reach/safe-kids-north-central-florida-2/"
+        },
+        {
+          "path": "/the-florida-diagnostic-learning-resources-system-fdlrs-2/",
+          "title": "FDLRS 2",
+          "url": "https://education.ufl.edu/reach/the-florida-diagnostic-learning-resources-system-fdlrs-2/"
+        },
+        {
+          "path": "/tri-county-community-resource-center/",
+          "title": "Tri-County Resource",
+          "url": "https://education.ufl.edu/reach/tri-county-community-resource-center/"
+        },
+        {
+          "path": "/dixie-county-anti-drug-coalition/",
+          "title": "Dixie Anti-Drug",
+          "url": "https://education.ufl.edu/reach/dixie-county-anti-drug-coalition/"
+        },
+        {
+          "path": "/sednet-district-3a/",
+          "title": "SEDNET 3A",
+          "url": "https://education.ufl.edu/reach/sednet-district-3a/"
+        },
+        {
+          "path": "/northstar-family-resource-center-nsfrc-2/",
+          "title": "Northstar 2",
+          "url": "https://education.ufl.edu/reach/northstar-family-resource-center-nsfrc-2/"
+        },
+        {
+          "path": "/palms-medical-group-2/",
+          "title": "Palms Medical 2",
+          "url": "https://education.ufl.edu/reach/palms-medical-group-2/"
+        },
+        {
+          "path": "/lutheran-services-florida-2/",
+          "title": "Lutheran Services 2",
+          "url": "https://education.ufl.edu/reach/lutheran-services-florida-2/"
+        },
+        {
+          "path": "/childrens-home-society-greater-northeast-florida-2/",
+          "title": "Children Home 2",
+          "url": "https://education.ufl.edu/reach/childrens-home-society-greater-northeast-florida-2/"
+        },
+        {
+          "path": "/searchlight-yoga/",
+          "title": "Searchlight Yoga",
+          "url": "https://education.ufl.edu/reach/searchlight-yoga/"
+        },
+        {
+          "path": "/the-early-learning-coalition-of-the-nature-coast/",
+          "title": "Early Learning",
+          "url": "https://education.ufl.edu/reach/the-early-learning-coalition-of-the-nature-coast/"
+        },
+        {
+          "path": "/access-florida-department-of-children-and-families/",
+          "title": "Access FL DCF",
+          "url": "https://education.ufl.edu/reach/access-florida-department-of-children-and-families/"
+        },
+        {
+          "path": "/the-florida-diagnostic-learning-resources-system-fdlrs/",
+          "title": "FDLRS",
+          "url": "https://education.ufl.edu/reach/the-florida-diagnostic-learning-resources-system-fdlrs/"
+        },
+        {
+          "path": "/florida-department-of-children-and-families/",
+          "title": "FL DCF",
+          "url": "https://education.ufl.edu/reach/florida-department-of-children-and-families/"
+        },
+        {
+          "path": "/the-levy-county-prevention-coalition/",
+          "title": "Levy Prevention",
+          "url": "https://education.ufl.edu/reach/the-levy-county-prevention-coalition/"
+        },
+        {
+          "path": "/the-intensive-treatment-modalities-team/",
+          "title": "Intensive Treatment",
+          "url": "https://education.ufl.edu/reach/the-intensive-treatment-modalities-team/"
+        },
+        {
+          "path": "/safe-kids-north-central-florida/",
+          "title": "Safe Kids NCF",
+          "url": "https://education.ufl.edu/reach/safe-kids-north-central-florida/"
+        },
+        {
+          "path": "/northstar-family-resource-center-nsfrc/",
+          "title": "Northstar",
+          "url": "https://education.ufl.edu/reach/northstar-family-resource-center-nsfrc/"
+        },
+        {
+          "path": "/palms-medical-group/",
+          "title": "Palms Medical",
+          "url": "https://education.ufl.edu/reach/palms-medical-group/"
+        },
+        {
+          "path": "/lutheran-services-florida/",
+          "title": "Lutheran Services",
+          "url": "https://education.ufl.edu/reach/lutheran-services-florida/"
+        },
+        {
+          "path": "/childrens-home-society-greater-northeast-florida/",
+          "title": "Children Home",
+          "url": "https://education.ufl.edu/reach/childrens-home-society-greater-northeast-florida/"
+        },
+        {
+          "path": "/heart-mind-healing-metaphysical-studio/",
+          "title": "Heart Mind Healing",
+          "url": "https://education.ufl.edu/reach/heart-mind-healing-metaphysical-studio/"
+        },
+        {
+          "path": "/ymca-youth-and-teen-center/",
+          "title": "YMCA Youth",
+          "url": "https://education.ufl.edu/reach/ymca-youth-and-teen-center/"
+        },
+        {
+          "path": "/the-cultural-arts-coalition/",
+          "title": "Cultural Arts",
+          "url": "https://education.ufl.edu/reach/the-cultural-arts-coalition/"
+        },
+        {
+          "path": "/florida-recovery-center/",
+          "title": "FL Recovery",
+          "url": "https://education.ufl.edu/reach/florida-recovery-center/"
+        },
+        {
+          "path": "/fun-4-gator-kids/",
+          "title": "Fun 4 Gator Kids",
+          "url": "https://education.ufl.edu/reach/fun-4-gator-kids/"
+        },
+        {
+          "path": "/woodland-park-boys-girls-club/",
+          "title": "Woodland Park BGC",
+          "url": "https://education.ufl.edu/reach/woodland-park-boys-girls-club/"
+        },
+        {
+          "path": "/northwest-boys-girls-club/",
+          "title": "Northwest BGC",
+          "url": "https://education.ufl.edu/reach/northwest-boys-girls-club/"
+        },
+        {
+          "path": "/girls-place-gainesville/",
+          "title": "Girls Place",
+          "url": "https://education.ufl.edu/reach/girls-place-gainesville/"
+        },
+        {
+          "path": "/uf-health-psychology-at-springhill/",
+          "title": "UF Health Psychology",
+          "url": "https://education.ufl.edu/reach/uf-health-psychology-at-springhill/"
+        },
+        {
+          "path": "/healthy-families-alachua/",
+          "title": "Healthy Families",
+          "url": "https://education.ufl.edu/reach/healthy-families-alachua/"
+        },
+        {
+          "path": "/child-advocacy-center/",
+          "title": "Child Advocacy",
+          "url": "https://education.ufl.edu/reach/child-advocacy-center/"
+        },
+        {
+          "path": "/shands-psychiatric-hospital/",
+          "title": "Shands Psychiatric",
+          "url": "https://education.ufl.edu/reach/shands-psychiatric-hospital/"
+        },
+        {
+          "path": "/behavioral-learning-systems-gainesville/",
+          "title": "Behavioral Learning",
+          "url": "https://education.ufl.edu/reach/behavioral-learning-systems-gainesville/"
+        },
+        {
+          "path": "/meridian-behavioral-healthcare/",
+          "title": "Meridian Behavioral",
+          "url": "https://education.ufl.edu/reach/meridian-behavioral-healthcare/"
+        },
+        {
+          "path": "/alachua-county-crisis-center/",
+          "title": "Alachua Crisis",
+          "url": "https://education.ufl.edu/reach/alachua-county-crisis-center/"
+        },
+        {
+          "path": "/cds-family-and-behavioral-services/",
+          "title": "CDS Family",
+          "url": "https://education.ufl.edu/reach/cds-family-and-behavioral-services/"
+        },
+        {
+          "path": "/rising-calm-center/",
+          "title": "Rising Calm",
+          "url": "https://education.ufl.edu/reach/rising-calm-center/"
+        },
+        {
+          "path": "/aba-results/",
+          "title": "ABA Results",
+          "url": "https://education.ufl.edu/reach/aba-results/"
+        },
+        {
+          "path": "/henry-and-rilla-white-youth-foundation/",
+          "title": "White Foundation",
+          "url": "https://education.ufl.edu/reach/henry-and-rilla-white-youth-foundation/"
+        },
+        {
+          "path": "/lucent-collaborative-services/",
+          "title": "Lucent Collaborative",
+          "url": "https://education.ufl.edu/reach/lucent-collaborative-services/"
+        },
+        {
+          "path": "/arena-counseling-and-wellness/",
+          "title": "Arena Counseling",
+          "url": "https://education.ufl.edu/reach/arena-counseling-and-wellness/"
+        },
+        {
+          "path": "/village-counseling-center/",
+          "title": "Village Counseling",
+          "url": "https://education.ufl.edu/reach/village-counseling-center/"
+        },
+        {
+          "path": "/category/resources/",
+          "title": "Resources",
+          "url": "https://education.ufl.edu/reach/category/resources/"
+        },
+        {
+          "path": "/category/filterable-resources/alachua-resources/",
+          "title": "Alachua Resources",
+          "url": "https://education.ufl.edu/reach/category/filterable-resources/alachua-resources/"
+        },
+        {
+          "path": "/category/filterable-resources/dixie-county/",
+          "title": "Dixie County",
+          "url": "https://education.ufl.edu/reach/category/filterable-resources/dixie-county/"
+        },
+        {
+          "path": "/category/filterable-resources/",
+          "title": "Filterable Resources",
+          "url": "https://education.ufl.edu/reach/category/filterable-resources/"
+        },
+        {
+          "path": "/category/filterable-resources/gilchrist-county/",
+          "title": "Gilchrist County",
+          "url": "https://education.ufl.edu/reach/category/filterable-resources/gilchrist-county/"
+        },
+        {
+          "path": "/category/filterable-resources/levy-county/",
+          "title": "Levy County",
+          "url": "https://education.ufl.edu/reach/category/filterable-resources/levy-county/"
+        },
+        {
+          "path": "/category/filterable-resources/national-resources/",
+          "title": "National Resources",
+          "url": "https://education.ufl.edu/reach/category/filterable-resources/national-resources/"
+        },
+        {
+          "path": "/category/filterable-resources/national-resources/statewide/",
+          "title": "Statewide",
+          "url": "https://education.ufl.edu/reach/category/filterable-resources/national-resources/statewide/"
+        },
+        {
+          "path": "/event/ymhfa-online-training-wednesday-september-25th-and-thursday-september-26th-2024-from-1230pm-to-300pm-est-1130am-200pm-cst/",
+          "title": "YMHFA Sept 2024",
+          "url": "https://education.ufl.edu/reach/event/ymhfa-online-training-wednesday-september-25th-and-thursday-september-26th-2024-from-1230pm-to-300pm-est-1130am-200pm-cst/"
+        },
+        {
+          "path": "/event/project-reach-ymhfa-online-training-wednesday-august-21st-and-thursday-august-22nd-2024-from-930am-to-1200pm-est-830am-1100am-cst/",
+          "title": "YMHFA Aug 2024",
+          "url": "https://education.ufl.edu/reach/event/project-reach-ymhfa-online-training-wednesday-august-21st-and-thursday-august-22nd-2024-from-930am-to-1200pm-est-830am-1100am-cst/"
+        },
+        {
+          "path": "/event/ymhfa-online-training/",
+          "title": "YMHFA Online",
+          "url": "https://education.ufl.edu/reach/event/ymhfa-online-training/"
+        },
+        {
+          "path": "/event/ymhfa-online-training-2/",
+          "title": "YMHFA Online 2",
+          "url": "https://education.ufl.edu/reach/event/ymhfa-online-training-2/"
+        },
+        {
+          "path": "/event/ymhfa-training-starke/",
+          "title": "YMHFA Starke",
+          "url": "https://education.ufl.edu/reach/event/ymhfa-training-starke/"
+        },
+        {
+          "path": "/event/ymhfa-in-person-training-friday-april-5th/",
+          "title": "YMHFA April 5",
+          "url": "https://education.ufl.edu/reach/event/ymhfa-in-person-training-friday-april-5th/"
+        },
+        {
+          "path": "/event/ymhfa-training-march-19-20/",
+          "title": "YMHFA March 19-20",
+          "url": "https://education.ufl.edu/reach/event/ymhfa-training-march-19-20/"
+        },
+        {
+          "path": "/event/ymhfa-march-8-training/",
+          "title": "YMHFA March 8",
+          "url": "https://education.ufl.edu/reach/event/ymhfa-march-8-training/"
+        },
+        {
+          "path": "/event/ymhfa-training-greenhouse-church/",
+          "title": "YMHFA Greenhouse",
+          "url": "https://education.ufl.edu/reach/event/ymhfa-training-greenhouse-church/"
+        },
+        {
+          "path": "/event/ymhfa-training-2/",
+          "title": "YMHFA Training 2",
+          "url": "https://education.ufl.edu/reach/event/ymhfa-training-2/"
+        },
+        {
+          "path": "/event/ymhfa-training-day-1-attendance-to-both-days-required/",
+          "title": "YMHFA Day 1",
+          "url": "https://education.ufl.edu/reach/event/ymhfa-training-day-1-attendance-to-both-days-required/"
+        },
+        {
+          "path": "/event/training-nov-14th-and-15th/",
+          "title": "Training Nov 14-15",
+          "url": "https://education.ufl.edu/reach/event/training-nov-14th-and-15th/"
+        },
+        {
+          "path": "/event/ymhfa-training/",
+          "title": "YMHFA Training",
+          "url": "https://education.ufl.edu/reach/event/ymhfa-training/"
+        },
+        {
+          "path": "/tag/programs/",
+          "title": "Programs Tag",
+          "url": "https://education.ufl.edu/reach/tag/programs/"
+        },
+        {
+          "path": "/tag/people-and-mental-health-services/",
+          "title": "Mental Health Tag",
+          "url": "https://education.ufl.edu/reach/tag/people-and-mental-health-services/"
+        },
+        {
+          "path": "/tag/activities-wellness-strageties-opportunities/",
+          "title": "Activities Tag",
+          "url": "https://education.ufl.edu/reach/tag/activities-wellness-strageties-opportunities/"
+        },
+        {
+          "path": "/author/caronnerush/",
+          "title": "Author Caron",
+          "url": "https://education.ufl.edu/reach/author/caronnerush/"
+        },
+        {
+          "path": "/category/filterable-resources/alachua-resources/page/2/",
+          "title": "Alachua Page 2",
+          "url": "https://education.ufl.edu/reach/category/filterable-resources/alachua-resources/page/2/"
+        },
+        {
+          "path": "/category/filterable-resources/dixie-county/page/2/",
+          "title": "Dixie Page 2",
+          "url": "https://education.ufl.edu/reach/category/filterable-resources/dixie-county/page/2/"
+        },
+        {
+          "path": "/category/filterable-resources/page/2/",
+          "title": "Filterable Page 2",
+          "url": "https://education.ufl.edu/reach/category/filterable-resources/page/2/"
+        },
+        {
+          "path": "/category/filterable-resources/gilchrist-county/page/2/",
+          "title": "Gilchrist Page 2",
+          "url": "https://education.ufl.edu/reach/category/filterable-resources/gilchrist-county/page/2/"
+        },
+        {
+          "path": "/category/filterable-resources/levy-county/page/2/",
+          "title": "Levy Page 2",
+          "url": "https://education.ufl.edu/reach/category/filterable-resources/levy-county/page/2/"
+        },
+        {
+          "path": "/category/filterable-resources/national-resources/page/2/",
+          "title": "National Page 2",
+          "url": "https://education.ufl.edu/reach/category/filterable-resources/national-resources/page/2/"
+        },
+        {
+          "path": "/tag/programs/page/2/",
+          "title": "Programs Page 2",
+          "url": "https://education.ufl.edu/reach/tag/programs/page/2/"
+        },
+        {
+          "path": "/tag/people-and-mental-health-services/page/2/",
+          "title": "Mental Health Page 2",
+          "url": "https://education.ufl.edu/reach/tag/people-and-mental-health-services/page/2/"
+        },
+        {
+          "path": "/author/caronnerush/page/2/",
+          "title": "Author Page 2",
+          "url": "https://education.ufl.edu/reach/author/caronnerush/page/2/"
+        },
+        {
+          "path": "/category/filterable-resources/alachua-resources/page/3/",
+          "title": "Alachua Page 3",
+          "url": "https://education.ufl.edu/reach/category/filterable-resources/alachua-resources/page/3/"
+        },
+        {
+          "path": "/category/filterable-resources/dixie-county/page/3/",
+          "title": "Dixie Page 3",
+          "url": "https://education.ufl.edu/reach/category/filterable-resources/dixie-county/page/3/"
+        },
+        {
+          "path": "/category/filterable-resources/page/3/",
+          "title": "Filterable Page 3",
+          "url": "https://education.ufl.edu/reach/category/filterable-resources/page/3/"
+        },
+        {
+          "path": "/tag/programs/page/3/",
+          "title": "Programs Page 3",
+          "url": "https://education.ufl.edu/reach/tag/programs/page/3/"
+        },
+        {
+          "path": "/tag/people-and-mental-health-services/page/3/",
+          "title": "Mental Health Page 3",
+          "url": "https://education.ufl.edu/reach/tag/people-and-mental-health-services/page/3/"
+        },
+        {
+          "path": "/author/caronnerush/page/3/",
+          "title": "Author Page 3",
+          "url": "https://education.ufl.edu/reach/author/caronnerush/page/3/"
+        },
+        {
+          "path": "/category/filterable-resources/alachua-resources/page/4/",
+          "title": "Alachua Page 4",
+          "url": "https://education.ufl.edu/reach/category/filterable-resources/alachua-resources/page/4/"
+        },
+        {
+          "path": "/category/filterable-resources/page/4/",
+          "title": "Filterable Page 4",
+          "url": "https://education.ufl.edu/reach/category/filterable-resources/page/4/"
+        },
+        {
+          "path": "/tag/programs/page/4/",
+          "title": "Programs Page 4",
+          "url": "https://education.ufl.edu/reach/tag/programs/page/4/"
+        },
+        {
+          "path": "/tag/people-and-mental-health-services/page/4/",
+          "title": "Mental Health Page 4",
+          "url": "https://education.ufl.edu/reach/tag/people-and-mental-health-services/page/4/"
+        },
+        {
+          "path": "/author/caronnerush/page/4/",
+          "title": "Author Page 4",
+          "url": "https://education.ufl.edu/reach/author/caronnerush/page/4/"
+        },
+        {
+          "path": "/category/filterable-resources/page/5/",
+          "title": "Filterable Page 5",
+          "url": "https://education.ufl.edu/reach/category/filterable-resources/page/5/"
+        },
+        {
+          "path": "/tag/programs/page/5/",
+          "title": "Programs Page 5",
+          "url": "https://education.ufl.edu/reach/tag/programs/page/5/"
+        },
+        {
+          "path": "/tag/people-and-mental-health-services/page/5/",
+          "title": "Mental Health Page 5",
+          "url": "https://education.ufl.edu/reach/tag/people-and-mental-health-services/page/5/"
+        },
+        {
+          "path": "/author/caronnerush/page/5/",
+          "title": "Author Page 5",
+          "url": "https://education.ufl.edu/reach/author/caronnerush/page/5/"
+        },
+        {
+          "path": "/category/filterable-resources/page/6/",
+          "title": "Filterable Page 6",
+          "url": "https://education.ufl.edu/reach/category/filterable-resources/page/6/"
+        },
+        {
+          "path": "/tag/people-and-mental-health-services/page/6/",
+          "title": "Mental Health Page 6",
+          "url": "https://education.ufl.edu/reach/tag/people-and-mental-health-services/page/6/"
+        },
+        {
+          "path": "/author/caronnerush/page/6/",
+          "title": "Author Page 6",
+          "url": "https://education.ufl.edu/reach/author/caronnerush/page/6/"
+        },
+        {
+          "path": "/category/filterable-resources/page/7/",
+          "title": "Filterable Page 7",
+          "url": "https://education.ufl.edu/reach/category/filterable-resources/page/7/"
+        },
+        {
+          "path": "/tag/people-and-mental-health-services/page/7/",
+          "title": "Mental Health Page 7",
+          "url": "https://education.ufl.edu/reach/tag/people-and-mental-health-services/page/7/"
+        },
+        {
+          "path": "/author/caronnerush/page/7/",
+          "title": "Author Page 7",
+          "url": "https://education.ufl.edu/reach/author/caronnerush/page/7/"
+        },
+        {
+          "path": "/category/filterable-resources/page/8/",
+          "title": "Filterable Page 8",
+          "url": "https://education.ufl.edu/reach/category/filterable-resources/page/8/"
+        },
+        {
+          "path": "/author/caronnerush/page/8/",
+          "title": "Author Page 8",
+          "url": "https://education.ufl.edu/reach/author/caronnerush/page/8/"
+        },
+        {
+          "path": "/category/filterable-resources/page/9/",
+          "title": "Filterable Page 9",
+          "url": "https://education.ufl.edu/reach/category/filterable-resources/page/9/"
+        },
+        {
+          "path": "/author/caronnerush/page/9/",
+          "title": "Author Page 9",
+          "url": "https://education.ufl.edu/reach/author/caronnerush/page/9/"
+        },
+        {
+          "path": "/category/filterable-resources/page/10/",
+          "title": "Filterable Page 10",
+          "url": "https://education.ufl.edu/reach/category/filterable-resources/page/10/"
+        },
+        {
+          "path": "/author/caronnerush/page/10/",
+          "title": "Author Page 10",
+          "url": "https://education.ufl.edu/reach/author/caronnerush/page/10/"
+        },
+        {
+          "path": "/category/filterable-resources/page/11/",
+          "title": "Filterable Page 11",
+          "url": "https://education.ufl.edu/reach/category/filterable-resources/page/11/"
+        },
+        {
+          "path": "/author/caronnerush/page/11/",
+          "title": "Author Page 11",
+          "url": "https://education.ufl.edu/reach/author/caronnerush/page/11/"
+        },
+        {
+          "path": "/category/filterable-resources/page/12/",
+          "title": "Filterable Page 12",
+          "url": "https://education.ufl.edu/reach/category/filterable-resources/page/12/"
+        },
+        {
+          "path": "/author/caronnerush/page/12/",
+          "title": "Author Page 12",
+          "url": "https://education.ufl.edu/reach/author/caronnerush/page/12/"
+        },
+        {
+          "path": "/author/caronnerush/page/13/",
+          "title": "Author Page 13",
+          "url": "https://education.ufl.edu/reach/author/caronnerush/page/13/"
+        },
+        {
+          "path": "/author/caronnerush/page/14/",
+          "title": "Author Page 14",
+          "url": "https://education.ufl.edu/reach/author/caronnerush/page/14/"
+        },
+        {
+          "path": "/author/caronnerush/page/15/",
+          "title": "Author Page 15",
+          "url": "https://education.ufl.edu/reach/author/caronnerush/page/15/"
+        }
+      ]
+    },
+    {
+      "id": "education-ufl-edu-neural",
+      "baseUrl": "https://education.ufl.edu/neural/",
+      "title": "NEURAL Lab - UF College of Education",
+      "isLive": true,
+      "pages": [
+        {
+          "path": "/",
+          "title": "NEURAL Home",
+          "url": "https://education.ufl.edu/neural/"
+        },
+        {
+          "path": "/team/",
+          "title": "Team",
+          "url": "https://education.ufl.edu/neural/team/"
+        },
+        {
+          "path": "/projects/",
+          "title": "Projects",
+          "url": "https://education.ufl.edu/neural/projects/"
+        },
+        {
+          "path": "/research/",
+          "title": "Research",
+          "url": "https://education.ufl.edu/neural/research/"
+        },
+        {
+          "path": "/products/",
+          "title": "Products",
+          "url": "https://education.ufl.edu/neural/products/"
+        },
+        {
+          "path": "/contact/",
+          "title": "Contact",
+          "url": "https://education.ufl.edu/neural/contact/"
+        },
+        {
+          "path": "/2024/01/18/research-1/",
+          "title": "Research 1",
+          "url": "https://education.ufl.edu/neural/2024/01/18/research-1/"
+        },
+        {
+          "path": "/2024/01/18/research-2/",
+          "title": "Research 2",
+          "url": "https://education.ufl.edu/neural/2024/01/18/research-2/"
+        },
+        {
+          "path": "/2024/01/18/how-mobile-app-developers-conceive-of-dyslexia-and-what-it-means-for-mobile-app-users/",
+          "title": "Dyslexia Mobile Apps",
+          "url": "https://education.ufl.edu/neural/2024/01/18/how-mobile-app-developers-conceive-of-dyslexia-and-what-it-means-for-mobile-app-users/"
+        },
+        {
+          "path": "/category/all/",
+          "title": "All",
+          "url": "https://education.ufl.edu/neural/category/all/"
+        },
+        {
+          "path": "/category/curricula/",
+          "title": "Curricula",
+          "url": "https://education.ufl.edu/neural/category/curricula/"
+        },
+        {
+          "path": "/category/data/",
+          "title": "Data",
+          "url": "https://education.ufl.edu/neural/category/data/"
+        },
+        {
+          "path": "/category/dyslexia/",
+          "title": "Dyslexia",
+          "url": "https://education.ufl.edu/neural/category/dyslexia/"
+        },
+        {
+          "path": "/category/stimuli/",
+          "title": "Stimuli",
+          "url": "https://education.ufl.edu/neural/category/stimuli/"
+        },
+        {
+          "path": "/author/evejung/",
+          "title": "Author Eve Jung",
+          "url": "https://education.ufl.edu/neural/author/evejung/"
+        }
+      ]
+    },
+    {
+      "id": "education-ufl-edu-innovations",
+      "baseUrl": "https://education.ufl.edu/innovations/",
+      "title": "Innovations - UF College of Education",
+      "isLive": true,
+      "pages": [
+        {
+          "path": "/",
+          "title": "Innovations Home",
+          "url": "https://education.ufl.edu/innovations/"
+        }
+      ]
+    },
+    {
+      "id": "education-ufl-edu-eltl",
+      "baseUrl": "https://education.ufl.edu/eltl/",
+      "title": "ELTL - UF College of Education",
+      "isLive": true,
+      "pages": [
+        {
+          "path": "/",
+          "title": "ELTL Home",
+          "url": "https://education.ufl.edu/eltl/"
+        },
+        {
+          "path": "/about/",
+          "title": "About",
+          "url": "https://education.ufl.edu/eltl/about/"
+        },
+        {
+          "path": "/team/",
+          "title": "Team",
+          "url": "https://education.ufl.edu/eltl/team/"
+        },
+        {
+          "path": "/research/",
+          "title": "Research",
+          "url": "https://education.ufl.edu/eltl/research/"
+        },
+        {
+          "path": "/our-work/",
+          "title": "Our Work",
+          "url": "https://education.ufl.edu/eltl/our-work/"
+        },
+        {
+          "path": "/connect/",
+          "title": "Connect",
+          "url": "https://education.ufl.edu/eltl/connect/"
+        },
+        {
+          "path": "/projects/",
+          "title": "Projects",
+          "url": "https://education.ufl.edu/eltl/projects/"
+        },
+        {
+          "path": "/ar-expeditions/",
+          "title": "AR Expeditions",
+          "url": "https://education.ufl.edu/eltl/ar-expeditions/"
+        },
+        {
+          "path": "/2024/10/23/call-for-submissions-ai-for-enabling-technologies/",
+          "title": "AI Submissions",
+          "url": "https://education.ufl.edu/eltl/2024/10/23/call-for-submissions-ai-for-enabling-technologies/"
+        },
+        {
+          "path": "/2022/05/11/miss-uf-and-family-visit-the-eltl/",
+          "title": "Miss UF Visit",
+          "url": "https://education.ufl.edu/eltl/2022/05/11/miss-uf-and-family-visit-the-eltl/"
+        },
+        {
+          "path": "/tech-club/",
+          "title": "Tech Club",
+          "url": "https://education.ufl.edu/eltl/tech-club/"
+        },
+        {
+          "path": "/author/ssarmiento/",
+          "title": "Author S Sarmiento",
+          "url": "https://education.ufl.edu/eltl/author/ssarmiento/"
+        },
+        {
+          "path": "/category/uncategorized/",
+          "title": "Uncategorized",
+          "url": "https://education.ufl.edu/eltl/category/uncategorized/"
+        }
+      ]
+    },
+    {
+      "id": "education-ufl-edu-align",
+      "baseUrl": "https://education.ufl.edu/align/",
+      "title": "ALIGN - UF College of Education",
+      "isLive": true,
+      "pages": [
+        {
+          "path": "/",
+          "title": "ALIGN Home",
+          "url": "https://education.ufl.edu/align/"
+        },
+        {
+          "path": "/about/",
+          "title": "About",
+          "url": "https://education.ufl.edu/align/about/"
+        },
+        {
+          "path": "/about/updates/",
+          "title": "Updates",
+          "url": "https://education.ufl.edu/align/about/updates/"
+        },
+        {
+          "path": "/c3-initiative/",
+          "title": "C3 Initiative",
+          "url": "https://education.ufl.edu/align/c3-initiative/"
+        },
+        {
+          "path": "/collaboration/",
+          "title": "Collaboration",
+          "url": "https://education.ufl.edu/align/collaboration/"
+        },
+        {
+          "path": "/align-scale/",
+          "title": "ALIGN Scale",
+          "url": "https://education.ufl.edu/align/align-scale/"
+        },
+        {
+          "path": "/resources-and-dissemination/",
+          "title": "Resources",
+          "url": "https://education.ufl.edu/align/resources-and-dissemination/"
+        }
+      ]
+    },
+    {
+      "id": "education-ufl-edu-akwaaba-freedom-school",
+      "baseUrl": "https://education.ufl.edu/akwaaba-freedom-school/",
+      "title": "Akwaaba Freedom School - UF College of Education",
+      "isLive": true,
+      "pages": [
+        {
+          "path": "/",
+          "title": "Akwaaba Home",
+          "url": "https://education.ufl.edu/akwaaba-freedom-school/"
+        },
+        {
+          "path": "/team/",
+          "title": "Team",
+          "url": "https://education.ufl.edu/akwaaba-freedom-school/team/"
+        },
+        {
+          "path": "/volunteer/",
+          "title": "Volunteer",
+          "url": "https://education.ufl.edu/akwaaba-freedom-school/volunteer/"
+        }
+      ]
+    },
+    {
+      "id": "education-ufl-edu-aihardware",
+      "baseUrl": "https://education.ufl.edu/aihardware/",
+      "title": "AI Hardware - UF College of Education",
+      "isLive": true,
+      "pages": [
+        {
+          "path": "/",
+          "title": "AI Hardware Home",
+          "url": "https://education.ufl.edu/aihardware/"
+        },
+        {
+          "path": "/curriculum/",
+          "title": "Curriculum",
+          "url": "https://education.ufl.edu/aihardware/curriculum/"
+        },
+        {
+          "path": "/research/",
+          "title": "Research",
+          "url": "https://education.ufl.edu/aihardware/research/"
+        },
+        {
+          "path": "/curriculum-implementations/",
+          "title": "Implementations",
+          "url": "https://education.ufl.edu/aihardware/curriculum-implementations/"
+        },
+        {
+          "path": "/team/",
+          "title": "Team",
+          "url": "https://education.ufl.edu/aihardware/team/"
+        },
+        {
+          "path": "/contact/",
+          "title": "Contact",
+          "url": "https://education.ufl.edu/aihardware/contact/"
+        },
+        {
+          "path": "/research/cultivating-hardware-engineering-interest-in-high-school-students-using-hands-on-learning/",
+          "title": "Hardware Engineering",
+          "url": "https://education.ufl.edu/aihardware/research/cultivating-hardware-engineering-interest-in-high-school-students-using-hands-on-learning/"
+        },
+        {
+          "path": "/exploring-ai-hardware-applications-in-experiential-learning-environments/",
+          "title": "AI Hardware Apps",
+          "url": "https://education.ufl.edu/aihardware/exploring-ai-hardware-applications-in-experiential-learning-environments/"
+        },
+        {
+          "path": "/engaging-undergraduate-and-high-school-students-in-hands-on-computer-hardware-fundamentals-using-fpga-board-games/",
+          "title": "FPGA Games",
+          "url": "https://education.ufl.edu/aihardware/engaging-undergraduate-and-high-school-students-in-hands-on-computer-hardware-fundamentals-using-fpga-board-games/"
+        },
+        {
+          "path": "/2024/05/07/fall-2023-undergraduate-course-at-uf/",
+          "title": "Fall 2023 Course",
+          "url": "https://education.ufl.edu/aihardware/2024/05/07/fall-2023-undergraduate-course-at-uf/"
+        },
+        {
+          "path": "/2024/05/07/summer-2023-honor-seminar-in-the-sstp-program-at-uf/",
+          "title": "Summer 2023 Seminar",
+          "url": "https://education.ufl.edu/aihardware/2024/05/07/summer-2023-honor-seminar-in-the-sstp-program-at-uf/"
+        },
+        {
+          "path": "/2024/05/07/summer-2023-summer-camp-at-university-of-kansas/",
+          "title": "Summer 2023 Camp",
+          "url": "https://education.ufl.edu/aihardware/2024/05/07/summer-2023-summer-camp-at-university-of-kansas/"
+        },
+        {
+          "path": "/2024/05/10/pilot-test-jan-2023-after-school-activity/",
+          "title": "Pilot Test 2023",
+          "url": "https://education.ufl.edu/aihardware/2024/05/10/pilot-test-jan-2023-after-school-activity/"
+        },
+        {
+          "path": "/author/evejung/",
+          "title": "Author Eve Jung",
+          "url": "https://education.ufl.edu/aihardware/author/evejung/"
+        },
+        {
+          "path": "/category/uncategorized/",
+          "title": "Uncategorized",
+          "url": "https://education.ufl.edu/aihardware/category/uncategorized/"
+        }
+      ]
+    },
+    {
+      "id": "education-ufl-edu-aect",
+      "baseUrl": "https://education.ufl.edu/aect/",
+      "title": "AECT - UF College of Education",
+      "isLive": true,
+      "pages": [
+        {
+          "path": "/",
+          "title": "AECT Home",
+          "url": "https://education.ufl.edu/aect/"
+        }
+      ]
+    },
+    {
+      "id": "education-ufl-edu-aaimse",
+      "baseUrl": "https://education.ufl.edu/aaimse/",
+      "title": "AAIMSE - UF College of Education",
+      "isLive": true,
+      "pages": [
+        {
+          "path": "/",
+          "title": "AAIMSE Home",
+          "url": "https://education.ufl.edu/aaimse/"
+        },
+        {
+          "path": "/team/",
+          "title": "Team",
+          "url": "https://education.ufl.edu/aaimse/team/"
         }
       ]
     }
