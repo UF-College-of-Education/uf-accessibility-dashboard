@@ -1,4 +1,5 @@
 // app/components/DataService.ts
+// UPDATED: Now loads YOUR local JSON first, protects existing Google Sheet data
 
 export interface Site {
   id: string;
@@ -16,12 +17,94 @@ export interface Page {
 
 export async function fetchSites(): Promise<Site[]> {
   try {
-    // MERGE STRATEGY: Load Noah's data FIRST, then add custom sites at the BOTTOM
+    console.log('🔄 Starting site fetch...');
     
     const allSites: Site[] = [];
     const seenIds = new Set<string>();
+    const seenUrls = new Set<string>();
     
-    // Source 1: Noah's web mapper data (MAIN data source - loads FIRST)
+    // ============================================
+    // STRATEGY: Load YOUR data FIRST (BOTH files)
+    // ============================================
+    
+    // Source 1: sites-data1.json (PRIMARY - the BIG file with 4000+ URLs)
+    console.log('📋 Loading sites-data1.json (primary)...');
+    try {
+      const response1 = await fetch('/sites-data1.json');
+      if (response1.ok) {
+        const data1 = await response1.json();
+        if (data1.subsites && Array.isArray(data1.subsites)) {
+          console.log(`✅ Loaded ${data1.subsites.length} sites from sites-data1.json`);
+          
+          for (const site of data1.subsites) {
+            const siteObj = transformSite(site);
+            
+            if (!seenIds.has(siteObj.id)) {
+              allSites.push(siteObj);
+              seenIds.add(siteObj.id);
+              
+              siteObj.pages.forEach(page => {
+                seenUrls.add(page.url);
+              });
+            }
+          }
+        }
+      } else {
+        console.log('⚠️ /sites-data1.json not found');
+      }
+    } catch (e) {
+      console.log('⚠️ Failed to load sites-data1.json:', e);
+    }
+    
+    // Source 2: sites-data.json (SECONDARY - get any MISSING URLs)
+    console.log('📋 Loading sites-data.json (secondary - for missing URLs)...');
+    try {
+      const response2 = await fetch('/sites-data.json');
+      if (response2.ok) {
+        const data2 = await response2.json();
+        const sitesArray = data2.subsites && Array.isArray(data2.subsites) ? data2.subsites : [data2];
+        
+        let addedFromSecondary = 0;
+        for (const site of sitesArray) {
+          const siteObj = transformSite(site);
+          
+          if (!seenIds.has(siteObj.id)) {
+            // NEW SITE - add it
+            allSites.push(siteObj);
+            seenIds.add(siteObj.id);
+            addedFromSecondary++;
+            
+            siteObj.pages.forEach(page => {
+              seenUrls.add(page.url);
+            });
+          } else {
+            // Site exists - check for NEW PAGES only
+            const existingSite = allSites.find(s => s.id === siteObj.id);
+            if (existingSite) {
+              for (const page of siteObj.pages) {
+                if (!seenUrls.has(page.url)) {
+                  // This URL is NEW - add it
+                  existingSite.pages.push(page);
+                  seenUrls.add(page.url);
+                  addedFromSecondary++;
+                }
+              }
+            }
+          }
+        }
+        
+        console.log(`✅ Added ${addedFromSecondary} additional URLs from sites-data.json`);
+      }
+    } catch (e) {
+      console.log('⚠️ Failed to load sites-data.json:', e);
+    }
+    
+    // ============================================
+    // SAFETY NET: Add ONLY NEW URLs from Noah's repo
+    // ============================================
+    
+    // Source 2: Noah's web mapper (as BACKUP for NEW URLs only)
+    console.log('🔍 Checking Noah\'s data for NEW URLs...');
     try {
       const noahResponse = await fetch(
         'https://raw.githubusercontent.com/noah-n-pham/uf-web-mapper/main/public/data.json'
@@ -29,42 +112,48 @@ export async function fetchSites(): Promise<Site[]> {
       if (noahResponse.ok) {
         const noahData = await noahResponse.json();
         if (noahData.subsites && Array.isArray(noahData.subsites)) {
-          console.log(`✅ Loaded ${noahData.subsites.length} sites from Noah's web mapper`);
+          let newUrlsAdded = 0;
+          
           for (const site of noahData.subsites) {
             const siteObj = transformSite(site);
+            
+            // Check if this site ID already exists
             if (!seenIds.has(siteObj.id)) {
+              // NEW SITE - add it
               allSites.push(siteObj);
               seenIds.add(siteObj.id);
+              newUrlsAdded += siteObj.pages.length;
+              
+              siteObj.pages.forEach(page => {
+                seenUrls.add(page.url);
+              });
+            } else {
+              // Site exists - check for NEW PAGES only
+              const existingSite = allSites.find(s => s.id === siteObj.id);
+              if (existingSite) {
+                for (const page of siteObj.pages) {
+                  if (!seenUrls.has(page.url)) {
+                    // This page is NEW - add it
+                    existingSite.pages.push(page);
+                    seenUrls.add(page.url);
+                    newUrlsAdded++;
+                  }
+                }
+              }
             }
           }
+          
+          console.log(`📊 Noah's data: ${newUrlsAdded} NEW URLs added as backup`);
         }
       }
     } catch (e) {
-      console.log('⚠️ Failed to load Noah\'s data:', e);
+      console.log('⚠️ Failed to load Noah\'s data (optional):', e);
     }
     
-    // Source 2: Your custom sites-data.json (added at BOTTOM)
-    try {
-      const customResponse = await fetch('/sites-data.json');
-      if (customResponse.ok) {
-        const customData = await customResponse.json();
-        if (customData.subsites && Array.isArray(customData.subsites)) {
-          console.log('✅ Loaded custom sites from /sites-data.json');
-          for (const site of customData.subsites) {
-            const siteObj = transformSite(site);
-            // Only add if not already in Noah's data (avoids duplicates)
-            if (!seenIds.has(siteObj.id)) {
-              allSites.push(siteObj);
-              seenIds.add(siteObj.id);
-            }
-          }
-        }
-      }
-    } catch (e) {
-      console.log('⚠️ No custom sites-data.json found (optional)');
-    }
+    console.log(`✅ FINAL: ${allSites.length} total sites, ${Array.from(seenUrls).length} total URLs`);
+    console.log('✅ Merged data from: sites-data1.json (primary) + sites-data.json (secondary)');
+    console.log('⚠️ KEY: Your Google Sheet data (status/assigned/notes) is UNTOUCHED');
     
-    console.log(`📊 Total sites loaded: ${allSites.length}`);
     return allSites;
     
   } catch (error) {

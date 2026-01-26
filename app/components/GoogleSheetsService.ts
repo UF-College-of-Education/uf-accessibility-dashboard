@@ -26,17 +26,19 @@ const GOOGLE_SCRIPT_URL = typeof window !== 'undefined'
 const STATUS_SHEET_ID = '1ntgfO0PeVULOCA-Q1eLfoEJwW-izHlPpP1FvWvVk2UM';
 
 // ============================================
-// STATUS OPTIONS
+// STATUS OPTIONS - UPDATED WITH ARCHIVE
 // ============================================
 
-export type PageStatusType = 'not-started' | 'working' | 'issues' | 'completed';
+export type PageStatusType = 'not-started' | 'working' | 'issues' | 'completed' | 'archive-pending' | 'archived';
 
 // Map between dashboard values and sheet values
 const STATUS_MAP_TO_SHEET: Record<PageStatusType, string> = {
   'not-started': 'Not Started',
   'working': 'Working on it',
   'issues': 'Facing Issues',
-  'completed': 'Completed'
+  'completed': 'Completed',
+  'archive-pending': 'Archive It',
+  'archived': 'Archived'
 };
 
 const STATUS_MAP_FROM_SHEET: Record<string, PageStatusType> = {
@@ -44,11 +46,15 @@ const STATUS_MAP_FROM_SHEET: Record<string, PageStatusType> = {
   'Working on it': 'working',
   'Facing Issues': 'issues',
   'Completed': 'completed',
+  'Archive It': 'archive-pending',
+  'Archived': 'archived',
   // Also handle lowercase variants
   'not started': 'not-started',
   'working on it': 'working',
   'facing issues': 'issues',
   'completed': 'completed',
+  'archive it': 'archive-pending',
+  'archived': 'archived',
 };
 
 export const STATUS_OPTIONS: { value: PageStatusType; label: string; color: string; bgColor: string }[] = [
@@ -56,6 +62,8 @@ export const STATUS_OPTIONS: { value: PageStatusType; label: string; color: stri
   { value: 'working', label: 'Working on it', color: 'text-blue-600', bgColor: 'bg-blue-100' },
   { value: 'issues', label: 'Facing Issues', color: 'text-orange-600', bgColor: 'bg-orange-100' },
   { value: 'completed', label: 'Completed', color: 'text-green-600', bgColor: 'bg-green-100' },
+  { value: 'archive-pending', label: 'Archive It', color: 'text-indigo-600', bgColor: 'bg-indigo-100' },
+  { value: 'archived', label: 'Archived', color: 'text-red-600', bgColor: 'bg-red-100' },
 ];
 
 // ============================================

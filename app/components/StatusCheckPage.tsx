@@ -316,6 +316,10 @@ export default function StatusCheckPage({ sites }: Props) {
         return <Clock className="text-blue-600 flex-shrink-0" size={20} />;
       case 'issues':
         return <AlertTriangle className="text-orange-600 flex-shrink-0" size={20} />;
+      case 'archive-pending':
+        return <Circle className="text-indigo-600 flex-shrink-0" size={20} style={{ fill: '#4f46e5' }} />;
+      case 'archived':
+        return <Circle className="text-red-600 flex-shrink-0" size={20} style={{ fill: '#dc2626' }} />;
       default:
         return <Circle className="text-gray-400 flex-shrink-0" size={20} />;
     }
@@ -332,6 +336,19 @@ export default function StatusCheckPage({ sites }: Props) {
   const completedPages = Object.values(pageStatuses).filter(s => s.status === 'completed').length;
   const completedSites = sites.filter(site => 
     site.pages.length > 0 && site.pages.every(page => pageStatuses[page.url]?.status === 'completed')
+  ).length;
+
+  // ⭐ NEW: Calculate archive stats
+  const archivedPages = Object.values(pageStatuses).filter(s => s.status === 'archived').length;
+  const archivePendingPages = Object.values(pageStatuses).filter(s => s.status === 'archive-pending').length;
+  
+  const archivedSites = sites.filter(site =>
+    site.pages.length > 0 && site.pages.every(page => pageStatuses[page.url]?.status === 'archived')
+  ).length;
+  
+  const archivePendingSites = sites.filter(site =>
+    site.pages.some(page => pageStatuses[page.url]?.status === 'archive-pending') &&
+    !site.pages.every(page => pageStatuses[page.url]?.status === 'archived')
   ).length;
 
   const isConfigured = isGoogleSheetsConfigured();
@@ -430,8 +447,9 @@ export default function StatusCheckPage({ sites }: Props) {
         )}
       </div>
 
-      {/* Progress Overview - 2 BOXES */}
+      {/* Progress Overview - 4 STAT CARDS */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Sites Done */}
         <div className="bg-white rounded-lg border-2 border-blue-200 p-6 shadow-sm">
           <div className="flex justify-between items-center mb-3">
             <h3 className="font-semibold text-gray-900">Sites Done</h3>
@@ -445,6 +463,7 @@ export default function StatusCheckPage({ sites }: Props) {
           </div>
         </div>
 
+        {/* Pages Completed */}
         <div className="bg-white rounded-lg border-2 border-green-200 p-6 shadow-sm">
           <div className="flex justify-between items-center mb-3">
             <h3 className="font-semibold text-gray-900">Pages Completed</h3>
@@ -454,6 +473,38 @@ export default function StatusCheckPage({ sites }: Props) {
             <div 
               className="bg-green-600 h-3 rounded-full transition-all duration-500"
               style={{ width: `${totalPages > 0 ? (completedPages / totalPages) * 100 : 0}%` }}
+            />
+          </div>
+        </div>
+
+        {/* Sites to Archive */}
+        <div className="bg-white rounded-lg border-2 border-indigo-200 p-6 shadow-sm">
+          <div className="flex justify-between items-center mb-3">
+            <h3 className="font-semibold text-gray-900">Sites to Archive</h3>
+            <span className="text-2xl font-bold text-indigo-600">{archivedSites}/{archivePendingSites}</span>
+          </div>
+          <div className="w-full bg-gray-200 rounded-full h-3">
+            <div
+              className="bg-indigo-600 h-3 rounded-full transition-all duration-500"
+              style={{
+                width: `${archivePendingSites > 0 ? (archivedSites / archivePendingSites) * 100 : 0}%`,
+              }}
+            />
+          </div>
+        </div>
+
+        {/* Pages to Archive */}
+        <div className="bg-white rounded-lg border-2 border-red-200 p-6 shadow-sm">
+          <div className="flex justify-between items-center mb-3">
+            <h3 className="font-semibold text-gray-900">Pages to Archive</h3>
+            <span className="text-2xl font-bold text-red-600">{archivedPages}/{archivePendingPages}</span>
+          </div>
+          <div className="w-full bg-gray-200 rounded-full h-3">
+            <div
+              className="bg-red-600 h-3 rounded-full transition-all duration-500"
+              style={{
+                width: `${archivePendingPages > 0 ? (archivedPages / archivePendingPages) * 100 : 0}%`,
+              }}
             />
           </div>
         </div>
@@ -595,7 +646,6 @@ export default function StatusCheckPage({ sites }: Props) {
                                 </button>
                               )}
                               
-                              {/* FIXED: Added text-gray-900 for darker, more visible text */}
                               <select
                                 value={status.assignedTo}
                                 onChange={(e) => {
@@ -611,7 +661,6 @@ export default function StatusCheckPage({ sites }: Props) {
                                 ))}
                               </select>
 
-                              {/* FIXED: Added text-gray-900 for darker, more visible text */}
                               <select
                                 value={status.status}
                                 onChange={(e) => {
