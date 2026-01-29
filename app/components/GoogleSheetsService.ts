@@ -7,6 +7,7 @@
  * 1. Exporting ALL pages from dashboard to Google Sheets
  * 2. Syncing status changes from website to sheet
  * 3. Reading status from sheet back to website (AUTO-LOAD ON PAGE OPEN)
+ * 4. Site Prioritization (NEW) - Priority 1,2,3,4 for sites
  * 
  * SETUP REQUIRED:
  * Add to .env.local AND Vercel Environment Variables:
@@ -113,6 +114,12 @@ export interface SiteData {
   pages: { title: string; url: string }[];
 }
 
+export interface SitePriority {
+  siteId: string;
+  priority: 1 | 2 | 3 | 4 | null;
+  updatedDate: string;
+}
+
 // ============================================
 // LOCAL STORAGE KEYS
 // ============================================
@@ -122,6 +129,7 @@ const STORAGE_KEYS = {
   TEAM_MEMBERS: 'uf-accessibility-team-members',
   SCAN_RESULTS: 'uf-accessibility-scan-results',
   LAST_SYNC: 'uf-accessibility-last-sync',
+  SITE_PRIORITIES: 'uf-accessibility-site-priorities',
 };
 
 // ============================================
@@ -136,18 +144,19 @@ export function isGoogleSheetsConfigured(): boolean {
 }
 
 /**
- * ⭐ NEW: Fetch ALL data from Google Sheets on page load
+ * ⭐ Fetch ALL data from Google Sheets on page load
  * This is the key function that enables sharing data between users!
  */
 export async function fetchAllDataFromSheet(): Promise<{
   success: boolean;
   statuses: Record<string, { status: PageStatusType; assignedTo: string; notes: string }>;
   teamMembers: string[];
+  sitePriorities?: Record<string, { priority: 1 | 2 | 3 | 4 | null }>;
   error?: string;
 }> {
   if (!GOOGLE_SCRIPT_URL) {
     console.log('Google Sheets not configured, using local data only');
-    return { success: false, statuses: {}, teamMembers: [], error: 'Not configured' };
+    return { success: false, statuses: {}, teamMembers: [], sitePriorities: {}, error: 'Not configured' };
   }
 
   try {
@@ -183,14 +192,25 @@ export async function fetchAllDataFromSheet(): Promise<{
         });
       }
 
+      // Convert site priorities
+      const sitePriorities: Record<string, { priority: 1 | 2 | 3 | 4 | null }> = {};
+      if (data.sitePriorities && typeof data.sitePriorities === 'object') {
+        Object.keys(data.sitePriorities).forEach(siteId => {
+          sitePriorities[siteId] = {
+            priority: data.sitePriorities[siteId].priority || null
+          };
+        });
+      }
+
       return {
         success: true,
         statuses,
         teamMembers: data.teamMembers || [],
+        sitePriorities,
       };
     }
 
-    return { success: false, statuses: {}, teamMembers: [], error: data.error || 'Unknown error' };
+    return { success: false, statuses: {}, teamMembers: [], sitePriorities: {}, error: data.error || 'Unknown error' };
   } catch (error) {
     console.error('Error fetching from Google Sheets:', error);
     
@@ -202,6 +222,7 @@ export async function fetchAllDataFromSheet(): Promise<{
       success: Object.keys(csvStatuses).length > 0,
       statuses: csvStatuses,
       teamMembers: [],
+      sitePriorities: {},
       error: Object.keys(csvStatuses).length > 0 ? undefined : String(error),
     };
   }
@@ -401,6 +422,37 @@ export async function addTeamMemberToSheet(name: string): Promise<boolean> {
 }
 
 /**
+ * ⭐ NEW: Update site priority in Google Sheets
+ */
+export async function updateSitePriorityInSheet(
+  siteId: string,
+  priority: 1 | 2 | 3 | 4 | null
+): Promise<boolean> {
+  if (!GOOGLE_SCRIPT_URL) {
+    console.log('Google Sheets not configured, saving locally only');
+    return false;
+  }
+
+  try {
+    await fetch(GOOGLE_SCRIPT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'updateSitePriority',
+        siteId: siteId,
+        priority: priority
+      }),
+      mode: 'no-cors'
+    });
+
+    return true;
+  } catch (error) {
+    console.error('Error updating site priority in Google Sheets:', error);
+    return false;
+  }
+}
+
+/**
  * Parse CSV text into 2D array
  */
 function parseCSV(csvText: string): string[][] {
@@ -489,7 +541,7 @@ export function getAllPageStatusesLocal(): Record<string, {
 }
 
 /**
- * ⭐ NEW: Merge sheet data into localStorage
+ * ⭐ Merge sheet data into localStorage
  * This ensures everyone sees the same data
  */
 export function mergeSheetDataIntoLocal(sheetStatuses: Record<string, { status: PageStatusType; assignedTo: string; notes: string }>): void {
@@ -557,6 +609,90 @@ export function removeTeamMember(name: string): TeamMember[] {
   const members = getTeamMembersLocal().filter(m => m.name !== name);
   saveTeamMembersLocal(members);
   return members;
+}
+
+// ============================================
+// ⭐ NEW: SITE PRIORITY FUNCTIONS
+// ============================================
+
+/**
+ * Get all site priorities from localStorage
+ */
+export function getAllSitePrioritiesLocal(): Record<string, SitePriority> {
+  if (typeof window === 'undefined') return {};
+  const stored = localStorage.getItem(STORAGE_KEYS.SITE_PRIORITIES);
+  if (!stored) return {};
+
+  try {
+    return JSON.parse(stored);
+  } catch (e) {
+    console.error('Error parsing site priorities:', e);
+    return {};
+  }
+}
+
+/**
+ * Save site priority locally AND sync to Google Sheets
+ */
+export function saveSitePriorityLocal(
+  siteId: string,
+  priority: 1 | 2 | 3 | 4 | null
+): void {
+  if (typeof window === 'undefined') return;
+
+  const existing = getAllSitePrioritiesLocal();
+  existing[siteId] = {
+    siteId,
+    priority,
+    updatedDate: new Date().toISOString(),
+  };
+  localStorage.setItem(STORAGE_KEYS.SITE_PRIORITIES, JSON.stringify(existing));
+
+  // Also sync to Google Sheets (fire and forget)
+  updateSitePriorityInSheet(siteId, priority);
+}
+
+/**
+ * Get priority for a specific site
+ */
+export function getSitePriority(siteId: string): 1 | 2 | 3 | 4 | null {
+  const priorities = getAllSitePrioritiesLocal();
+  return priorities[siteId]?.priority || null;
+}
+
+/**
+ * Merge sheet site priorities into localStorage
+ */
+export function mergeSitePrioritiesIntoLocal(
+  sheetPriorities: Record<string, { priority: 1 | 2 | 3 | 4 | null }>
+): void {
+  if (typeof window === 'undefined') return;
+
+  const existing = getAllSitePrioritiesLocal();
+
+  Object.keys(sheetPriorities).forEach(siteId => {
+    existing[siteId] = {
+      siteId,
+      priority: sheetPriorities[siteId].priority,
+      updatedDate: new Date().toISOString(),
+    };
+  });
+
+  localStorage.setItem(STORAGE_KEYS.SITE_PRIORITIES, JSON.stringify(existing));
+}
+
+/**
+ * Sort sites by priority (1,2,3,4 first, then null at end)
+ */
+export function sortSitesByPriority(sites: SiteData[]): SiteData[] {
+  const priorities = getAllSitePrioritiesLocal();
+
+  return [...sites].sort((a, b) => {
+    const priorityA = priorities[a.id]?.priority ?? 999;
+    const priorityB = priorities[b.id]?.priority ?? 999;
+
+    return priorityA - priorityB;
+  });
 }
 
 // ============================================

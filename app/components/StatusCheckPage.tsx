@@ -3,7 +3,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Site } from './DataService';
 import { 
   ChevronDown, 
   ChevronUp, 
@@ -26,16 +25,17 @@ import {
   Cloud,
   CloudOff
 } from 'lucide-react';
-import { 
+import {
   PageStatusType,
   STATUS_OPTIONS,
   ScanResultData,
+  SiteData,
+  TeamMember,
   getTeamMembersLocal,
   saveTeamMembersLocal,
   getAllPageStatusesLocal,
   savePageStatusLocal,
   getLatestScanForPageLocal,
-  TeamMember,
   exportAllPagesToSheet,
   isGoogleSheetsConfigured,
   getLastSyncTime,
@@ -43,11 +43,17 @@ import {
   addTeamMember as addTeamMemberService,
   removeTeamMember as removeTeamMemberService,
   fetchAllDataFromSheet,
-  mergeSheetDataIntoLocal
+  mergeSheetDataIntoLocal,
+  // NEW IMPORTS FOR PRIORITIZATION
+  getAllSitePrioritiesLocal,
+  saveSitePriorityLocal,
+  getSitePriority,
+  sortSitesByPriority,
+  mergeSitePrioritiesIntoLocal,
 } from './GoogleSheetsService';
 
 interface Props {
-  sites: Site[];
+  sites: SiteData[];
 }
 
 interface LocalStatus {
@@ -58,6 +64,7 @@ interface LocalStatus {
 }
 
 export default function StatusCheckPage({ sites }: Props) {
+  // Existing state
   const [expandedSite, setExpandedSite] = useState<string | null>(null);
   const [pageStatuses, setPageStatuses] = useState<Record<string, LocalStatus>>({});
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
@@ -68,6 +75,9 @@ export default function StatusCheckPage({ sites }: Props) {
   const [exporting, setExporting] = useState(false);
   const [exportSuccess, setExportSuccess] = useState(false);
   const [cloudStatus, setCloudStatus] = useState<'loading' | 'connected' | 'offline'>('loading');
+  
+  // NEW STATE: Site priorities
+  const [sitePriorities, setSitePriorities] = useState<Record<string, 1 | 2 | 3 | 4 | null>>({});
   
   // Notes popup state
   const [notesPopup, setNotesPopup] = useState<{
@@ -85,37 +95,37 @@ export default function StatusCheckPage({ sites }: Props) {
     scanData: ScanResultData | null;
   }>({ isOpen: false, pageUrl: '', pageTitle: '', scanData: null });
 
-  // ⭐ AUTO-LOAD FROM GOOGLE SHEETS ON MOUNT
+  // Load data on mount
   useEffect(() => {
     loadDataFromCloud();
   }, []);
 
   /**
-   * ⭐ NEW: Load data from Google Sheets first, then merge with local
-   * This ensures everyone sees the same data!
+   * Load data from Google Sheets (including priorities)
    */
   async function loadDataFromCloud() {
     setLoading(true);
     setCloudStatus('loading');
 
     try {
-      // First, try to fetch from Google Sheets
       const sheetData = await fetchAllDataFromSheet();
       
       if (sheetData.success && Object.keys(sheetData.statuses).length > 0) {
-        console.log('✅ Cloud data loaded:', Object.keys(sheetData.statuses).length, 'pages');
+        console.log('✅ Cloud data loaded');
         
-        // Merge sheet data into localStorage (sheet takes precedence)
         mergeSheetDataIntoLocal(sheetData.statuses);
         
-        // Update team members if we got any from sheet
+        // NEW: Merge site priorities if provided
+        if (sheetData.sitePriorities) {
+          mergeSitePrioritiesIntoLocal(sheetData.sitePriorities);
+        }
+        
         if (sheetData.teamMembers && sheetData.teamMembers.length > 0) {
           const members = sheetData.teamMembers.map(name => ({
             name,
             email: '',
             role: 'Team Member'
           }));
-          // Merge with existing
           const existing = getTeamMembersLocal();
           const allNames = new Set([...existing.map(m => m.name), ...sheetData.teamMembers]);
           const mergedMembers = Array.from(allNames).map(name => ({
@@ -129,28 +139,41 @@ export default function StatusCheckPage({ sites }: Props) {
         setCloudStatus('connected');
         setLastSyncTime();
       } else {
-        console.log('ℹ️ No cloud data or not configured, using local');
+        console.log('ℹ️ No cloud data, using local');
         setCloudStatus('offline');
       }
       
-      // Now load from localStorage (which may have been updated with sheet data)
       const statuses = getAllPageStatusesLocal();
       const members = getTeamMembersLocal();
       const lastSync = getLastSyncTime();
+      
+      // NEW: Load site priorities
+      const priorities = getAllSitePrioritiesLocal();
+      const prioritiesMap: Record<string, 1 | 2 | 3 | 4 | null> = {};
+      Object.values(priorities).forEach(p => {
+        prioritiesMap[p.siteId] = p.priority;
+      });
 
       setPageStatuses(statuses);
       setTeamMembers(members);
       setLastSyncTimeState(lastSync ? new Date(lastSync).toLocaleString() : 'Never');
+      setSitePriorities(prioritiesMap); // NEW
       
     } catch (error) {
       console.error('Error loading data:', error);
       setCloudStatus('offline');
       
-      // Fall back to local data
       const statuses = getAllPageStatusesLocal();
       const members = getTeamMembersLocal();
+      const priorities = getAllSitePrioritiesLocal();
+      const prioritiesMap: Record<string, 1 | 2 | 3 | 4 | null> = {};
+      Object.values(priorities).forEach(p => {
+        prioritiesMap[p.siteId] = p.priority;
+      });
+      
       setPageStatuses(statuses);
       setTeamMembers(members);
+      setSitePriorities(prioritiesMap); // NEW
     } finally {
       setLoading(false);
     }
@@ -160,7 +183,6 @@ export default function StatusCheckPage({ sites }: Props) {
     await loadDataFromCloud();
   }
 
-  // Export ALL pages to Google Sheets
   async function handleExportToSheet() {
     setExporting(true);
     setExportSuccess(false);
@@ -184,7 +206,6 @@ export default function StatusCheckPage({ sites }: Props) {
     }
   }
 
-  // Update page status
   function updateStatus(pageUrl: string, newStatus: PageStatusType) {
     const currentStatus = pageStatuses[pageUrl] || {
       status: 'not-started',
@@ -200,7 +221,6 @@ export default function StatusCheckPage({ sites }: Props) {
       updatedDate: new Date().toISOString(),
     };
 
-    // Save locally AND sync to Google Sheets
     savePageStatusLocal(pageUrl, {
       status: updated.status,
       assignedTo: updated.assignedTo,
@@ -213,7 +233,6 @@ export default function StatusCheckPage({ sites }: Props) {
     }));
   }
 
-  // Update assigned team member
   function updateAssignedTo(pageUrl: string, assignedTo: string) {
     const currentStatus = pageStatuses[pageUrl] || {
       status: 'not-started',
@@ -228,7 +247,6 @@ export default function StatusCheckPage({ sites }: Props) {
       updatedDate: new Date().toISOString(),
     };
 
-    // Save locally AND sync to Google Sheets
     savePageStatusLocal(pageUrl, {
       status: updated.status,
       assignedTo: updated.assignedTo,
@@ -241,7 +259,6 @@ export default function StatusCheckPage({ sites }: Props) {
     }));
   }
 
-  // Update notes
   function saveNotes(pageUrl: string, notes: string) {
     const currentStatus = pageStatuses[pageUrl] || {
       status: 'not-started',
@@ -270,7 +287,6 @@ export default function StatusCheckPage({ sites }: Props) {
     setNotesPopup({ isOpen: false, pageUrl: '', pageTitle: '', notes: '' });
   }
 
-  // Open notes popup
   function openNotesPopup(pageUrl: string, pageTitle: string) {
     const currentNotes = pageStatuses[pageUrl]?.notes || '';
     setNotesPopup({
@@ -281,7 +297,6 @@ export default function StatusCheckPage({ sites }: Props) {
     });
   }
 
-  // Open report popup
   function openReportPopup(pageUrl: string, pageTitle: string) {
     const scanData = getLatestScanForPageLocal(pageUrl);
     setReportPopup({
@@ -292,7 +307,6 @@ export default function StatusCheckPage({ sites }: Props) {
     });
   }
 
-  // Team member functions
   function addTeamMember() {
     if (!newMemberName.trim()) return;
     
@@ -307,7 +321,61 @@ export default function StatusCheckPage({ sites }: Props) {
     setTeamMembers(updated);
   }
 
-  // Get status icon
+  // NEW: Update site priority
+  function updateSitePriority(siteId: string, priority: 1 | 2 | 3 | 4 | null) {
+    saveSitePriorityLocal(siteId, priority);
+    setSitePriorities(prev => ({
+      ...prev,
+      [siteId]: priority
+    }));
+  }
+
+  // NEW: Get priority style
+  function getPriorityStyle(priority: 1 | 2 | 3 | 4 | null) {
+    switch (priority) {
+      case 1:
+        return {
+          icon: '🔴',
+          label: 'Priority 1',
+          color: 'text-red-700',
+          bg: 'bg-red-100',
+          borderColor: 'border-red-300'
+        };
+      case 2:
+        return {
+          icon: '🟠',
+          label: 'Priority 2',
+          color: 'text-orange-700',
+          bg: 'bg-orange-100',
+          borderColor: 'border-orange-300'
+        };
+      case 3:
+        return {
+          icon: '🟡',
+          label: 'Priority 3',
+          color: 'text-amber-700',
+          bg: 'bg-amber-100',
+          borderColor: 'border-amber-300'
+        };
+      case 4:
+        return {
+          icon: '🔵',
+          label: 'Priority 4',
+          color: 'text-blue-700',
+          bg: 'bg-blue-100',
+          borderColor: 'border-blue-300'
+        };
+      default:
+        return {
+          icon: '⭕',
+          label: 'Not Set',
+          color: 'text-gray-700',
+          bg: 'bg-gray-100',
+          borderColor: 'border-gray-300'
+        };
+    }
+  }
+
   function getStatusIcon(status: PageStatusType) {
     switch (status) {
       case 'completed':
@@ -325,20 +393,17 @@ export default function StatusCheckPage({ sites }: Props) {
     }
   }
 
-  // Get status style
   function getStatusStyle(status: PageStatusType) {
     const option = STATUS_OPTIONS.find(o => o.value === status);
     return option || STATUS_OPTIONS[0];
   }
 
-  // Calculate stats
   const totalPages = sites.reduce((sum, site) => sum + site.pages.length, 0);
   const completedPages = Object.values(pageStatuses).filter(s => s.status === 'completed').length;
   const completedSites = sites.filter(site => 
     site.pages.length > 0 && site.pages.every(page => pageStatuses[page.url]?.status === 'completed')
   ).length;
 
-  // ⭐ NEW: Calculate archive stats
   const archivedPages = Object.values(pageStatuses).filter(s => s.status === 'archived').length;
   const archivePendingPages = Object.values(pageStatuses).filter(s => s.status === 'archive-pending').length;
   
@@ -352,6 +417,9 @@ export default function StatusCheckPage({ sites }: Props) {
   ).length;
 
   const isConfigured = isGoogleSheetsConfigured();
+
+  // NEW: Sort sites by priority
+  const sortedSites = sortSitesByPriority(sites);
 
   if (loading) {
     return (
@@ -374,7 +442,6 @@ export default function StatusCheckPage({ sites }: Props) {
         
         {/* Sync Controls */}
         <div className="flex items-center justify-center gap-3 mt-3 flex-wrap">
-          {/* Cloud Status Indicator */}
           <span className={`flex items-center gap-1 text-sm ${
             cloudStatus === 'connected' ? 'text-green-600' :
             cloudStatus === 'loading' ? 'text-blue-600' : 'text-gray-500'
@@ -433,10 +500,9 @@ export default function StatusCheckPage({ sites }: Props) {
           </a>
         </div>
         
-        {/* Sync Status Messages */}
         {!isConfigured && (
           <div className="mt-3 p-2 bg-yellow-50 border border-yellow-200 rounded-lg text-sm text-yellow-800 max-w-2xl mx-auto">
-            ⚠️ Google Sheets sync not configured. Add <code className="bg-yellow-100 px-1 rounded">NEXT_PUBLIC_GOOGLE_SCRIPT_URL</code> to Vercel Environment Variables
+            ⚠️ Google Sheets sync not configured
           </div>
         )}
         
@@ -447,9 +513,8 @@ export default function StatusCheckPage({ sites }: Props) {
         )}
       </div>
 
-      {/* Progress Overview - 4 STAT CARDS */}
+      {/* Progress Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Sites Done */}
         <div className="bg-white rounded-lg border-2 border-blue-200 p-6 shadow-sm">
           <div className="flex justify-between items-center mb-3">
             <h3 className="font-semibold text-gray-900">Sites Done</h3>
@@ -463,7 +528,6 @@ export default function StatusCheckPage({ sites }: Props) {
           </div>
         </div>
 
-        {/* Pages Completed */}
         <div className="bg-white rounded-lg border-2 border-green-200 p-6 shadow-sm">
           <div className="flex justify-between items-center mb-3">
             <h3 className="font-semibold text-gray-900">Pages Completed</h3>
@@ -477,7 +541,6 @@ export default function StatusCheckPage({ sites }: Props) {
           </div>
         </div>
 
-        {/* Sites to Archive */}
         <div className="bg-white rounded-lg border-2 border-indigo-200 p-6 shadow-sm">
           <div className="flex justify-between items-center mb-3">
             <h3 className="font-semibold text-gray-900">Sites to Archive</h3>
@@ -493,7 +556,6 @@ export default function StatusCheckPage({ sites }: Props) {
           </div>
         </div>
 
-        {/* Pages to Archive */}
         <div className="bg-white rounded-lg border-2 border-red-200 p-6 shadow-sm">
           <div className="flex justify-between items-center mb-3">
             <h3 className="font-semibold text-gray-900">Pages to Archive</h3>
@@ -559,24 +621,33 @@ export default function StatusCheckPage({ sites }: Props) {
         </div>
       </div>
 
-      {/* Sites List */}
+      {/* Sites List - UPDATED WITH PRIORITIES */}
       <div className="space-y-3">
-        {sites.map(site => {
+        {sortedSites.map(site => {
           const isExpanded = expandedSite === site.id;
           const completedInSite = site.pages.filter(p => pageStatuses[p.url]?.status === 'completed').length;
           const progress = site.pages.length > 0 ? (completedInSite / site.pages.length) * 100 : 0;
+          
+          // NEW: Get priority for this site
+          const sitePriority = sitePriorities[site.id] || null;
+          const priorityStyle = getPriorityStyle(sitePriority);
 
           return (
             <div key={site.id} className="bg-white rounded-lg border shadow-sm overflow-hidden">
+              {/* UPDATED HEADER WITH PRIORITY DROPDOWN */}
               <div 
                 className="p-4 cursor-pointer hover:bg-gray-50 transition"
                 onClick={() => setExpandedSite(isExpanded ? null : site.id)}
               >
-                <div className="flex items-center justify-between">
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-gray-900">{site.title}</h3>
-                    <p className="text-sm text-gray-600">{site.baseUrl}</p>
-                    <div className="flex items-center gap-2 mt-2">
+                <div className="flex items-center justify-between gap-4">
+                  {/* Left: Title, Progress (No Logo) */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-3 mb-1">
+                      <span className="text-2xl">{priorityStyle.icon}</span>
+                      <h3 className="font-semibold text-gray-900 truncate">{site.title}</h3>
+                    </div>
+                    <p className="text-sm text-gray-600 ml-0 truncate">{site.baseUrl}</p>
+                    <div className="flex items-center gap-2 mt-2 ml-0">
                       <span className="text-sm text-gray-600">
                         {completedInSite}/{site.pages.length} Pages
                       </span>
@@ -588,10 +659,33 @@ export default function StatusCheckPage({ sites }: Props) {
                       </div>
                     </div>
                   </div>
-                  {isExpanded ? <ChevronUp size={24} /> : <ChevronDown size={24} />}
+
+                  {/* Right: Priority Dropdown + Expand Button */}
+                  <div className="flex items-center gap-3 flex-shrink-0">
+                    {/* NEW: PRIORITY DROPDOWN */}
+                    <select
+                      value={sitePriority ?? ''}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        const priority = value === '' ? null : (parseInt(value) as 1 | 2 | 3 | 4);
+                        updateSitePriority(site.id, priority);
+                      }}
+                      onClick={(e) => e.stopPropagation()}
+                      className={`text-xs border-2 rounded px-3 py-1.5 bg-white cursor-pointer hover:bg-opacity-90 w-36 font-medium transition ${priorityStyle.color} ${priorityStyle.bg} border-current`}
+                    >
+                      <option value="">⭕ Not Set</option>
+                      <option value="1">🔴 Priority 1</option>
+                      <option value="2">🟠 Priority 2</option>
+                      <option value="3">🟡 Priority 3</option>
+                      <option value="4">🔵 Priority 4</option>
+                    </select>
+
+                    {isExpanded ? <ChevronUp size={24} /> : <ChevronDown size={24} />}
+                  </div>
                 </div>
               </div>
 
+              {/* Expanded Content */}
               {isExpanded && (
                 <div className="border-t bg-gray-50 p-4">
                   <div className="space-y-2">
@@ -610,8 +704,12 @@ export default function StatusCheckPage({ sites }: Props) {
                             <div className="flex items-center gap-3 flex-1 min-w-0">
                               {getStatusIcon(status.status)}
                               <div className="flex-1 min-w-0">
-                                <div className="font-medium text-gray-900 truncate">{page.title}</div>
-                                <div className="text-xs text-gray-500 truncate">{page.url}</div>
+                                <div className="font-medium text-gray-900 truncate">
+                                  {page.title}
+                                </div>
+                                <div className="text-xs text-gray-500 truncate">
+                                  {page.url}
+                                </div>
                                 {status.status !== 'not-started' && status.assignedTo && (
                                   <div className={`text-xs mt-1 ${statusStyle.color}`}>
                                     {statusStyle.label} by {status.assignedTo}
@@ -626,7 +724,9 @@ export default function StatusCheckPage({ sites }: Props) {
                                   e.stopPropagation();
                                   openNotesPopup(page.url, page.title);
                                 }}
-                                className={`p-1.5 rounded hover:bg-white transition ${hasNotes ? 'text-purple-600' : 'text-gray-400'}`}
+                                className={`p-1.5 rounded hover:bg-white transition ${
+                                  hasNotes ? 'text-purple-600' : 'text-gray-400'
+                                }`}
                                 title={hasNotes ? 'View/Edit Notes' : 'Add Notes'}
                               >
                                 <MessageSquare size={16} />
@@ -657,7 +757,9 @@ export default function StatusCheckPage({ sites }: Props) {
                               >
                                 <option value="" className="text-gray-900">Assign to</option>
                                 {teamMembers.map((member, mIdx) => (
-                                  <option key={mIdx} value={member.name} className="text-gray-900">{member.name}</option>
+                                  <option key={mIdx} value={member.name} className="text-gray-900">
+                                    {member.name}
+                                  </option>
                                 ))}
                               </select>
 
@@ -681,7 +783,8 @@ export default function StatusCheckPage({ sites }: Props) {
 
                           {hasNotes && (
                             <div className="mt-2 p-2 bg-white rounded text-xs text-gray-600 border">
-                              <span className="font-medium">Notes:</span> {status.notes.substring(0, 100)}{status.notes.length > 100 ? '...' : ''}
+                              <span className="font-medium">Notes:</span> {status.notes.substring(0, 100)}
+                              {status.notes.length > 100 ? '...' : ''}
                             </div>
                           )}
                         </div>
