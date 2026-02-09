@@ -1,30 +1,18 @@
 // app/components/StatusCheckPage.tsx
-
 'use client';
 
-import { useState, useEffect } from 'react';
-import { 
-  ChevronDown, 
-  ChevronUp, 
-  CheckCircle, 
-  Circle,
-  Clock,
-  AlertTriangle,
-  Users, 
-  Plus, 
-  RefreshCw,
-  ExternalLink,
-  Eye,
-  X,
-  FileText,
-  Loader2,
-  Save,
-  MessageSquare,
-  Upload,
-  Check,
-  Cloud,
-  CloudOff
-} from 'lucide-react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
+import { Shield, Activity, Search } from 'lucide-react';
+import { TooltipProvider } from '@/components/ui/tooltip';
+import StatCards from '@/components/dashboard/stat-cards';
+import TeamMembers from '@/components/dashboard/team-members';
+import SyncHeader from '@/components/dashboard/sync-header';
+import SiteCard from '@/components/dashboard/site-card';
+import NotesDialog from '@/components/dashboard/notes-dialog';
+import ReportDialog from '@/components/dashboard/report-dialog';
+import StatusLegend from '@/components/dashboard/status-legend';
+import BallCursor from '@/components/ball-cursor';
+import InteractiveBackground from '@/components/interactive-background';
 import {
   PageStatusType,
   STATUS_OPTIONS,
@@ -44,7 +32,6 @@ import {
   removeTeamMember as removeTeamMemberService,
   fetchAllDataFromSheet,
   mergeSheetDataIntoLocal,
-  // NEW IMPORTS FOR PRIORITIZATION
   getAllSitePrioritiesLocal,
   saveSitePriorityLocal,
   getSitePriority,
@@ -64,68 +51,59 @@ interface LocalStatus {
 }
 
 export default function StatusCheckPage({ sites }: Props) {
-  // Existing state
-  const [expandedSite, setExpandedSite] = useState<string | null>(null);
+  // ============================================
+  // STATE — ALL YOUR ORIGINAL STATE PRESERVED
+  // ============================================
   const [pageStatuses, setPageStatuses] = useState<Record<string, LocalStatus>>({});
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
-  const [newMemberName, setNewMemberName] = useState('');
-  const [showAddMember, setShowAddMember] = useState(false);
+  const [sitePriorities, setSitePriorities] = useState<Record<string, 1 | 2 | 3 | 4 | null>>({});
   const [loading, setLoading] = useState(true);
   const [lastSyncTime, setLastSyncTimeState] = useState<string>('');
   const [exporting, setExporting] = useState(false);
   const [exportSuccess, setExportSuccess] = useState(false);
   const [cloudStatus, setCloudStatus] = useState<'loading' | 'connected' | 'offline'>('loading');
-  
-  // NEW STATE: Site priorities
-  const [sitePriorities, setSitePriorities] = useState<Record<string, 1 | 2 | 3 | 4 | null>>({});
-  
-  // Notes popup state
-  const [notesPopup, setNotesPopup] = useState<{
+  const [searchQuery, setSearchQuery] = useState('');
+
+  // Dialog state (V0 style)
+  const [notesDialog, setNotesDialog] = useState({
+    isOpen: false,
+    pageUrl: '',
+    pageTitle: '',
+    notes: '',
+  });
+  const [reportDialog, setReportDialog] = useState<{
     isOpen: boolean;
-    pageUrl: string;
-    pageTitle: string;
-    notes: string;
-  }>({ isOpen: false, pageUrl: '', pageTitle: '', notes: '' });
-  
-  // View report popup state
-  const [reportPopup, setReportPopup] = useState<{
-    isOpen: boolean;
-    pageUrl: string;
     pageTitle: string;
     scanData: ScanResultData | null;
-  }>({ isOpen: false, pageUrl: '', pageTitle: '', scanData: null });
+  }>({
+    isOpen: false,
+    pageTitle: '',
+    scanData: null,
+  });
 
-  // Load data on mount
+  // ============================================
+  // LOAD DATA — YOUR ORIGINAL CLOUD SYNC LOGIC
+  // ============================================
   useEffect(() => {
     loadDataFromCloud();
   }, []);
 
-  /**
-   * Load data from Google Sheets (including priorities)
-   */
   async function loadDataFromCloud() {
     setLoading(true);
     setCloudStatus('loading');
 
     try {
       const sheetData = await fetchAllDataFromSheet();
-      
+
       if (sheetData.success && Object.keys(sheetData.statuses).length > 0) {
         console.log('✅ Cloud data loaded');
-        
         mergeSheetDataIntoLocal(sheetData.statuses);
-        
-        // NEW: Merge site priorities if provided
+
         if (sheetData.sitePriorities) {
           mergeSitePrioritiesIntoLocal(sheetData.sitePriorities);
         }
-        
+
         if (sheetData.teamMembers && sheetData.teamMembers.length > 0) {
-          const members = sheetData.teamMembers.map(name => ({
-            name,
-            email: '',
-            role: 'Team Member'
-          }));
           const existing = getTeamMembersLocal();
           const allNames = new Set([...existing.map(m => m.name), ...sheetData.teamMembers]);
           const mergedMembers = Array.from(allNames).map(name => ({
@@ -135,19 +113,18 @@ export default function StatusCheckPage({ sites }: Props) {
           }));
           saveTeamMembersLocal(mergedMembers);
         }
-        
+
         setCloudStatus('connected');
         setLastSyncTime();
       } else {
         console.log('ℹ️ No cloud data, using local');
         setCloudStatus('offline');
       }
-      
+
       const statuses = getAllPageStatusesLocal();
       const members = getTeamMembersLocal();
       const lastSync = getLastSyncTime();
-      
-      // NEW: Load site priorities
+
       const priorities = getAllSitePrioritiesLocal();
       const prioritiesMap: Record<string, 1 | 2 | 3 | 4 | null> = {};
       Object.values(priorities).forEach(p => {
@@ -157,12 +134,11 @@ export default function StatusCheckPage({ sites }: Props) {
       setPageStatuses(statuses);
       setTeamMembers(members);
       setLastSyncTimeState(lastSync ? new Date(lastSync).toLocaleString() : 'Never');
-      setSitePriorities(prioritiesMap); // NEW
-      
+      setSitePriorities(prioritiesMap);
     } catch (error) {
       console.error('Error loading data:', error);
       setCloudStatus('offline');
-      
+
       const statuses = getAllPageStatusesLocal();
       const members = getTeamMembersLocal();
       const priorities = getAllSitePrioritiesLocal();
@@ -170,26 +146,28 @@ export default function StatusCheckPage({ sites }: Props) {
       Object.values(priorities).forEach(p => {
         prioritiesMap[p.siteId] = p.priority;
       });
-      
+
       setPageStatuses(statuses);
       setTeamMembers(members);
-      setSitePriorities(prioritiesMap); // NEW
+      setSitePriorities(prioritiesMap);
     } finally {
       setLoading(false);
     }
   }
 
+  // ============================================
+  // HANDLERS — YOUR ORIGINAL LOGIC PRESERVED
+  // ============================================
   async function handleRefresh() {
     await loadDataFromCloud();
   }
 
-  async function handleExportToSheet() {
+  async function handleExport() {
     setExporting(true);
     setExportSuccess(false);
-    
+
     try {
       const result = await exportAllPagesToSheet(sites);
-      
       if (result.success) {
         setExportSuccess(true);
         setLastSyncTimeState(new Date().toLocaleString());
@@ -227,13 +205,10 @@ export default function StatusCheckPage({ sites }: Props) {
       notes: updated.notes,
     });
 
-    setPageStatuses(prev => ({
-      ...prev,
-      [pageUrl]: updated
-    }));
+    setPageStatuses(prev => ({ ...prev, [pageUrl]: updated }));
   }
 
-  function updateAssignedTo(pageUrl: string, assignedTo: string) {
+  function updateAssignment(pageUrl: string, assignedTo: string) {
     const currentStatus = pageStatuses[pageUrl] || {
       status: 'not-started',
       assignedTo: '',
@@ -253,10 +228,31 @@ export default function StatusCheckPage({ sites }: Props) {
       notes: updated.notes,
     });
 
-    setPageStatuses(prev => ({
-      ...prev,
-      [pageUrl]: updated
-    }));
+    setPageStatuses(prev => ({ ...prev, [pageUrl]: updated }));
+  }
+
+  function updatePriority(siteId: string, priority: 1 | 2 | 3 | 4 | null) {
+    saveSitePriorityLocal(siteId, priority);
+    setSitePriorities(prev => ({ ...prev, [siteId]: priority }));
+  }
+
+  function handleAddTeamMember(name: string) {
+    const updated = addTeamMemberService(name);
+    setTeamMembers(updated);
+  }
+
+  function handleRemoveTeamMember(name: string) {
+    const updated = removeTeamMemberService(name);
+    setTeamMembers(updated);
+  }
+
+  function openNotes(pageUrl: string, pageTitle: string) {
+    setNotesDialog({
+      isOpen: true,
+      pageUrl,
+      pageTitle,
+      notes: pageStatuses[pageUrl]?.notes || '',
+    });
   }
 
   function saveNotes(pageUrl: string, notes: string) {
@@ -279,668 +275,210 @@ export default function StatusCheckPage({ sites }: Props) {
       notes: updated.notes,
     });
 
-    setPageStatuses(prev => ({
-      ...prev,
-      [pageUrl]: updated
-    }));
-
-    setNotesPopup({ isOpen: false, pageUrl: '', pageTitle: '', notes: '' });
+    setPageStatuses(prev => ({ ...prev, [pageUrl]: updated }));
+    setNotesDialog({ isOpen: false, pageUrl: '', pageTitle: '', notes: '' });
   }
 
-  function openNotesPopup(pageUrl: string, pageTitle: string) {
-    const currentNotes = pageStatuses[pageUrl]?.notes || '';
-    setNotesPopup({
-      isOpen: true,
-      pageUrl,
-      pageTitle,
-      notes: currentNotes
-    });
-  }
-
-  function openReportPopup(pageUrl: string, pageTitle: string) {
+  function openReport(pageUrl: string, pageTitle: string) {
     const scanData = getLatestScanForPageLocal(pageUrl);
-    setReportPopup({
+    setReportDialog({
       isOpen: true,
-      pageUrl,
       pageTitle,
-      scanData
+      scanData,
     });
   }
 
-  function addTeamMember() {
-    if (!newMemberName.trim()) return;
-    
-    const updated = addTeamMemberService(newMemberName.trim());
-    setTeamMembers(updated);
-    setNewMemberName('');
-    setShowAddMember(false);
-  }
+  const getScanData = useCallback(
+    (pageUrl: string): ScanResultData | null => {
+      return getLatestScanForPageLocal(pageUrl);
+    },
+    []
+  );
 
-  function removeTeamMember(name: string) {
-    const updated = removeTeamMemberService(name);
-    setTeamMembers(updated);
-  }
-
-  // NEW: Update site priority
-  function updateSitePriority(siteId: string, priority: 1 | 2 | 3 | 4 | null) {
-    saveSitePriorityLocal(siteId, priority);
-    setSitePriorities(prev => ({
-      ...prev,
-      [siteId]: priority
-    }));
-  }
-
-  // NEW: Get priority style
-  function getPriorityStyle(priority: 1 | 2 | 3 | 4 | null) {
-    switch (priority) {
-      case 1:
-        return {
-          icon: '🔴',
-          label: 'Priority 1',
-          color: 'text-red-700',
-          bg: 'bg-red-100',
-          borderColor: 'border-red-300'
-        };
-      case 2:
-        return {
-          icon: '🟠',
-          label: 'Priority 2',
-          color: 'text-orange-700',
-          bg: 'bg-orange-100',
-          borderColor: 'border-orange-300'
-        };
-      case 3:
-        return {
-          icon: '🟡',
-          label: 'Priority 3',
-          color: 'text-amber-700',
-          bg: 'bg-amber-100',
-          borderColor: 'border-amber-300'
-        };
-      case 4:
-        return {
-          icon: '🔵',
-          label: 'Priority 4',
-          color: 'text-blue-700',
-          bg: 'bg-blue-100',
-          borderColor: 'border-blue-300'
-        };
-      default:
-        return {
-          icon: '⭕',
-          label: 'Not Set',
-          color: 'text-gray-700',
-          bg: 'bg-gray-100',
-          borderColor: 'border-gray-300'
-        };
-    }
-  }
-
-  function getStatusIcon(status: PageStatusType) {
-    switch (status) {
-      case 'completed':
-        return <CheckCircle className="text-green-600 flex-shrink-0" size={20} />;
-      case 'working':
-        return <Clock className="text-blue-600 flex-shrink-0" size={20} />;
-      case 'issues':
-        return <AlertTriangle className="text-orange-600 flex-shrink-0" size={20} />;
-      case 'archive-pending':
-        return <Circle className="text-indigo-600 flex-shrink-0" size={20} style={{ fill: '#4f46e5' }} />;
-      case 'archived':
-        return <Circle className="text-red-600 flex-shrink-0" size={20} style={{ fill: '#dc2626' }} />;
-      default:
-        return <Circle className="text-gray-400 flex-shrink-0" size={20} />;
-    }
-  }
-
-  function getStatusStyle(status: PageStatusType) {
-    const option = STATUS_OPTIONS.find(o => o.value === status);
-    return option || STATUS_OPTIONS[0];
-  }
-
-  const totalPages = sites.reduce((sum, site) => sum + site.pages.length, 0);
+  // ============================================
+  // COMPUTED VALUES
+  // ============================================
+  const totalPages = sites.reduce((sum, s) => sum + s.pages.length, 0);
   const completedPages = Object.values(pageStatuses).filter(s => s.status === 'completed').length;
-  const completedSites = sites.filter(site => 
-    site.pages.length > 0 && site.pages.every(page => pageStatuses[page.url]?.status === 'completed')
+  const completedSites = sites.filter(site =>
+    site.pages.length > 0 && site.pages.every(p => pageStatuses[p.url]?.status === 'completed')
   ).length;
-
   const archivedPages = Object.values(pageStatuses).filter(s => s.status === 'archived').length;
   const archivePendingPages = Object.values(pageStatuses).filter(s => s.status === 'archive-pending').length;
-  
   const archivedSites = sites.filter(site =>
-    site.pages.length > 0 && site.pages.every(page => pageStatuses[page.url]?.status === 'archived')
+    site.pages.length > 0 && site.pages.every(p => pageStatuses[p.url]?.status === 'archived')
   ).length;
-  
   const archivePendingSites = sites.filter(site =>
-    site.pages.some(page => pageStatuses[page.url]?.status === 'archive-pending') &&
-    !site.pages.every(page => pageStatuses[page.url]?.status === 'archived')
+    site.pages.some(p => pageStatuses[p.url]?.status === 'archive-pending') &&
+    !site.pages.every(p => pageStatuses[p.url]?.status === 'archived')
   ).length;
 
-  const isConfigured = isGoogleSheetsConfigured();
+  // Sort + filter sites
+  const sortedSites = useMemo(() => {
+    const filtered = searchQuery
+      ? sites.filter(
+          s =>
+            s.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            s.baseUrl.toLowerCase().includes(searchQuery.toLowerCase())
+        )
+      : sites;
 
-  // NEW: Sort sites by priority
-  const sortedSites = sortSitesByPriority(sites);
+    return [...filtered].sort((a, b) => {
+      const pa = sitePriorities[a.id] ?? 99;
+      const pb = sitePriorities[b.id] ?? 99;
+      return pa - pb;
+    });
+  }, [sites, sitePriorities, searchQuery]);
 
+  // ============================================
+  // LOADING STATE
+  // ============================================
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center p-12">
-        <Loader2 className="animate-spin text-blue-600" size={40} />
+        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600" />
         <span className="mt-3 text-gray-600">Loading from Google Sheets...</span>
         <span className="text-sm text-gray-400 mt-1">Syncing latest data...</span>
       </div>
     );
   }
 
+  // ============================================
+  // RENDER — V0's NEW UI LAYOUT
+  // ============================================
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="text-center">
-        <h2 className="text-3xl font-bold text-gray-900 flex items-center justify-center gap-3">
-          📊 Status Check
-        </h2>
-        <p className="text-gray-600 mt-1">Track completion status for all sites and pages</p>
-        
-        {/* Sync Controls */}
-        <div className="flex items-center justify-center gap-3 mt-3 flex-wrap">
-          <span className={`flex items-center gap-1 text-sm ${
-            cloudStatus === 'connected' ? 'text-green-600' :
-            cloudStatus === 'loading' ? 'text-blue-600' : 'text-gray-500'
-          }`}>
-            {cloudStatus === 'connected' ? (
-              <><Cloud size={14} /> Connected</>
-            ) : cloudStatus === 'loading' ? (
-              <><Loader2 size={14} className="animate-spin" /> Syncing...</>
-            ) : (
-              <><CloudOff size={14} /> Offline</>
-            )}
-          </span>
-          
-          <span className="text-gray-300">|</span>
-          
-          <span className="text-sm text-gray-500">
-            Last sync: {lastSyncTime}
-          </span>
-          
-          <button
-            onClick={handleRefresh}
-            disabled={loading}
-            className="flex items-center gap-2 px-3 py-1 text-sm bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition disabled:opacity-50"
-          >
-            <RefreshCw size={14} className={loading ? 'animate-spin' : ''} />
-            Refresh
-          </button>
-          
-          <button
-            onClick={handleExportToSheet}
-            disabled={exporting}
-            className={`flex items-center gap-2 px-3 py-1 text-sm rounded-lg transition ${
-              exportSuccess 
-                ? 'bg-green-100 text-green-700' 
-                : 'bg-purple-100 text-purple-700 hover:bg-purple-200'
-            } ${exporting ? 'opacity-50 cursor-not-allowed' : ''}`}
-          >
-            {exporting ? (
-              <Loader2 size={14} className="animate-spin" />
-            ) : exportSuccess ? (
-              <Check size={14} />
-            ) : (
-              <Upload size={14} />
-            )}
-            {exporting ? 'Exporting...' : exportSuccess ? 'Exported!' : 'Export to Sheet'}
-          </button>
-          
-          <a
-            href="https://docs.google.com/spreadsheets/d/1ntgfO0PeVULOCA-Q1eLfoEJwW-izHlPpP1FvWvVk2UM/edit"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-1 px-3 py-1 text-sm bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition"
-          >
-            <ExternalLink size={14} />
-            Open Sheet
-          </a>
-        </div>
-        
-        {!isConfigured && (
-          <div className="mt-3 p-2 bg-yellow-50 border border-yellow-200 rounded-lg text-sm text-yellow-800 max-w-2xl mx-auto">
-            ⚠️ Google Sheets sync not configured
-          </div>
-        )}
-        
-        {cloudStatus === 'connected' && (
-          <div className="mt-3 p-2 bg-green-50 border border-green-200 rounded-lg text-sm text-green-800 max-w-2xl mx-auto">
-            ✅ Connected to Google Sheets - All users see the same data
-          </div>
-        )}
-      </div>
+    <TooltipProvider>
+      <BallCursor />
+      <InteractiveBackground />
+      <div className="relative z-10 min-h-screen bg-transparent" style={{ cursor: 'none' }}>
+        {/* Top banner */}
+        <header className="relative overflow-hidden border-b border-white/[0.06]">
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-600/10 via-transparent to-cyan-600/5" />
+          <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
+          <div className="absolute bottom-0 left-0 w-64 h-64 bg-cyan-500/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/3" />
 
-      {/* Progress Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="bg-white rounded-lg border-2 border-blue-200 p-6 shadow-sm">
-          <div className="flex justify-between items-center mb-3">
-            <h3 className="font-semibold text-gray-900">Sites Done</h3>
-            <span className="text-2xl font-bold text-blue-600">{completedSites}/{sites.length}</span>
-          </div>
-          <div className="w-full bg-gray-200 rounded-full h-3">
-            <div 
-              className="bg-blue-600 h-3 rounded-full transition-all duration-500"
-              style={{ width: `${sites.length > 0 ? (completedSites / sites.length) * 100 : 0}%` }}
-            />
-          </div>
-        </div>
-
-        <div className="bg-white rounded-lg border-2 border-green-200 p-6 shadow-sm">
-          <div className="flex justify-between items-center mb-3">
-            <h3 className="font-semibold text-gray-900">Pages Completed</h3>
-            <span className="text-2xl font-bold text-green-600">{completedPages}/{totalPages}</span>
-          </div>
-          <div className="w-full bg-gray-200 rounded-full h-3">
-            <div 
-              className="bg-green-600 h-3 rounded-full transition-all duration-500"
-              style={{ width: `${totalPages > 0 ? (completedPages / totalPages) * 100 : 0}%` }}
-            />
-          </div>
-        </div>
-
-        <div className="bg-white rounded-lg border-2 border-indigo-200 p-6 shadow-sm">
-          <div className="flex justify-between items-center mb-3">
-            <h3 className="font-semibold text-gray-900">Sites to Archive</h3>
-            <span className="text-2xl font-bold text-indigo-600">{archivedSites}/{archivePendingSites}</span>
-          </div>
-          <div className="w-full bg-gray-200 rounded-full h-3">
-            <div
-              className="bg-indigo-600 h-3 rounded-full transition-all duration-500"
-              style={{
-                width: `${archivePendingSites > 0 ? (archivedSites / archivePendingSites) * 100 : 0}%`,
-              }}
-            />
-          </div>
-        </div>
-
-        <div className="bg-white rounded-lg border-2 border-red-200 p-6 shadow-sm">
-          <div className="flex justify-between items-center mb-3">
-            <h3 className="font-semibold text-gray-900">Pages to Archive</h3>
-            <span className="text-2xl font-bold text-red-600">{archivedPages}/{archivePendingPages}</span>
-          </div>
-          <div className="w-full bg-gray-200 rounded-full h-3">
-            <div
-              className="bg-red-600 h-3 rounded-full transition-all duration-500"
-              style={{
-                width: `${archivePendingPages > 0 ? (archivedPages / archivePendingPages) * 100 : 0}%`,
-              }}
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* Team Members */}
-      <div className="bg-white rounded-lg border p-4 shadow-sm">
-        <div className="flex justify-between items-center mb-3">
-          <h3 className="font-semibold text-gray-900 flex items-center gap-2">
-            <Users size={18} />
-            Team Members
-          </h3>
-          <button
-            onClick={() => setShowAddMember(!showAddMember)}
-            className="flex items-center gap-1 px-3 py-1.5 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 transition"
-          >
-            <Plus size={14} />
-            Add
-          </button>
-        </div>
-
-        {showAddMember && (
-          <div className="flex gap-2 mb-3 p-3 bg-gray-50 rounded-lg">
-            <input
-              type="text"
-              value={newMemberName}
-              onChange={(e) => setNewMemberName(e.target.value)}
-              placeholder="Enter name..."
-              className="flex-1 px-3 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none"
-              onKeyDown={(e) => e.key === 'Enter' && addTeamMember()}
-            />
-            <button onClick={addTeamMember} className="px-3 py-2 bg-green-600 text-white rounded-lg text-sm hover:bg-green-700">Add</button>
-            <button onClick={() => setShowAddMember(false)} className="px-3 py-2 bg-gray-300 text-gray-700 rounded-lg text-sm hover:bg-gray-400">Cancel</button>
-          </div>
-        )}
-
-        <div className="flex flex-wrap gap-2">
-          {teamMembers.map((member, idx) => (
-            <div 
-              key={idx}
-              className="flex items-center gap-2 px-3 py-1.5 bg-blue-100 text-blue-800 rounded-full text-sm group"
-            >
-              <span>{member.name}</span>
-              <button
-                onClick={() => removeTeamMember(member.name)}
-                className="opacity-0 group-hover:opacity-100 text-blue-600 hover:text-red-600 transition"
-              >
-                ×
-              </button>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Sites List - UPDATED WITH PRIORITIES */}
-      <div className="space-y-3">
-        {sortedSites.map(site => {
-          const isExpanded = expandedSite === site.id;
-          const completedInSite = site.pages.filter(p => pageStatuses[p.url]?.status === 'completed').length;
-          const progress = site.pages.length > 0 ? (completedInSite / site.pages.length) * 100 : 0;
-          
-          // NEW: Get priority for this site
-          const sitePriority = sitePriorities[site.id] || null;
-          const priorityStyle = getPriorityStyle(sitePriority);
-
-          return (
-            <div key={site.id} className="bg-white rounded-lg border shadow-sm overflow-hidden">
-              {/* UPDATED HEADER WITH PRIORITY DROPDOWN */}
-              <div 
-                className="p-4 cursor-pointer hover:bg-gray-50 transition"
-                onClick={() => setExpandedSite(isExpanded ? null : site.id)}
-              >
-                <div className="flex items-center justify-between gap-4">
-                  {/* Left: Title, Progress (No Logo) */}
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-3 mb-1">
-                      <span className="text-2xl">{priorityStyle.icon}</span>
-                      <h3 className="font-semibold text-gray-900 truncate">{site.title}</h3>
-                    </div>
-                    <p className="text-sm text-gray-600 ml-0 truncate">{site.baseUrl}</p>
-                    <div className="flex items-center gap-2 mt-2 ml-0">
-                      <span className="text-sm text-gray-600">
-                        {completedInSite}/{site.pages.length} Pages
-                      </span>
-                      <div className="flex-1 max-w-xs bg-gray-200 rounded-full h-2">
-                        <div 
-                          className="bg-green-500 h-2 rounded-full transition-all"
-                          style={{ width: `${progress}%` }}
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Right: Priority Dropdown + Expand Button */}
-                  <div className="flex items-center gap-3 flex-shrink-0">
-                    {/* NEW: PRIORITY DROPDOWN */}
-                    <select
-                      value={sitePriority ?? ''}
-                      onChange={(e) => {
-                        const value = e.target.value;
-                        const priority = value === '' ? null : (parseInt(value) as 1 | 2 | 3 | 4);
-                        updateSitePriority(site.id, priority);
-                      }}
-                      onClick={(e) => e.stopPropagation()}
-                      className={`text-xs border-2 rounded px-3 py-1.5 bg-white cursor-pointer hover:bg-opacity-90 w-36 font-medium transition ${priorityStyle.color} ${priorityStyle.bg} border-current`}
-                    >
-                      <option value="">⭕ Not Set</option>
-                      <option value="1">🔴 Priority 1</option>
-                      <option value="2">🟠 Priority 2</option>
-                      <option value="3">🟡 Priority 3</option>
-                      <option value="4">🔵 Priority 4</option>
-                    </select>
-
-                    {isExpanded ? <ChevronUp size={24} /> : <ChevronDown size={24} />}
-                  </div>
-                </div>
+          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div className="flex items-center gap-4 mb-2">
+              <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 shadow-lg shadow-blue-500/25 animate-float">
+                <Shield className="w-6 h-6 text-white" />
               </div>
-
-              {/* Expanded Content */}
-              {isExpanded && (
-                <div className="border-t bg-gray-50 p-4">
-                  <div className="space-y-2">
-                    {site.pages.map((page, idx) => {
-                      const status = pageStatuses[page.url] || { status: 'not-started', assignedTo: '', notes: '', updatedDate: '' };
-                      const statusStyle = getStatusStyle(status.status);
-                      const hasNotes = status.notes && status.notes.length > 0;
-                      const latestScan = getLatestScanForPageLocal(page.url);
-                      
-                      return (
-                        <div 
-                          key={idx}
-                          className={`p-3 rounded-lg border transition ${statusStyle.bgColor} border-opacity-50`}
-                        >
-                          <div className="flex items-center gap-3">
-                            <div className="flex items-center gap-3 flex-1 min-w-0">
-                              {getStatusIcon(status.status)}
-                              <div className="flex-1 min-w-0">
-                                <div className="font-medium text-gray-900 truncate">
-                                  {page.title}
-                                </div>
-                                <div className="text-xs text-gray-500 truncate">
-                                  {page.url}
-                                </div>
-                                {status.status !== 'not-started' && status.assignedTo && (
-                                  <div className={`text-xs mt-1 ${statusStyle.color}`}>
-                                    {statusStyle.label} by {status.assignedTo}
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-                            
-                            <div className="flex items-center gap-2 flex-shrink-0">
-                              <button
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  openNotesPopup(page.url, page.title);
-                                }}
-                                className={`p-1.5 rounded hover:bg-white transition ${
-                                  hasNotes ? 'text-purple-600' : 'text-gray-400'
-                                }`}
-                                title={hasNotes ? 'View/Edit Notes' : 'Add Notes'}
-                              >
-                                <MessageSquare size={16} />
-                              </button>
-
-                              {latestScan && (
-                                <button
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    openReportPopup(page.url, page.title);
-                                  }}
-                                  className="flex items-center gap-1 px-2 py-1 text-xs bg-purple-100 text-purple-700 rounded hover:bg-purple-200 transition"
-                                  title="View latest scan report"
-                                >
-                                  <Eye size={12} />
-                                  Report
-                                </button>
-                              )}
-                              
-                              <select
-                                value={status.assignedTo}
-                                onChange={(e) => {
-                                  e.stopPropagation();
-                                  updateAssignedTo(page.url, e.target.value);
-                                }}
-                                onClick={(e) => e.stopPropagation()}
-                                className="text-xs border rounded px-2 py-1.5 bg-white cursor-pointer hover:bg-gray-50 w-24 text-gray-900 font-medium"
-                              >
-                                <option value="" className="text-gray-900">Assign to</option>
-                                {teamMembers.map((member, mIdx) => (
-                                  <option key={mIdx} value={member.name} className="text-gray-900">
-                                    {member.name}
-                                  </option>
-                                ))}
-                              </select>
-
-                              <select
-                                value={status.status}
-                                onChange={(e) => {
-                                  e.stopPropagation();
-                                  updateStatus(page.url, e.target.value as PageStatusType);
-                                }}
-                                onClick={(e) => e.stopPropagation()}
-                                className="text-xs border rounded px-2 py-1.5 bg-white cursor-pointer hover:bg-gray-50 w-28 text-gray-900 font-medium"
-                              >
-                                {STATUS_OPTIONS.map(option => (
-                                  <option key={option.value} value={option.value} className="text-gray-900">
-                                    {option.label}
-                                  </option>
-                                ))}
-                              </select>
-                            </div>
-                          </div>
-
-                          {hasNotes && (
-                            <div className="mt-2 p-2 bg-white rounded text-xs text-gray-600 border">
-                              <span className="font-medium">Notes:</span> {status.notes.substring(0, 100)}
-                              {status.notes.length > 100 ? '...' : ''}
-                            </div>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
-            </div>
-          );
-        })}
-      </div>
-
-      {/* Notes Popup */}
-      {notesPopup.isOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg shadow-xl max-w-lg w-full">
-            <div className="flex items-center justify-between p-4 border-b">
-              <h3 className="font-semibold text-gray-900 flex items-center gap-2">
-                <MessageSquare size={20} />
-                Notes
-              </h3>
-              <button
-                onClick={() => setNotesPopup({ isOpen: false, pageUrl: '', pageTitle: '', notes: '' })}
-                className="text-gray-500 hover:text-gray-700"
-              >
-                <X size={20} />
-              </button>
-            </div>
-            <div className="p-4">
-              <p className="text-sm text-gray-600 mb-3 truncate">{notesPopup.pageTitle}</p>
-              <textarea
-                value={notesPopup.notes}
-                onChange={(e) => setNotesPopup(prev => ({ ...prev, notes: e.target.value }))}
-                placeholder="Add notes about this page..."
-                className="w-full h-32 p-3 border rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none resize-none"
-              />
-            </div>
-            <div className="flex justify-end gap-2 p-4 border-t bg-gray-50 rounded-b-lg">
-              <button
-                onClick={() => setNotesPopup({ isOpen: false, pageUrl: '', pageTitle: '', notes: '' })}
-                className="px-4 py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 transition"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={() => saveNotes(notesPopup.pageUrl, notesPopup.notes)}
-                className="px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition flex items-center gap-2"
-              >
-                <Save size={16} />
-                Save Notes
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Report Popup */}
-      {reportPopup.isOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 overflow-y-auto">
-          <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full my-8">
-            <div className="flex items-center justify-between p-4 border-b bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-t-lg">
               <div>
-                <h3 className="font-semibold text-lg flex items-center gap-2">
-                  <FileText size={20} />
-                  Scan Report
-                </h3>
-                <p className="text-purple-100 text-sm truncate max-w-md">{reportPopup.pageTitle}</p>
+                <p className="text-xs font-semibold text-blue-400 tracking-widest uppercase mb-0.5">
+                  UF College of Education
+                </p>
+                <h1 className="text-2xl font-bold tracking-tight text-foreground text-balance">
+                  Accessibility Audit Dashboard — Status Check
+                </h1>
               </div>
-              <button
-                onClick={() => setReportPopup({ isOpen: false, pageUrl: '', pageTitle: '', scanData: null })}
-                className="text-white hover:bg-purple-800 p-2 rounded"
-              >
-                <X size={20} />
-              </button>
+              <div className="ml-auto hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20">
+                <Activity className="w-3.5 h-3.5 text-emerald-400" />
+                <span className="text-xs font-medium text-emerald-400">
+                  {cloudStatus === 'connected' ? 'Live' : cloudStatus === 'loading' ? 'Syncing' : 'Offline'}
+                </span>
+              </div>
             </div>
-            
-            {reportPopup.scanData ? (
-              <div className="p-6">
-                <div className="flex items-center justify-between mb-4 text-sm text-gray-600">
-                  <span>Scanned: {new Date(reportPopup.scanData.date).toLocaleString()}</span>
-                  <span className={`px-2 py-1 rounded text-xs font-medium ${
-                    reportPopup.scanData.source === 'auto' ? 'bg-blue-100 text-blue-700' : 'bg-green-100 text-green-700'
-                  }`}>
-                    {reportPopup.scanData.source === 'auto' ? '🤖 Auto Scan' : '👤 Manual Scan'}
-                  </span>
-                </div>
+            <p className="text-sm text-muted-foreground mt-1 ml-16 max-w-xl leading-relaxed">
+              Track completion status for all sites and pages
+            </p>
+          </div>
+        </header>
 
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                  {[
-                    { label: 'Performance', value: reportPopup.scanData.lighthousePerformance, bg: 'bg-orange-50', border: 'border-orange-200' },
-                    { label: 'Accessibility', value: reportPopup.scanData.lighthouseAccessibility, bg: 'bg-blue-50', border: 'border-blue-200' },
-                    { label: 'Best Practices', value: reportPopup.scanData.lighthouseBestPractices, bg: 'bg-green-50', border: 'border-green-200' },
-                    { label: 'SEO', value: reportPopup.scanData.lighthouseSeo, bg: 'bg-purple-50', border: 'border-purple-200' },
-                  ].map((metric, idx) => (
-                    <div key={idx} className={`${metric.bg} p-4 rounded-lg border ${metric.border}`}>
-                      <div className="text-sm text-gray-600 mb-1">{metric.label}</div>
-                      <div className={`text-3xl font-bold ${
-                        metric.value >= 90 ? 'text-green-600' :
-                        metric.value >= 50 ? 'text-orange-600' : 'text-red-600'
-                      }`}>
-                        {metric.value || '-'}
-                      </div>
-                    </div>
-                  ))}
-                </div>
+        {/* Main content */}
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+          {/* Stat cards */}
+          <StatCards
+            completedSites={completedSites}
+            totalSites={sites.length}
+            completedPages={completedPages}
+            totalPages={totalPages}
+            archivedSites={archivedSites}
+            archivePendingSites={archivePendingSites}
+            archivedPages={archivedPages}
+            archivePendingPages={archivePendingPages}
+          />
 
-                <div className="bg-gray-50 p-4 rounded-lg mb-6">
-                  <h4 className="font-semibold text-gray-900 mb-3">Accessibility Issues</h4>
-                  <div className="grid grid-cols-5 gap-3">
-                    {[
-                      { label: 'Total', value: reportPopup.scanData.totalIssues, color: 'text-gray-900' },
-                      { label: 'Critical', value: reportPopup.scanData.criticalCount, color: 'text-red-600' },
-                      { label: 'Serious', value: reportPopup.scanData.seriousCount, color: 'text-orange-600' },
-                      { label: 'Moderate', value: reportPopup.scanData.moderateCount, color: 'text-yellow-600' },
-                      { label: 'Minor', value: reportPopup.scanData.minorCount, color: 'text-blue-600' },
-                    ].map((item, idx) => (
-                      <div key={idx} className="text-center">
-                        <div className={`text-2xl font-bold ${item.color}`}>{item.value}</div>
-                        <div className="text-xs text-gray-600">{item.label}</div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div className="p-12 text-center text-gray-500">
-                <FileText size={48} className="mx-auto mb-4 opacity-50" />
-                <p>No scan data available for this page.</p>
+          {/* Team members */}
+          <TeamMembers
+            members={teamMembers}
+            onAdd={handleAddTeamMember}
+            onRemove={handleRemoveTeamMember}
+          />
+
+          {/* Sync + Search */}
+          <SyncHeader
+            cloudStatus={cloudStatus}
+            lastSyncTime={lastSyncTime}
+            exporting={exporting}
+            exportSuccess={exportSuccess}
+            loading={loading}
+            searchQuery={searchQuery}
+            onRefresh={handleRefresh}
+            onExport={handleExport}
+            onSearchChange={setSearchQuery}
+          />
+
+          {/* Sites list */}
+          <div className="space-y-3">
+            <div className="flex items-center justify-between mb-1 animate-fade-in-up" style={{ animationDelay: '600ms' }}>
+              <h2 className="text-sm font-semibold text-foreground flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
+                All Sites
+                <span className="text-xs font-mono text-muted-foreground bg-white/[0.06] px-2 py-0.5 rounded-full">
+                  {sortedSites.length}
+                </span>
+              </h2>
+            </div>
+
+            {sortedSites.length === 0 && (
+              <div className="text-center py-16 text-muted-foreground rounded-xl border border-white/[0.06] glass">
+                <Search className="w-8 h-8 mx-auto mb-3 opacity-30" />
+                <p className="text-sm">No sites match your search.</p>
               </div>
             )}
-            
-            <div className="flex justify-end p-4 border-t bg-gray-50 rounded-b-lg">
-              <button
-                onClick={() => setReportPopup({ isOpen: false, pageUrl: '', pageTitle: '', scanData: null })}
-                className="px-6 py-2 text-white bg-purple-600 rounded-lg hover:bg-purple-700 transition"
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
-      {/* Status Legend */}
-      <div className="bg-white border rounded-lg p-4 text-sm">
-        <h4 className="font-semibold text-gray-800 mb-2">Status Legend:</h4>
-        <div className="flex flex-wrap gap-4">
-          {STATUS_OPTIONS.map(option => (
-            <div key={option.value} className="flex items-center gap-2">
-              <div className={`w-3 h-3 rounded-full ${option.bgColor} border`}></div>
-              <span className="text-gray-900 font-medium">{option.label}</span>
-            </div>
-          ))}
-        </div>
+            {sortedSites.map((site, idx) => (
+              <div
+                key={site.id}
+                className="animate-fade-in-up"
+                style={{ animationDelay: `${650 + idx * 50}ms` }}
+              >
+                <SiteCard
+                  site={site}
+                  pageStatuses={pageStatuses}
+                  sitePriority={sitePriorities[site.id] ?? null}
+                  teamMembers={teamMembers}
+                  onUpdateStatus={updateStatus}
+                  onUpdateAssignment={updateAssignment}
+                  onUpdatePriority={updatePriority}
+                  onOpenNotes={openNotes}
+                  onOpenReport={openReport}
+                  getScanData={getScanData}
+                />
+              </div>
+            ))}
+          </div>
+
+          {/* Status Legend */}
+          <StatusLegend />
+        </main>
+
+        {/* Dialogs */}
+        <NotesDialog
+          isOpen={notesDialog.isOpen}
+          pageUrl={notesDialog.pageUrl}
+          pageTitle={notesDialog.pageTitle}
+          initialNotes={notesDialog.notes}
+          onClose={() => setNotesDialog({ isOpen: false, pageUrl: '', pageTitle: '', notes: '' })}
+          onSave={saveNotes}
+        />
+
+        <ReportDialog
+          isOpen={reportDialog.isOpen}
+          pageTitle={reportDialog.pageTitle}
+          scanData={reportDialog.scanData}
+          onClose={() => setReportDialog({ isOpen: false, pageTitle: '', scanData: null })}
+        />
       </div>
-    </div>
+    </TooltipProvider>
   );
 }
