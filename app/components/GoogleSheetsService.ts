@@ -348,7 +348,7 @@ export async function exportAllPagesToSheet(sites: SiteData[]): Promise<{ succes
         action: 'syncPages',
         pages: pages
       }),
-      mode: 'no-cors' // Google Apps Script requires this
+      redirect: 'follow' // Google Apps Script requires this
     });
 
     // Save last sync time
@@ -380,7 +380,6 @@ export async function updateStatusInSheet(
   try {
     await fetch(GOOGLE_SCRIPT_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         action: 'updateStatus',
         pageUrl: pageUrl,
@@ -388,7 +387,7 @@ export async function updateStatusInSheet(
         assignedTo: assignedTo,
         notes: notes
       }),
-      mode: 'no-cors'
+      redirect: 'follow'
     });
 
     return true;
@@ -412,7 +411,7 @@ export async function addTeamMemberToSheet(name: string): Promise<boolean> {
         action: 'addTeamMember',
         name: name
       }),
-      mode: 'no-cors'
+      redirect: 'follow'
     });
     return true;
   } catch (error) {
@@ -442,7 +441,7 @@ export async function updateSitePriorityInSheet(
         siteId: siteId,
         priority: priority
       }),
-      mode: 'no-cors'
+      redirect: 'follow'
     });
 
     return true;
