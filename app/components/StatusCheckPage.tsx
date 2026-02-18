@@ -2,7 +2,7 @@
 'use client';
 
 import { useState, useEffect, useMemo, useCallback } from 'react';
-import { Shield, Activity, Search } from 'lucide-react';
+import { Shield, Activity, Search, ExternalLink } from 'lucide-react';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import StatCards from '@/components/dashboard/stat-cards';
 import TeamMembers from '@/components/dashboard/team-members';
@@ -11,6 +11,7 @@ import SiteCard from '@/components/dashboard/site-card';
 import NotesDialog from '@/components/dashboard/notes-dialog';
 import ReportDialog from '@/components/dashboard/report-dialog';
 import StatusLegend from '@/components/dashboard/status-legend';
+import TeamProgress from '@/components/dashboard/team-progress';
 import BallCursor from '@/components/ball-cursor';
 import InteractiveBackground from '@/components/interactive-background';
 import {
@@ -403,6 +404,26 @@ export default function StatusCheckPage({ sites }: Props) {
             onAdd={handleAddTeamMember}
             onRemove={handleRemoveTeamMember}
           />
+
+          {/* Team Progress Dashboard */}
+          <div className="space-y-2">
+            <div className="flex justify-end">
+              <a
+                href="/team-progress"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 rounded-lg hover:bg-emerald-500/20 transition-colors"
+              >
+                <ExternalLink className="w-3.5 h-3.5" />
+                Open Full Progress View
+              </a>
+            </div>
+            <TeamProgress
+              pageStatuses={pageStatuses}
+              teamMembers={teamMembers}
+              sites={sites}
+            />
+          </div>
 
           {/* Sync + Search */}
           <SyncHeader
