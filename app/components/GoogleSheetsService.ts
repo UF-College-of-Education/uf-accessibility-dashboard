@@ -18,20 +18,14 @@
 // CONFIGURATION
 // ============================================
 
-// Get the Google Script URL from environment
-const GOOGLE_SCRIPT_URL = typeof window !== 'undefined'
-  ? (process.env.NEXT_PUBLIC_GOOGLE_SCRIPT_URL || '')
-  : '';
+// All Google Sheets communication goes through /api/sheets server-side proxy.
+// This avoids CORS issues, redirect issues, and removes the need for
+// the client to know the Google Script URL.
 
 /**
  * POST to Google Apps Script via server-side proxy.
- * Browser-side POST to Google Apps Script fails due to 302 redirect
- * converting POST→GET and losing the body. The server-side proxy
- * at /api/sheets handles this correctly.
  */
 async function postToGoogleScript(data: Record<string, unknown>): Promise<boolean> {
-  if (!GOOGLE_SCRIPT_URL) return false;
-
   try {
     const response = await fetch('/api/sheets', {
       method: 'POST',
@@ -167,9 +161,10 @@ const STORAGE_KEYS = {
 
 /**
  * Check if Google Sheets sync is configured
+ * Always true now — the server-side proxy handles the URL.
  */
 export function isGoogleSheetsConfigured(): boolean {
-  return Boolean(GOOGLE_SCRIPT_URL);
+  return true;
 }
 
 /**
@@ -183,14 +178,9 @@ export async function fetchAllDataFromSheet(): Promise<{
   sitePriorities?: Record<string, { priority: 1 | 2 | 3 | 4 | null }>;
   error?: string;
 }> {
-  if (!GOOGLE_SCRIPT_URL) {
-    console.log('Google Sheets not configured, using local data only');
-    return { success: false, statuses: {}, teamMembers: [], sitePriorities: {}, error: 'Not configured' };
-  }
-
   try {
-    // Use the Apps Script to fetch data (this avoids CORS issues)
-    const response = await fetch(`${GOOGLE_SCRIPT_URL}?action=getAllData&t=${Date.now()}`, {
+    // Fetch via server-side proxy to avoid CORS issues
+    const response = await fetch(`/api/sheets?action=getAllData`, {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -344,10 +334,6 @@ async function fetchStatusesFromSheetCSV(): Promise<Record<string, { status: Pag
  * This sends all your sites and pages to the sheet
  */
 export async function exportAllPagesToSheet(sites: SiteData[]): Promise<{ success: boolean; pagesExported?: number; error?: string }> {
-  if (!GOOGLE_SCRIPT_URL) {
-    return { success: false, error: 'Google Script URL not configured. Add NEXT_PUBLIC_GOOGLE_SCRIPT_URL to .env.local' };
-  }
-
   try {
     // Get current statuses from localStorage
     const localStatuses = getAllPageStatusesLocal();
@@ -393,11 +379,6 @@ export async function updateStatusInSheet(
   assignedTo: string,
   notes?: string
 ): Promise<boolean> {
-  if (!GOOGLE_SCRIPT_URL) {
-    console.log('Google Sheets not configured, saving locally only');
-    return false;
-  }
-
   try {
     const success = await postToGoogleScript({
       action: 'updateStatus',
@@ -421,8 +402,6 @@ export async function updateStatusInSheet(
  * Add team member to Google Sheets
  */
 export async function addTeamMemberToSheet(name: string): Promise<boolean> {
-  if (!GOOGLE_SCRIPT_URL) return false;
-
   try {
     return await postToGoogleScript({ action: 'addTeamMember', name });
   } catch (error) {
@@ -438,11 +417,6 @@ export async function updateSitePriorityInSheet(
   siteId: string,
   priority: 1 | 2 | 3 | 4 | null
 ): Promise<boolean> {
-  if (!GOOGLE_SCRIPT_URL) {
-    console.log('Google Sheets not configured, saving locally only');
-    return false;
-  }
-
   try {
     return await postToGoogleScript({
       action: 'updateSitePriority',
