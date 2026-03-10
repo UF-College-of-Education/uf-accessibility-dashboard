@@ -338,32 +338,53 @@ export async function exportAllPagesToSheet(sites: SiteData[]): Promise<{ succes
     // Get current statuses from localStorage
     const localStatuses = getAllPageStatusesLocal();
 
-    // Build pages array with all data
-    const pages: any[] = [];
-    
+    // Only export pages that have actual status changes (not "not-started" with no assignment)
+    // This avoids sending thousands of empty rows and timing out
+    const pagesToSync: { url: string; status: string; assignedTo: string; notes: string }[] = [];
+
     sites.forEach(site => {
       site.pages.forEach(page => {
         const localStatus = localStatuses[page.url];
-        pages.push({
-          siteName: site.title,
-          title: page.title,
-          url: page.url,
-          assignedTo: localStatus?.assignedTo || '',
-          status: STATUS_MAP_TO_SHEET[localStatus?.status || 'not-started'],
-          notes: localStatus?.notes || ''
-        });
+        if (localStatus && (localStatus.status !== 'not-started' || localStatus.assignedTo || localStatus.notes)) {
+          pagesToSync.push({
+            url: page.url,
+            status: STATUS_MAP_TO_SHEET[localStatus.status],
+            assignedTo: localStatus.assignedTo || '',
+            notes: localStatus.notes || '',
+          });
+        }
       });
     });
 
-    // Send to Google Sheets
-    await postToGoogleScript({ action: 'syncPages', pages });
+    console.log(`Exporting ${pagesToSync.length} pages with status changes...`);
+
+    // Send in batches of 50 to avoid timeouts
+    const BATCH_SIZE = 50;
+    let exported = 0;
+    for (let i = 0; i < pagesToSync.length; i += BATCH_SIZE) {
+      const batch = pagesToSync.slice(i, i + BATCH_SIZE);
+      // Send each page as individual updateStatus calls in parallel (within batch)
+      await Promise.all(
+        batch.map(page =>
+          postToGoogleScript({
+            action: 'updateStatus',
+            pageUrl: page.url,
+            status: page.status,
+            assignedTo: page.assignedTo,
+            notes: page.notes,
+          })
+        )
+      );
+      exported += batch.length;
+      console.log(`Exported batch ${Math.floor(i / BATCH_SIZE) + 1}: ${exported}/${pagesToSync.length}`);
+    }
 
     // Save last sync time
     if (typeof window !== 'undefined') {
       localStorage.setItem(STORAGE_KEYS.LAST_SYNC, new Date().toISOString());
     }
 
-    return { success: true, pagesExported: pages.length };
+    return { success: true, pagesExported: exported };
   } catch (error) {
     console.error('Error exporting to Google Sheets:', error);
     return { success: false, error: String(error) };
@@ -492,7 +513,7 @@ export function savePageStatusLocal(pageUrl: string, status: {
   notes: string;
 }): void {
   if (typeof window === 'undefined') return;
-  
+
   const existing = JSON.parse(localStorage.getItem(STORAGE_KEYS.PAGE_STATUSES) || '{}');
   existing[pageUrl] = {
     ...status,
@@ -500,8 +521,19 @@ export function savePageStatusLocal(pageUrl: string, status: {
   };
   localStorage.setItem(STORAGE_KEYS.PAGE_STATUSES, JSON.stringify(existing));
 
-  // Also sync to Google Sheets (fire and forget)
-  updateStatusInSheet(pageUrl, status.status, status.assignedTo, status.notes);
+  // Sync to Google Sheets with logging
+  console.log('📤 Syncing to Google Sheets:', pageUrl, status.status, status.assignedTo);
+  updateStatusInSheet(pageUrl, status.status, status.assignedTo, status.notes)
+    .then(success => {
+      if (success) {
+        console.log('✅ Saved to Google Sheets:', pageUrl);
+      } else {
+        console.error('❌ Failed to save to Google Sheets:', pageUrl);
+      }
+    })
+    .catch(err => {
+      console.error('❌ Error saving to Google Sheets:', pageUrl, err);
+    });
 }
 
 /**
