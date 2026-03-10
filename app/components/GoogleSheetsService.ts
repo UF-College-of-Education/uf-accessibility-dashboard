@@ -24,21 +24,27 @@ const GOOGLE_SCRIPT_URL = typeof window !== 'undefined'
   : '';
 
 /**
- * POST to Google Apps Script handling the 302 redirect properly.
- * Google Apps Script returns a 302 redirect on POST, and browsers
- * convert POST→GET on redirect, losing the body (causes 411 error).
- * Fix: use no-cors mode which lets the browser handle the redirect natively.
+ * POST to Google Apps Script via server-side proxy.
+ * Browser-side POST to Google Apps Script fails due to 302 redirect
+ * converting POST→GET and losing the body. The server-side proxy
+ * at /api/sheets handles this correctly.
  */
 async function postToGoogleScript(data: Record<string, unknown>): Promise<boolean> {
   if (!GOOGLE_SCRIPT_URL) return false;
 
   try {
-    await fetch(GOOGLE_SCRIPT_URL, {
+    const response = await fetch('/api/sheets', {
       method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
-      mode: 'no-cors',
     });
-    // no-cors returns opaque response (status 0), but the request goes through
+
+    const result = await response.json();
+    if (!result.success) {
+      console.error('Google Sheets POST failed:', result.error);
+      return false;
+    }
+
     return true;
   } catch (error) {
     console.error('Google Sheets POST error:', error);
