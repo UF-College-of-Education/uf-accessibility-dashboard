@@ -551,37 +551,24 @@ export function getAllPageStatusesLocal(): Record<string, {
 
 /**
  * ⭐ Merge sheet data into localStorage
- * This ensures everyone sees the same data
+ * Google Sheets is the single source of truth.
+ * Sheet data ALWAYS overwrites localStorage to ensure all browsers see the same data.
  */
 export function mergeSheetDataIntoLocal(sheetStatuses: Record<string, { status: PageStatusType; assignedTo: string; notes: string }>): void {
   if (typeof window === 'undefined') return;
 
-  const existing = JSON.parse(localStorage.getItem(STORAGE_KEYS.PAGE_STATUSES) || '{}');
+  // Start fresh from sheet data — Google Sheets is the source of truth
+  const merged: Record<string, { status: PageStatusType; assignedTo: string; notes: string; updatedDate: string }> = {};
 
-  // Merge: Sheet data fills in missing entries, but does NOT overwrite
-  // local changes that are newer (within last 5 minutes)
-  const fiveMinutesAgo = Date.now() - 5 * 60 * 1000;
-
+  // Write all sheet data
   Object.keys(sheetStatuses).forEach(url => {
-    const local = existing[url];
-
-    // If local entry exists and was updated recently, keep local version
-    if (local && local.updatedDate) {
-      const localTime = new Date(local.updatedDate).getTime();
-      if (localTime > fiveMinutesAgo) {
-        // Local is recent — keep it, don't overwrite
-        return;
-      }
-    }
-
-    // Otherwise, use sheet data
-    existing[url] = {
+    merged[url] = {
       ...sheetStatuses[url],
       updatedDate: new Date().toISOString(),
     };
   });
 
-  localStorage.setItem(STORAGE_KEYS.PAGE_STATUSES, JSON.stringify(existing));
+  localStorage.setItem(STORAGE_KEYS.PAGE_STATUSES, JSON.stringify(merged));
 }
 
 /**
