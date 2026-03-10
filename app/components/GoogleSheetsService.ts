@@ -19,9 +19,32 @@
 // ============================================
 
 // Get the Google Script URL from environment
-const GOOGLE_SCRIPT_URL = typeof window !== 'undefined' 
+const GOOGLE_SCRIPT_URL = typeof window !== 'undefined'
   ? (process.env.NEXT_PUBLIC_GOOGLE_SCRIPT_URL || '')
   : '';
+
+/**
+ * POST to Google Apps Script handling the 302 redirect properly.
+ * Google Apps Script returns a 302 redirect on POST, and browsers
+ * convert POST→GET on redirect, losing the body (causes 411 error).
+ * Fix: use no-cors mode which lets the browser handle the redirect natively.
+ */
+async function postToGoogleScript(data: Record<string, unknown>): Promise<boolean> {
+  if (!GOOGLE_SCRIPT_URL) return false;
+
+  try {
+    await fetch(GOOGLE_SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify(data),
+      mode: 'no-cors',
+    });
+    // no-cors returns opaque response (status 0), but the request goes through
+    return true;
+  } catch (error) {
+    console.error('Google Sheets POST error:', error);
+    return false;
+  }
+}
 
 // Sheet IDs (for direct reading via CSV export)
 const STATUS_SHEET_ID = '1ntgfO0PeVULOCA-Q1eLfoEJwW-izHlPpP1FvWvVk2UM';
@@ -341,15 +364,7 @@ export async function exportAllPagesToSheet(sites: SiteData[]): Promise<{ succes
     });
 
     // Send to Google Sheets
-    const response = await fetch(GOOGLE_SCRIPT_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify({
-        action: 'syncPages',
-        pages: pages
-      }),
-      redirect: 'follow' // Google Apps Script requires this
-    });
+    await postToGoogleScript({ action: 'syncPages', pages });
 
     // Save last sync time
     if (typeof window !== 'undefined') {
@@ -378,26 +393,18 @@ export async function updateStatusInSheet(
   }
 
   try {
-    const response = await fetch(GOOGLE_SCRIPT_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify({
-        action: 'updateStatus',
-        pageUrl: pageUrl,
-        status: STATUS_MAP_TO_SHEET[status],
-        assignedTo: assignedTo,
-        notes: notes || ''
-      }),
-      redirect: 'follow'
+    const success = await postToGoogleScript({
+      action: 'updateStatus',
+      pageUrl: pageUrl,
+      status: STATUS_MAP_TO_SHEET[status],
+      assignedTo: assignedTo,
+      notes: notes || ''
     });
 
-    if (!response.ok) {
-      console.error('Google Sheets update failed:', response.status);
-      return false;
+    if (success) {
+      console.log('✅ Status synced to Google Sheets for:', pageUrl);
     }
-
-    console.log('✅ Status synced to Google Sheets for:', pageUrl);
-    return true;
+    return success;
   } catch (error) {
     console.error('Error updating Google Sheets:', error);
     return false;
@@ -411,16 +418,7 @@ export async function addTeamMemberToSheet(name: string): Promise<boolean> {
   if (!GOOGLE_SCRIPT_URL) return false;
 
   try {
-    await fetch(GOOGLE_SCRIPT_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify({
-        action: 'addTeamMember',
-        name: name
-      }),
-      redirect: 'follow'
-    });
-    return true;
+    return await postToGoogleScript({ action: 'addTeamMember', name });
   } catch (error) {
     console.error('Error adding team member to sheet:', error);
     return false;
@@ -440,18 +438,11 @@ export async function updateSitePriorityInSheet(
   }
 
   try {
-    await fetch(GOOGLE_SCRIPT_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify({
-        action: 'updateSitePriority',
-        siteId: siteId,
-        priority: priority
-      }),
-      redirect: 'follow'
+    return await postToGoogleScript({
+      action: 'updateSitePriority',
+      siteId: siteId,
+      priority: priority
     });
-
-    return true;
   } catch (error) {
     console.error('Error updating site priority in Google Sheets:', error);
     return false;
