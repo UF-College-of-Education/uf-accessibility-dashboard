@@ -39,6 +39,11 @@ import {
   sortSitesByPriority,
   mergeSitePrioritiesIntoLocal,
 } from './GoogleSheetsService';
+import {
+  syncAllSiteimproveData,
+  getSiteimproveDataLocal,
+  type SiteimproveData,
+} from './SiteimproveService';
 
 interface Props {
   sites: SiteData[];
@@ -65,6 +70,11 @@ export default function StatusCheckPage({ sites }: Props) {
   const [cloudStatus, setCloudStatus] = useState<'loading' | 'connected' | 'offline'>('loading');
   const [searchQuery, setSearchQuery] = useState('');
 
+  // Siteimprove state
+  const [siteimproveStatus, setSiteimproveStatus] = useState<'idle' | 'syncing' | 'done' | 'error'>('idle');
+  const [siteimproveMessage, setSiteimproveMessage] = useState('');
+  const [siteimproveData, setSiteimproveData] = useState<SiteimproveData | null>(null);
+
   // Dialog state (V0 style)
   const [notesDialog, setNotesDialog] = useState({
     isOpen: false,
@@ -87,6 +97,13 @@ export default function StatusCheckPage({ sites }: Props) {
   // ============================================
   useEffect(() => {
     loadDataFromCloud();
+    // Load cached Siteimprove data immediately, then auto-sync fresh data
+    const cached = getSiteimproveDataLocal();
+    if (cached) {
+      setSiteimproveData(cached);
+    }
+    // Auto-sync Siteimprove data (uses cache if less than 1 hour old)
+    handleSiteimproveSync(false);
   }, []);
 
   async function loadDataFromCloud() {
@@ -296,6 +313,27 @@ export default function StatusCheckPage({ sites }: Props) {
     []
   );
 
+  // Siteimprove sync — fetches all sites, cached for 1 hour, no Google Sheets
+  async function handleSiteimproveSync(force: boolean = true) {
+    setSiteimproveStatus('syncing');
+    setSiteimproveMessage('Checking Siteimprove data...');
+
+    try {
+      const result = await syncAllSiteimproveData(
+        (msg) => setSiteimproveMessage(msg),
+        force
+      );
+      setSiteimproveData(result);
+      setSiteimproveStatus('done');
+      setTimeout(() => setSiteimproveStatus('idle'), 5000);
+    } catch (error) {
+      console.error('Siteimprove sync error:', error);
+      setSiteimproveStatus('error');
+      setSiteimproveMessage(`Error: ${error}`);
+      setTimeout(() => setSiteimproveStatus('idle'), 5000);
+    }
+  }
+
   // ============================================
   // COMPUTED VALUES
   // ============================================
@@ -436,6 +474,9 @@ export default function StatusCheckPage({ sites }: Props) {
             onRefresh={handleRefresh}
             onExport={handleExport}
             onSearchChange={setSearchQuery}
+            siteimproveStatus={siteimproveStatus}
+            siteimproveMessage={siteimproveMessage}
+            onSiteimproveSync={handleSiteimproveSync}
           />
 
           {/* Sites list */}
@@ -457,11 +498,9 @@ export default function StatusCheckPage({ sites }: Props) {
               </div>
             )}
 
-            {sortedSites.map((site, idx) => (
+            {sortedSites.map((site) => (
               <div
                 key={site.id}
-                className="animate-fade-in-up"
-                style={{ animationDelay: `${650 + idx * 50}ms` }}
               >
                 <SiteCard
                   site={site}
@@ -474,6 +513,7 @@ export default function StatusCheckPage({ sites }: Props) {
                   onOpenNotes={openNotes}
                   onOpenReport={openReport}
                   getScanData={getScanData}
+                  siteimproveData={siteimproveData}
                 />
               </div>
             ))}

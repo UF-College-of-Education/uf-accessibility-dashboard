@@ -19,6 +19,7 @@ import {
   TooltipProvider,
 } from "@/components/ui/tooltip";
 import { STATUS_OPTIONS, type SiteData, type TeamMember, type PageStatusType, type ScanResultData } from '@/app/components/GoogleSheetsService';
+import type { SiteimproveData } from '@/app/components/SiteimproveService';
 interface LocalStatus { status: PageStatusType; assignedTo: string; notes: string; updatedDate: string; }
 
 interface SiteCardProps {
@@ -32,6 +33,7 @@ interface SiteCardProps {
   onOpenNotes: (pageUrl: string, pageTitle: string) => void;
   onOpenReport: (pageUrl: string, pageTitle: string) => void;
   getScanData: (pageUrl: string) => ScanResultData | null;
+  siteimproveData?: SiteimproveData | null;
 }
 
 const PRIORITY_CONFIG = {
@@ -99,6 +101,8 @@ function getStatusBgColor(status: PageStatusType) {
   }
 }
 
+const PAGES_PER_BATCH = 30;
+
 export default function SiteCard({
   site,
   pageStatuses,
@@ -110,8 +114,10 @@ export default function SiteCard({
   onOpenNotes,
   onOpenReport,
   getScanData,
+  siteimproveData,
 }: SiteCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(PAGES_PER_BATCH);
 
   const completedInSite = site.pages.filter(
     (p) => pageStatuses[p.url]?.status === "completed"
@@ -252,7 +258,7 @@ export default function SiteCard({
 
             <div className="p-3">
               <div className="space-y-0.5">
-                {site.pages.map((page, pageIdx) => {
+                {site.pages.slice(0, visibleCount).map((page) => {
                   const status = pageStatuses[page.url] || {
                     status: "not-started" as PageStatusType,
                     assignedTo: "",
@@ -262,11 +268,15 @@ export default function SiteCard({
                   const hasNotes = !!status.notes;
                   const scanData = getScanData(page.url);
 
+                  // Siteimprove issue lookup
+                  const siPage = siteimproveData?.pages?.[page.url]
+                    || siteimproveData?.pages?.[page.url.replace(/\/$/, '')]
+                    || null;
+
                   return (
                     <div
                       key={page.url}
-                      className={`flex items-center gap-3 p-2.5 rounded-lg transition-all duration-200 group animate-fade-in-up ${getStatusBgColor(status.status)}`}
-                      style={{ animationDelay: `${pageIdx * 25}ms` }}
+                      className={`flex items-center gap-3 p-2.5 rounded-lg transition-colors duration-150 group ${getStatusBgColor(status.status)}`}
                     >
                       {/* Status icon */}
                       <div className="flex-shrink-0">{getStatusIcon(status.status)}</div>
@@ -275,12 +285,39 @@ export default function SiteCard({
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-foreground truncate">{page.title}</p>
                         <p className="text-[11px] text-muted-foreground truncate font-mono">{page.url}</p>
-                        {status.assignedTo && (
-                          <span className="inline-flex items-center gap-1 text-[10px] text-blue-400 mt-0.5 bg-blue-500/10 px-1.5 py-0.5 rounded-full">
-                            <Zap className="w-2.5 h-2.5" />
-                            {status.assignedTo}
-                          </span>
-                        )}
+                        <div className="flex items-center gap-1.5 mt-0.5 flex-wrap">
+                          {status.assignedTo && (
+                            <span className="inline-flex items-center gap-1 text-[10px] text-blue-400 bg-blue-500/10 px-1.5 py-0.5 rounded-full">
+                              <Zap className="w-2.5 h-2.5" />
+                              {status.assignedTo}
+                            </span>
+                          )}
+                          {siPage && (
+                            <>
+                              <span className={`inline-flex items-center gap-0.5 text-[10px] font-mono px-1.5 py-0.5 rounded-full border ${
+                                siPage.aIssues > 0
+                                  ? "text-red-400 bg-red-500/10 border-red-500/20"
+                                  : "text-emerald-400 bg-emerald-500/10 border-emerald-500/20"
+                              }`}>
+                                A: {siPage.aIssues}
+                              </span>
+                              <span className={`inline-flex items-center gap-0.5 text-[10px] font-mono px-1.5 py-0.5 rounded-full border ${
+                                siPage.aaIssues > 0
+                                  ? "text-amber-400 bg-amber-500/10 border-amber-500/20"
+                                  : "text-emerald-400 bg-emerald-500/10 border-emerald-500/20"
+                              }`}>
+                                AA: {siPage.aaIssues}
+                              </span>
+                              <span className={`inline-flex items-center gap-0.5 text-[10px] font-mono px-1.5 py-0.5 rounded-full border ${
+                                siPage.ariaIssues > 0
+                                  ? "text-purple-400 bg-purple-500/10 border-purple-500/20"
+                                  : "text-emerald-400 bg-emerald-500/10 border-emerald-500/20"
+                              }`}>
+                                ARIA: {siPage.ariaIssues}
+                              </span>
+                            </>
+                          )}
+                        </div>
                       </div>
 
                       {/* Actions */}
@@ -361,6 +398,33 @@ export default function SiteCard({
                   );
                 })}
               </div>
+
+              {/* Load More / Show Less buttons for sites with many pages */}
+              {site.pages.length > PAGES_PER_BATCH && (
+                <div className="flex items-center justify-center gap-3 mt-3 pt-3 border-t border-white/[0.06]">
+                  {visibleCount < site.pages.length && (
+                    <button
+                      type="button"
+                      onClick={() => setVisibleCount((prev) => Math.min(prev + PAGES_PER_BATCH, site.pages.length))}
+                      className="px-4 py-1.5 text-xs font-medium text-blue-400 bg-blue-500/10 border border-blue-500/20 rounded-lg hover:bg-blue-500/20 transition-colors"
+                    >
+                      Load More ({Math.min(PAGES_PER_BATCH, site.pages.length - visibleCount)} of {site.pages.length - visibleCount} remaining)
+                    </button>
+                  )}
+                  {visibleCount > PAGES_PER_BATCH && (
+                    <button
+                      type="button"
+                      onClick={() => setVisibleCount(PAGES_PER_BATCH)}
+                      className="px-4 py-1.5 text-xs font-medium text-muted-foreground bg-white/[0.04] border border-white/[0.08] rounded-lg hover:bg-white/[0.08] transition-colors"
+                    >
+                      Show Less
+                    </button>
+                  )}
+                  <span className="text-[10px] text-muted-foreground font-mono">
+                    Showing {Math.min(visibleCount, site.pages.length)}/{site.pages.length} pages
+                  </span>
+                </div>
+              )}
             </div>
           </div>
         )}

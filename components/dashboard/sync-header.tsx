@@ -24,6 +24,9 @@ interface SyncHeaderProps {
   onRefresh: () => void;
   onExport: () => void;
   onSearchChange: (query: string) => void;
+  siteimproveStatus?: "idle" | "syncing" | "done" | "error";
+  siteimproveMessage?: string;
+  onSiteimproveSync?: () => void;
 }
 
 export default function SyncHeader({
@@ -36,6 +39,9 @@ export default function SyncHeader({
   onRefresh,
   onExport,
   onSearchChange,
+  siteimproveStatus = "idle",
+  siteimproveMessage,
+  onSiteimproveSync,
 }: SyncHeaderProps) {
   return (
     <div className="animate-fade-in-up flex flex-col gap-4" style={{ animationDelay: "500ms" }}>
@@ -106,6 +112,35 @@ export default function SyncHeader({
             )}
             {exporting ? "Exporting..." : exportSuccess ? "Exported!" : "Export"}
           </Button>
+
+          {onSiteimproveSync && (
+            <Button
+              variant="outline"
+              size="sm"
+              className={`h-8 gap-1.5 text-xs ${
+                siteimproveStatus === "done"
+                  ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-400"
+                  : siteimproveStatus === "error"
+                    ? "border-red-500/30 bg-red-500/10 text-red-400"
+                    : "border-purple-500/20 bg-purple-500/10 hover:bg-purple-500/20 text-purple-400"
+              }`}
+              onClick={onSiteimproveSync}
+              disabled={siteimproveStatus === "syncing"}
+            >
+              {siteimproveStatus === "syncing" ? (
+                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+              ) : siteimproveStatus === "done" ? (
+                <Check className="w-3.5 h-3.5" />
+              ) : (
+                <Sparkles className="w-3.5 h-3.5" />
+              )}
+              {siteimproveStatus === "syncing"
+                ? "Syncing..."
+                : siteimproveStatus === "done"
+                  ? "Synced!"
+                  : "Siteimprove"}
+            </Button>
+          )}
 
           <Button
             variant="outline"

@@ -343,7 +343,7 @@ export async function exportAllPagesToSheet(sites: SiteData[]): Promise<{ succes
     // Send to Google Sheets
     const response = await fetch(GOOGLE_SCRIPT_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'text/plain' },
       body: JSON.stringify({
         action: 'syncPages',
         pages: pages
@@ -367,9 +367,9 @@ export async function exportAllPagesToSheet(sites: SiteData[]): Promise<{ succes
  * Update a single page status in Google Sheets
  */
 export async function updateStatusInSheet(
-  pageUrl: string, 
-  status: PageStatusType, 
-  assignedTo: string, 
+  pageUrl: string,
+  status: PageStatusType,
+  assignedTo: string,
   notes?: string
 ): Promise<boolean> {
   if (!GOOGLE_SCRIPT_URL) {
@@ -378,18 +378,25 @@ export async function updateStatusInSheet(
   }
 
   try {
-    await fetch(GOOGLE_SCRIPT_URL, {
+    const response = await fetch(GOOGLE_SCRIPT_URL, {
       method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
       body: JSON.stringify({
         action: 'updateStatus',
         pageUrl: pageUrl,
         status: STATUS_MAP_TO_SHEET[status],
         assignedTo: assignedTo,
-        notes: notes
+        notes: notes || ''
       }),
       redirect: 'follow'
     });
 
+    if (!response.ok) {
+      console.error('Google Sheets update failed:', response.status);
+      return false;
+    }
+
+    console.log('✅ Status synced to Google Sheets for:', pageUrl);
     return true;
   } catch (error) {
     console.error('Error updating Google Sheets:', error);
@@ -406,7 +413,7 @@ export async function addTeamMemberToSheet(name: string): Promise<boolean> {
   try {
     await fetch(GOOGLE_SCRIPT_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'text/plain' },
       body: JSON.stringify({
         action: 'addTeamMember',
         name: name
@@ -435,7 +442,7 @@ export async function updateSitePriorityInSheet(
   try {
     await fetch(GOOGLE_SCRIPT_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'text/plain' },
       body: JSON.stringify({
         action: 'updateSitePriority',
         siteId: siteId,
@@ -545,17 +552,32 @@ export function getAllPageStatusesLocal(): Record<string, {
  */
 export function mergeSheetDataIntoLocal(sheetStatuses: Record<string, { status: PageStatusType; assignedTo: string; notes: string }>): void {
   if (typeof window === 'undefined') return;
-  
+
   const existing = JSON.parse(localStorage.getItem(STORAGE_KEYS.PAGE_STATUSES) || '{}');
-  
-  // Merge: Sheet data takes precedence for pages that exist in sheet
+
+  // Merge: Sheet data fills in missing entries, but does NOT overwrite
+  // local changes that are newer (within last 5 minutes)
+  const fiveMinutesAgo = Date.now() - 5 * 60 * 1000;
+
   Object.keys(sheetStatuses).forEach(url => {
+    const local = existing[url];
+
+    // If local entry exists and was updated recently, keep local version
+    if (local && local.updatedDate) {
+      const localTime = new Date(local.updatedDate).getTime();
+      if (localTime > fiveMinutesAgo) {
+        // Local is recent — keep it, don't overwrite
+        return;
+      }
+    }
+
+    // Otherwise, use sheet data
     existing[url] = {
       ...sheetStatuses[url],
       updatedDate: new Date().toISOString(),
     };
   });
-  
+
   localStorage.setItem(STORAGE_KEYS.PAGE_STATUSES, JSON.stringify(existing));
 }
 

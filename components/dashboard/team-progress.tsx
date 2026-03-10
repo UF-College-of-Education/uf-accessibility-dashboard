@@ -147,26 +147,29 @@ export default function TeamProgress({ pageStatuses, teamMembers, sites, fullPag
       .sort((a, b) => b.completed - a.completed);
   }, [pageStatuses, teamMembers, urlInfo]);
 
-  // Daily completions (last 14 days)
+  // Daily completions (last 5 calendar days)
   const dailyData = useMemo(() => {
     const dailyMap: Record<string, Record<string, number>> = {};
-    const allDates = new Set<string>();
 
     for (const [, status] of Object.entries(pageStatuses)) {
       if (status.status !== "completed" || !status.assignedTo || !status.updatedDate) continue;
       const dateKey = getDateKey(status.updatedDate);
       if (!dateKey) continue;
 
-      allDates.add(dateKey);
       if (!dailyMap[dateKey]) dailyMap[dateKey] = {};
       if (!dailyMap[dateKey][status.assignedTo]) dailyMap[dateKey][status.assignedTo] = 0;
       dailyMap[dateKey][status.assignedTo]++;
     }
 
-    // Get last 14 days with activity, sorted newest first
-    const sortedDates = Array.from(allDates).sort((a, b) => b.localeCompare(a)).slice(0, 14);
+    // Always show exactly last 5 calendar days, even if no activity
+    const dates: string[] = [];
+    for (let i = 0; i < 5; i++) {
+      const d = new Date();
+      d.setDate(d.getDate() - i);
+      dates.push(d.toISOString().split("T")[0]);
+    }
 
-    return { dailyMap, dates: sortedDates };
+    return { dailyMap, dates };
   }, [pageStatuses]);
 
   // Get unique users who have completions
@@ -227,19 +230,21 @@ export default function TeamProgress({ pageStatuses, teamMembers, sites, fullPag
               <Users className="w-4 h-4 text-blue-400" />
               <h4 className="text-xs font-semibold text-foreground uppercase tracking-wider">Member Overview</h4>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
-              {userStats.map((user, idx) => {
-                const pct = user.total > 0 ? (user.completed / user.total) * 100 : 0;
-                const isUserExpanded = expandedUser === user.name;
+            <div className="space-y-3">
+              {/* User cards grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+                {userStats.map((user, idx) => {
+                  const pct = user.total > 0 ? (user.completed / user.total) * 100 : 0;
+                  const isUserExpanded = expandedUser === user.name;
 
-                return (
-                  <div key={user.name}>
+                  return (
                     <button
+                      key={user.name}
                       type="button"
                       onClick={() => setExpandedUser(isUserExpanded ? null : user.name)}
                       className={`w-full text-left rounded-xl border p-4 transition-all duration-200 hover:border-white/[0.15] ${
                         isUserExpanded
-                          ? "border-emerald-500/30 bg-emerald-500/5"
+                          ? "border-emerald-500/30 bg-emerald-500/5 ring-1 ring-emerald-500/20"
                           : "border-white/[0.06] bg-white/[0.02] hover:bg-white/[0.04]"
                       }`}
                     >
@@ -308,58 +313,62 @@ export default function TeamProgress({ pageStatuses, teamMembers, sites, fullPag
                         </div>
                       )}
                     </button>
+                  );
+                })}
+              </div>
 
-                    {/* ===== Expanded: Completed URLs for this user ===== */}
-                    {isUserExpanded && user.completedPages.length > 0 && (
-                      <div className="mt-1 rounded-xl border border-white/[0.06] bg-white/[0.01] overflow-hidden animate-scale-in">
-                        <div className="p-3 border-b border-white/[0.06] flex items-center gap-2">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-                          <span className="text-xs font-semibold text-foreground">
-                            Completed Pages ({user.completedPages.length})
-                          </span>
-                        </div>
-                        <div className={`${fullPage ? "max-h-[600px]" : "max-h-64"} overflow-y-auto`}>
-                          {user.completedPages.map((page) => (
-                            <div
-                              key={page.url}
-                              className="flex items-center gap-3 px-3 py-2 border-b border-white/[0.03] hover:bg-white/[0.03] transition-colors group"
-                            >
-                              <CheckCircle2 className="w-3 h-3 text-emerald-400 flex-shrink-0" />
-                              <div className="flex-1 min-w-0">
-                                <p className="text-xs font-medium text-foreground truncate">{page.title}</p>
-                                <p className="text-[10px] text-muted-foreground truncate font-mono">{page.url}</p>
-                                <div className="flex items-center gap-2 mt-0.5">
-                                  <span className="text-[10px] text-muted-foreground">{page.site}</span>
-                                  <span className="text-[10px] text-muted-foreground">•</span>
-                                  <span className="text-[10px] text-emerald-400">{formatDate(page.date)}</span>
-                                </div>
-                              </div>
-                              <a
-                                href={page.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="p-1 rounded hover:bg-white/[0.08] text-muted-foreground hover:text-blue-400 opacity-0 group-hover:opacity-100 transition-all flex-shrink-0"
-                              >
-                                <ExternalLink className="w-3 h-3" />
-                              </a>
+              {/* ===== Expanded: Completed URLs — rendered OUTSIDE the grid so it spans full width ===== */}
+              {expandedUser && (() => {
+                const user = userStats.find((u) => u.name === expandedUser);
+                if (!user || user.completedPages.length === 0) return null;
+
+                return (
+                  <div className="rounded-xl border border-emerald-500/20 bg-white/[0.01] overflow-hidden animate-scale-in">
+                    <div className="p-3 border-b border-white/[0.06] flex items-center gap-2 bg-emerald-500/5">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                      <span className="text-xs font-semibold text-foreground">
+                        {user.name}'s Completed Pages ({user.completedPages.length})
+                      </span>
+                    </div>
+                    <div className={`${fullPage ? "max-h-[70vh]" : "max-h-80"} overflow-y-auto`}>
+                      {user.completedPages.map((page) => (
+                        <div
+                          key={page.url}
+                          className="flex items-center gap-3 px-3 py-2 border-b border-white/[0.03] hover:bg-white/[0.03] transition-colors group"
+                        >
+                          <CheckCircle2 className="w-3 h-3 text-emerald-400 flex-shrink-0" />
+                          <div className="flex-1 min-w-0">
+                            <p className="text-xs font-medium text-foreground truncate">{page.title}</p>
+                            <p className="text-[10px] text-muted-foreground truncate font-mono">{page.url}</p>
+                            <div className="flex items-center gap-2 mt-0.5">
+                              <span className="text-[10px] text-muted-foreground">{page.site}</span>
+                              <span className="text-[10px] text-muted-foreground">•</span>
+                              <span className="text-[10px] text-emerald-400">{formatDate(page.date)}</span>
                             </div>
-                          ))}
+                          </div>
+                          <a
+                            href={page.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="p-1 rounded hover:bg-white/[0.08] text-muted-foreground hover:text-blue-400 opacity-0 group-hover:opacity-100 transition-all flex-shrink-0"
+                          >
+                            <ExternalLink className="w-3 h-3" />
+                          </a>
                         </div>
-                      </div>
-                    )}
+                      ))}
+                    </div>
                   </div>
                 );
-              })}
+              })()}
             </div>
           </div>
 
           {/* ===== SECTION 2: Daily Activity Table ===== */}
-          {dailyData.dates.length > 0 && (
-            <div>
+          <div>
               <div className="flex items-center gap-2 mb-3">
                 <Calendar className="w-4 h-4 text-amber-400" />
                 <h4 className="text-xs font-semibold text-foreground uppercase tracking-wider">
-                  Daily Completions (Last {dailyData.dates.length} days)
+                  Daily Completions (Last 5 Days)
                 </h4>
               </div>
               <div className="rounded-xl border border-white/[0.06] overflow-hidden">
@@ -452,7 +461,6 @@ export default function TeamProgress({ pageStatuses, teamMembers, sites, fullPag
                 </div>
               </div>
             </div>
-          )}
         </div>
       )}
     </div>
