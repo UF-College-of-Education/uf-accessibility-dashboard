@@ -126,7 +126,11 @@ export async function syncAllSiteimproveData(
           existing.aIssues = Math.max(existing.aIssues, page.aIssues);
           existing.aaIssues = Math.max(existing.aaIssues, page.aaIssues);
           existing.ariaIssues = Math.max(existing.ariaIssues, page.ariaIssues);
+          existing.aOccurrences = Math.max(existing.aOccurrences, page.aOccurrences);
+          existing.aaOccurrences = Math.max(existing.aaOccurrences, page.aaOccurrences);
+          existing.ariaOccurrences = Math.max(existing.ariaOccurrences, page.ariaOccurrences);
           existing.issues = existing.aIssues + existing.aaIssues + existing.ariaIssues;
+          existing.occurrences = existing.aOccurrences + existing.aaOccurrences + existing.ariaOccurrences;
         } else {
           pagesMap[normalizedUrl] = { ...page };
           totalCount++;

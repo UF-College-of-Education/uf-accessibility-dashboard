@@ -321,11 +321,18 @@ async function fetchStatusesFromSheetCSV(): Promise<Record<string, { status: Pag
         const status = statusColIndex >= 0 ? row[statusColIndex] : '';
         const assignedTo = assignedColIndex >= 0 ? row[assignedColIndex] : '';
         const notes = notesColIndex >= 0 ? row[notesColIndex] : '';
-        
+        const newStatus = STATUS_MAP_FROM_SHEET[status] || STATUS_MAP_FROM_SHEET[status?.toLowerCase()] || 'not-started';
+        const existing = statuses[pageUrl];
+
+        // Don't let duplicate "Not Started" rows overwrite real statuses
+        if (existing && existing.status !== 'not-started' && newStatus === 'not-started') {
+          continue;
+        }
+
         statuses[pageUrl] = {
-          status: STATUS_MAP_FROM_SHEET[status] || STATUS_MAP_FROM_SHEET[status?.toLowerCase()] || 'not-started',
-          assignedTo: assignedTo || '',
-          notes: notes || '',
+          status: newStatus,
+          assignedTo: assignedTo || existing?.assignedTo || '',
+          notes: notes || existing?.notes || '',
         };
       }
     }
