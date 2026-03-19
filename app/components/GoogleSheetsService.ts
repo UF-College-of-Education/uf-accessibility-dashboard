@@ -202,10 +202,19 @@ export async function fetchAllDataFromSheet(): Promise<{
       if (data.pages && Array.isArray(data.pages)) {
         data.pages.forEach((row: any) => {
           if (row.url) {
+            const newStatus = STATUS_MAP_FROM_SHEET[row.status] || STATUS_MAP_FROM_SHEET[row.status?.toLowerCase()] || 'not-started';
+            const existing = statuses[row.url];
+
+            // If this URL already has a real status, don't overwrite with "not-started"
+            // This handles duplicate rows in the sheet where old rows still say Not Started
+            if (existing && existing.status !== 'not-started' && newStatus === 'not-started') {
+              return; // Keep the existing non-default status
+            }
+
             statuses[row.url] = {
-              status: STATUS_MAP_FROM_SHEET[row.status] || STATUS_MAP_FROM_SHEET[row.status?.toLowerCase()] || 'not-started',
-              assignedTo: row.assignedTo || '',
-              notes: row.notes || '',
+              status: newStatus,
+              assignedTo: row.assignedTo || existing?.assignedTo || '',
+              notes: row.notes || existing?.notes || '',
             };
           }
         });
