@@ -5027,6 +5027,57 @@
       "score": null,
       "lastRun": "2026-03-20T20:00:50.361Z",
       "error": true
+    },
+    "https://education.ufl.edu/educational-research/category/research-bulletin/page/9/": {
+      "siteId": "education-ufl-edu-educational-research",
+      "score": 100,
+      "lastRun": "2026-03-20T20:01:00.270Z"
+    },
+    "https://education.ufl.edu/educational-research/category/research-bulletin/page/8/": {
+      "siteId": "education-ufl-edu-educational-research",
+      "score": null,
+      "lastRun": "2026-03-20T20:01:02.356Z",
+      "error": true
+    },
+    "https://education.ufl.edu/educational-research/category/research-bulletin/page/7/": {
+      "siteId": "education-ufl-edu-educational-research",
+      "score": null,
+      "lastRun": "2026-03-20T20:01:04.548Z",
+      "error": true
+    },
+    "https://education.ufl.edu/educational-research/category/research-spotlights/page/3/": {
+      "siteId": "education-ufl-edu-educational-research",
+      "score": 100,
+      "lastRun": "2026-03-20T20:01:14.264Z"
+    },
+    "https://education.ufl.edu/educational-research/category/research-spotlights/": {
+      "siteId": "education-ufl-edu-educational-research",
+      "score": null,
+      "lastRun": "2026-03-20T20:01:16.140Z",
+      "error": true
+    },
+    "https://education.ufl.edu/educational-research/category/research-spotlights/page/2/": {
+      "siteId": "education-ufl-edu-educational-research",
+      "score": null,
+      "lastRun": "2026-03-20T20:01:18.941Z",
+      "error": true
+    },
+    "https://education.ufl.edu/educational-research/category/research-spotlights/page/4/": {
+      "siteId": "education-ufl-edu-educational-research",
+      "score": 100,
+      "lastRun": "2026-03-20T20:01:28.535Z"
+    },
+    "https://education.ufl.edu/educational-research/category/research-spotlights/page/6/": {
+      "siteId": "education-ufl-edu-educational-research",
+      "score": null,
+      "lastRun": "2026-03-20T20:01:30.737Z",
+      "error": true
+    },
+    "https://education.ufl.edu/educational-research/category/research-spotlights/page/5/": {
+      "siteId": "education-ufl-edu-educational-research",
+      "score": null,
+      "lastRun": "2026-03-20T20:01:33.977Z",
+      "error": true
     }
   },
   "sites": {
@@ -5034,133 +5085,133 @@
       "avgScore": 100,
       "pageCount": 1,
       "scannedCount": 1,
-      "lastRun": "2026-03-20T20:00:52.305Z"
+      "lastRun": "2026-03-20T20:01:35.900Z"
     },
     "education-ufl-edu-about": {
       "avgScore": 100,
       "pageCount": 4,
       "scannedCount": 4,
-      "lastRun": "2026-03-20T20:00:52.305Z"
+      "lastRun": "2026-03-20T20:01:35.900Z"
     },
     "education-ufl-edu-administration": {
       "avgScore": 100,
       "pageCount": 7,
       "scannedCount": 7,
-      "lastRun": "2026-03-20T20:00:52.305Z"
+      "lastRun": "2026-03-20T20:01:35.900Z"
     },
     "education-ufl-edu-ai": {
       "avgScore": 99,
       "pageCount": 2,
       "scannedCount": 2,
-      "lastRun": "2026-03-20T20:00:52.305Z"
+      "lastRun": "2026-03-20T20:01:35.900Z"
     },
     "education-ufl-edu-aihardware": {
       "avgScore": 99,
       "pageCount": 14,
       "scannedCount": 14,
-      "lastRun": "2026-03-20T20:00:52.305Z"
+      "lastRun": "2026-03-20T20:01:35.900Z"
     },
     "education-ufl-edu-alumni": {
       "avgScore": 98,
       "pageCount": 83,
       "scannedCount": 83,
-      "lastRun": "2026-03-20T20:00:52.305Z"
+      "lastRun": "2026-03-20T20:01:35.900Z"
     },
     "education-ufl-edu-apps": {
       "avgScore": 69,
       "pageCount": 1,
       "scannedCount": 1,
-      "lastRun": "2026-03-20T20:00:52.305Z"
+      "lastRun": "2026-03-20T20:01:35.900Z"
     },
     "education-ufl-edu-best-in-class": {
       "avgScore": 78,
       "pageCount": 40,
       "scannedCount": 40,
-      "lastRun": "2026-03-20T20:00:52.305Z"
+      "lastRun": "2026-03-20T20:01:35.900Z"
     },
     "education-ufl-edu-coe-online": {
       "avgScore": 97,
       "pageCount": 6,
       "scannedCount": 6,
-      "lastRun": "2026-03-20T20:00:52.305Z"
+      "lastRun": "2026-03-20T20:01:35.900Z"
     },
     "education-ufl-edu-cognitive-behavioral-research-group": {
       "avgScore": 76,
       "pageCount": 64,
       "scannedCount": 64,
-      "lastRun": "2026-03-20T20:00:52.305Z"
+      "lastRun": "2026-03-20T20:01:35.900Z"
     },
     "education-ufl-edu-committees": {
       "avgScore": 84,
       "pageCount": 18,
       "scannedCount": 18,
-      "lastRun": "2026-03-20T20:00:52.305Z"
+      "lastRun": "2026-03-20T20:01:35.900Z"
     },
     "education-ufl-edu-computer-science-education": {
       "avgScore": 100,
       "pageCount": 16,
       "scannedCount": 16,
-      "lastRun": "2026-03-20T20:00:52.305Z"
+      "lastRun": "2026-03-20T20:01:35.900Z"
     },
     "education-ufl-edu-connect": {
       "avgScore": 100,
       "pageCount": 1,
       "scannedCount": 1,
-      "lastRun": "2026-03-20T20:00:52.305Z"
+      "lastRun": "2026-03-20T20:01:35.900Z"
     },
     "education-ufl-edu-contact": {
       "avgScore": 100,
       "pageCount": 2,
       "scannedCount": 2,
-      "lastRun": "2026-03-20T20:00:52.305Z"
+      "lastRun": "2026-03-20T20:01:35.900Z"
     },
     "education-ufl-edu-counselor-education": {
       "avgScore": 100,
       "pageCount": 19,
       "scannedCount": 19,
-      "lastRun": "2026-03-20T20:00:52.305Z"
+      "lastRun": "2026-03-20T20:01:35.900Z"
     },
     "education-ufl-edu-course-syllabi": {
       "avgScore": 100,
       "pageCount": 1,
       "scannedCount": 1,
-      "lastRun": "2026-03-20T20:00:52.305Z"
+      "lastRun": "2026-03-20T20:01:35.900Z"
     },
     "education-ufl-edu-curriculum-teaching": {
       "avgScore": 97,
       "pageCount": 15,
       "scannedCount": 15,
-      "lastRun": "2026-03-20T20:00:52.305Z"
+      "lastRun": "2026-03-20T20:01:35.900Z"
     },
     "education-ufl-edu-current-edugators": {
       "avgScore": null,
       "pageCount": 1,
       "scannedCount": 1,
-      "lastRun": "2026-03-20T20:00:52.305Z"
+      "lastRun": "2026-03-20T20:01:35.900Z"
     },
     "education-ufl-edu-early-childhood": {
       "avgScore": 100,
       "pageCount": 14,
       "scannedCount": 14,
-      "lastRun": "2026-03-20T20:00:52.305Z"
+      "lastRun": "2026-03-20T20:01:35.900Z"
     },
     "education-ufl-edu-education-sciences": {
       "avgScore": 97,
       "pageCount": 13,
       "scannedCount": 13,
-      "lastRun": "2026-03-20T20:00:52.305Z"
+      "lastRun": "2026-03-20T20:01:35.900Z"
     },
     "education-ufl-edu-educational-leadership": {
       "avgScore": 98,
       "pageCount": 41,
       "scannedCount": 41,
-      "lastRun": "2026-03-20T20:00:52.305Z"
+      "lastRun": "2026-03-20T20:01:35.900Z"
     },
     "education-ufl-edu-educational-research": {
       "avgScore": 86,
       "pageCount": 618,
-      "scannedCount": 532,
-      "lastRun": "2026-03-20T20:00:52.305Z"
+      "scannedCount": 541,
+      "lastRun": "2026-03-20T20:01:35.900Z"
     }
   }
 }
