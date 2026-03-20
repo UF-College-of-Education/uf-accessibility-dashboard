@@ -75,6 +75,10 @@ export default function StatusCheckPage({ sites }: Props) {
   const [siteimproveMessage, setSiteimproveMessage] = useState('');
   const [siteimproveData, setSiteimproveData] = useState<SiteimproveData | null>(null);
 
+  // Lighthouse scores (site-level averages + per-page scores)
+  const [lighthouseScores, setLighthouseScores] = useState<Record<string, { score: number | null }>>({});
+  const [lighthousePageScores, setLighthousePageScores] = useState<Record<string, { score: number | null; status?: number }>>({});
+
   // Dialog state (V0 style)
   const [notesDialog, setNotesDialog] = useState({
     isOpen: false,
@@ -104,6 +108,30 @@ export default function StatusCheckPage({ sites }: Props) {
     }
     // Auto-sync Siteimprove data (uses cache if less than 1 hour old)
     handleSiteimproveSync(false);
+    // Load Lighthouse scores
+    fetch('/lighthouse-scores.json?t=' + Date.now())
+      .then(r => r.ok ? r.json() : {})
+      .then((data: any) => {
+        // Support new format { sites: { [id]: { avgScore } }, pages: { [url]: { score } } }
+        if (data.sites) {
+          const mapped: Record<string, { score: number | null }> = {};
+          for (const [id, info] of Object.entries(data.sites) as [string, any][]) {
+            mapped[id] = { score: info.avgScore ?? null };
+          }
+          setLighthouseScores(mapped);
+        } else {
+          setLighthouseScores(data);
+        }
+        // Extract per-page scores
+        if (data.pages) {
+          const pageScores: Record<string, { score: number | null; status?: number }> = {};
+          for (const [url, info] of Object.entries(data.pages) as [string, any][]) {
+            pageScores[url] = { score: info.score ?? null, status: info.status };
+          }
+          setLighthousePageScores(pageScores);
+        }
+      })
+      .catch(() => {});
   }, []);
 
   async function loadDataFromCloud() {
@@ -514,6 +542,8 @@ export default function StatusCheckPage({ sites }: Props) {
                   onOpenReport={openReport}
                   getScanData={getScanData}
                   siteimproveData={siteimproveData}
+                  lighthouseScore={lighthouseScores[site.id]?.score ?? null}
+                  lighthousePages={lighthousePageScores}
                 />
               </div>
             ))}

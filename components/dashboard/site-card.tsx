@@ -34,6 +34,8 @@ interface SiteCardProps {
   onOpenReport: (pageUrl: string, pageTitle: string) => void;
   getScanData: (pageUrl: string) => ScanResultData | null;
   siteimproveData?: SiteimproveData | null;
+  lighthouseScore?: number | null;
+  lighthousePages?: Record<string, { score: number | null; status?: number }>;
 }
 
 const PRIORITY_CONFIG = {
@@ -115,6 +117,8 @@ export default function SiteCard({
   onOpenReport,
   getScanData,
   siteimproveData,
+  lighthouseScore,
+  lighthousePages,
 }: SiteCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [visibleCount, setVisibleCount] = useState(PAGES_PER_BATCH);
@@ -162,6 +166,15 @@ export default function SiteCard({
               {priorityConfig && (
                 <span className={`text-[10px] py-0.5 px-2 rounded-full font-medium border ${priorityConfig.badgeClass}`}>
                   {priorityConfig.label} {priorityConfig.full}
+                </span>
+              )}
+              {lighthouseScore != null && (
+                <span className={`text-[10px] py-0.5 px-2 rounded-full font-mono font-medium border ${
+                  lighthouseScore >= 90 ? "text-emerald-400 bg-emerald-500/10 border-emerald-500/20"
+                    : lighthouseScore >= 50 ? "text-amber-400 bg-amber-500/10 border-amber-500/20"
+                    : "text-red-400 bg-red-500/10 border-red-500/20"
+                }`}>
+                  A11y: {lighthouseScore}
                 </span>
               )}
             </div>
@@ -273,6 +286,11 @@ export default function SiteCard({
                     || siteimproveData?.pages?.[page.url.replace(/\/$/, '')]
                     || null;
 
+                  // Lighthouse per-page score
+                  const lhData = lighthousePages?.[page.url] ?? lighthousePages?.[page.url.replace(/\/$/, '')] ?? null;
+                  const lhScore = lhData?.score ?? null;
+                  const lhStatus = lhData?.status;
+
                   return (
                     <div
                       key={page.url}
@@ -317,6 +335,21 @@ export default function SiteCard({
                               </span>
                             </>
                           )}
+                          {lhStatus === 404 || lhScore === 0 ? (
+                            <span className="inline-flex items-center gap-0.5 text-[10px] font-mono px-1.5 py-0.5 rounded-full border text-gray-400 bg-gray-500/10 border-gray-500/20">
+                              404
+                            </span>
+                          ) : lhScore != null ? (
+                            <span className={`inline-flex items-center gap-0.5 text-[10px] font-mono px-1.5 py-0.5 rounded-full border ${
+                              lhScore >= 90
+                                ? "text-emerald-400 bg-emerald-500/10 border-emerald-500/20"
+                                : lhScore >= 50
+                                ? "text-amber-400 bg-amber-500/10 border-amber-500/20"
+                                : "text-red-400 bg-red-500/10 border-red-500/20"
+                            }`}>
+                              LH: {lhScore}
+                            </span>
+                          ) : null}
                         </div>
                       </div>
 
