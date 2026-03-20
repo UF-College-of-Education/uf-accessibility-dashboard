@@ -16,28 +16,116 @@ import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..');
-const CONCURRENCY = 3;
+const CONCURRENCY = 1;
 const MAX_PASSES = 5;
 
-// Load sites
-const sitesPath = resolve(ROOT, 'public/sites-data1.json');
-const sitesData = JSON.parse(readFileSync(sitesPath, 'utf-8'));
-const sites = sitesData.subsites || [];
+// Load all 3 data sources (matching dashboard behavior)
+const sites1Path = resolve(ROOT, 'public/sites-data1.json');
+const sites2Path = resolve(ROOT, 'public/sites-data.json');
+const noahUrl = 'https://raw.githubusercontent.com/noah-n-pham/uf-web-mapper/main/public/data.json';
 
-// Build flat list of all pages
+const sites1 = JSON.parse(readFileSync(sites1Path, 'utf-8')).subsites || [];
+let sites2 = [];
+if (existsSync(sites2Path)) {
+  try { sites2 = JSON.parse(readFileSync(sites2Path, 'utf-8')).subsites || []; } catch {}
+}
+
+// Fetch Noah's data
+let noahSites = [];
+try {
+  console.log('📥 Fetching Noah\'s web mapper data...');
+  const res = await fetch(noahUrl, { signal: AbortSignal.timeout(15000) });
+  if (res.ok) {
+    const data = await res.json();
+    noahSites = data.subsites || [];
+    console.log(`   Found ${noahSites.length} sites from Noah's data`);
+  }
+} catch (err) {
+  console.log(`   ⚠️ Could not fetch Noah's data: ${err.message}`);
+}
+
+// Merge all sites — use URL as dedup key
+const sites = [...sites1];
+const seenSiteIds = new Set(sites1.map(s => s.id));
+
+// Add sites-data.json pages (new URLs only)
+for (const site of sites2) {
+  if (seenSiteIds.has(site.id)) {
+    const existing = sites.find(s => s.id === site.id);
+    const existingUrls = new Set((existing.pages || []).map(p => p.url));
+    for (const page of (site.pages || [])) {
+      if (page.url && !existingUrls.has(page.url)) {
+        existing.pages = existing.pages || [];
+        existing.pages.push(page);
+      }
+    }
+  } else {
+    sites.push(site);
+    seenSiteIds.add(site.id);
+  }
+}
+
+// Add Noah's data (new URLs only)
+for (const site of noahSites) {
+  if (seenSiteIds.has(site.id)) {
+    const existing = sites.find(s => s.id === site.id);
+    const existingUrls = new Set((existing.pages || []).map(p => p.url));
+    for (const page of (site.pages || [])) {
+      if (page.url && !existingUrls.has(page.url)) {
+        existing.pages = existing.pages || [];
+        existing.pages.push(page);
+      }
+    }
+  } else {
+    sites.push(site);
+    seenSiteIds.add(site.id);
+  }
+}
+
+console.log(`📊 Merged ${sites.length} sites from all 3 sources`);
+
+// Load known 404 pages — skip them entirely
+const fourOhFourPath = resolve(ROOT, 'public/404-pages.json');
+let known404s = new Set();
+if (existsSync(fourOhFourPath)) {
+  try {
+    const raw = JSON.parse(readFileSync(fourOhFourPath, 'utf-8'));
+    known404s = new Set(raw.urls || []);
+    console.log(`📋 Loaded ${known404s.size} known 404 pages from 404-pages.json — skipping them`);
+  } catch {}
+}
+
+// Build flat list of all pages (excluding known 404s)
 const allPages = [];
+let skipped404 = 0;
 for (const site of sites) {
   const pages = site.pages || [];
   if (pages.length === 0 && site.baseUrl) {
-    allPages.push({ siteId: site.id, url: site.baseUrl });
+    if (known404s.has(site.baseUrl)) { skipped404++; } else {
+      allPages.push({ siteId: site.id, url: site.baseUrl });
+    }
   } else {
     for (const page of pages) {
       if (page.url && page.url.startsWith('http')) {
-        allPages.push({ siteId: site.id, url: page.url });
+        if (known404s.has(page.url)) { skipped404++; } else {
+          allPages.push({ siteId: site.id, url: page.url });
+        }
       }
     }
   }
 }
+
+// Dedup by URL
+const seenUrls = new Set();
+const dedupedPages = [];
+for (const p of allPages) {
+  if (!seenUrls.has(p.url)) {
+    seenUrls.add(p.url);
+    dedupedPages.push(p);
+  }
+}
+const allPagesDeduped = dedupedPages;
+console.log(`📊 ${allPagesDeduped.length} unique pages to process (${skipped404} known 404s skipped, ${allPages.length - dedupedPages.length} duplicates removed)`);
 
 // Lighthouse config — accessibility only, minimal work
 const lhConfig = {
@@ -52,6 +140,7 @@ const lhConfig = {
 const lhFlags = {
   output: 'json',
   logLevel: 'error',
+  maxWaitForLoad: 45000,
 };
 
 // Prevent Windows EPERM crash from chrome-launcher temp dir cleanup
@@ -144,7 +233,7 @@ async function runPass(passNum) {
   const results = { pages: { ...existing.pages }, sites: { ...existing.sites } };
 
   // Filter out already-scanned pages (within last 24 hours)
-  const toScan = allPages.filter(p => {
+  const toScan = allPagesDeduped.filter(p => {
     const prev = results.pages[p.url];
     // Skip 404 pages — no point retrying
     if (prev && prev.status === 404) return false;
@@ -155,15 +244,15 @@ async function runPass(passNum) {
     return true;
   });
 
-  const skipped = allPages.length - toScan.length;
+  const skipped = allPagesDeduped.length - toScan.length;
 
   if (toScan.length === 0) {
-    console.log(`\n🎉 Pass ${passNum}: All ${allPages.length} pages already scored! Nothing to do.`);
+    console.log(`\n🎉 Pass ${passNum}: All ${allPagesDeduped.length} pages already scored! Nothing to do.`);
     return 0;
   }
 
   console.log(`\n${'='.repeat(60)}`);
-  console.log(`🔄 Pass ${passNum}/${MAX_PASSES}: ${toScan.length} pages to scan (${skipped} already done, ${allPages.length} total)`);
+  console.log(`🔄 Pass ${passNum}/${MAX_PASSES}: ${toScan.length} pages to scan (${skipped} already done, ${allPagesDeduped.length} total)`);
   console.log(`⚡ Running ${CONCURRENCY} parallel Chrome instances`);
   console.log(`${'='.repeat(60)}\n`);
 
@@ -182,6 +271,9 @@ async function runPass(passNum) {
 
     completed += batchResults.filter(r => r).length;
     failedCount += batchResults.filter(r => !r).length;
+
+    // Small delay between batches to let Chrome fully clean up
+    await new Promise(r => setTimeout(r, 2000));
 
     recalcSiteAverages(results);
     writeFileSync(scoresPath, JSON.stringify(results, null, 2));
