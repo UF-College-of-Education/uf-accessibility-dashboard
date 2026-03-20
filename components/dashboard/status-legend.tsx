@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { CheckCircle2, Circle, Clock, AlertTriangle } from "lucide-react";
+import { CheckCircle2, Circle, Clock, AlertTriangle, Ban } from "lucide-react";
 import type { PageStatusType } from '@/app/components/GoogleSheetsService';
 
 const LEGEND_ITEMS: {
@@ -45,6 +45,12 @@ const LEGEND_ITEMS: {
     label: "Archived",
     icon: <Circle className="w-3.5 h-3.5" style={{ fill: "currentColor" }} />,
     colorClass: "text-rose-400 bg-rose-500/10",
+  },
+  {
+    status: "404",
+    label: "404 - Not Found",
+    icon: <Ban className="w-3.5 h-3.5" />,
+    colorClass: "text-gray-400 bg-gray-500/10",
   },
 ];
 

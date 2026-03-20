@@ -132,7 +132,31 @@ export default function StatusCheckPage({ sites }: Props) {
         }
       })
       .catch(() => {});
+    // 404 pages are loaded inside loadDataFromCloud() to avoid race conditions
   }, []);
+
+  async function apply404Statuses(statuses: Record<string, LocalStatus>): Promise<Record<string, LocalStatus>> {
+    try {
+      const res = await fetch('/404-pages.json?t=' + Date.now());
+      if (!res.ok) return statuses;
+      const data = await res.json();
+      const fourOhFourUrls: string[] = data.urls || [];
+      if (fourOhFourUrls.length === 0) return statuses;
+
+      const updated = { ...statuses };
+      for (const url of fourOhFourUrls) {
+        updated[url] = {
+          status: '404',
+          assignedTo: updated[url]?.assignedTo || '',
+          notes: updated[url]?.notes || '',
+          updatedDate: new Date().toISOString(),
+        };
+      }
+      return updated;
+    } catch {
+      return statuses;
+    }
+  }
 
   async function loadDataFromCloud() {
     setLoading(true);
@@ -177,7 +201,9 @@ export default function StatusCheckPage({ sites }: Props) {
         prioritiesMap[p.siteId] = p.priority;
       });
 
-      setPageStatuses(statuses);
+      // Load 404 pages and merge into statuses before setting state
+      const mergedStatuses = await apply404Statuses(statuses);
+      setPageStatuses(mergedStatuses);
       setTeamMembers(members);
       setLastSyncTimeState(lastSync ? new Date(lastSync).toLocaleString() : 'Never');
       setSitePriorities(prioritiesMap);
@@ -193,7 +219,8 @@ export default function StatusCheckPage({ sites }: Props) {
         prioritiesMap[p.siteId] = p.priority;
       });
 
-      setPageStatuses(statuses);
+      const mergedStatuses = await apply404Statuses(statuses);
+      setPageStatuses(mergedStatuses);
       setTeamMembers(members);
       setSitePriorities(prioritiesMap);
     } finally {
@@ -365,11 +392,22 @@ export default function StatusCheckPage({ sites }: Props) {
   // ============================================
   // COMPUTED VALUES
   // ============================================
-  const totalPages = sites.reduce((sum, s) => sum + s.pages.length, 0);
-  const completedPages = Object.values(pageStatuses).filter(s => s.status === 'completed').length;
-  const completedSites = sites.filter(site =>
-    site.pages.length > 0 && site.pages.every(p => pageStatuses[p.url]?.status === 'completed')
+  // 404 counts
+  const fourOhFourPages = Object.values(pageStatuses).filter(s => s.status === '404').length;
+  const fourOhFourSites = sites.filter(site =>
+    site.pages.length > 0 && site.pages.every(p => pageStatuses[p.url]?.status === '404')
   ).length;
+
+  // Exclude 404 pages from totals
+  const totalPages = sites.reduce((sum, s) => sum + s.pages.filter(p => pageStatuses[p.url]?.status !== '404').length, 0);
+  const totalSitesExcluding404 = sites.filter(site =>
+    site.pages.some(p => pageStatuses[p.url]?.status !== '404')
+  ).length;
+  const completedPages = Object.values(pageStatuses).filter(s => s.status === 'completed').length;
+  const completedSites = sites.filter(site => {
+    const nonFourOhFourPages = site.pages.filter(p => pageStatuses[p.url]?.status !== '404');
+    return nonFourOhFourPages.length > 0 && nonFourOhFourPages.every(p => pageStatuses[p.url]?.status === 'completed');
+  }).length;
   const archivedPages = Object.values(pageStatuses).filter(s => s.status === 'archived').length;
   const archivePendingPages = Object.values(pageStatuses).filter(s => s.status === 'archive-pending').length;
   const archivedSites = sites.filter(site =>
@@ -455,7 +493,7 @@ export default function StatusCheckPage({ sites }: Props) {
           {/* Stat cards */}
           <StatCards
             completedSites={completedSites}
-            totalSites={sites.length}
+            totalSites={totalSitesExcluding404}
             completedPages={completedPages}
             totalPages={totalPages}
             archivedSites={archivedSites}

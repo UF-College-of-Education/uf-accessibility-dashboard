@@ -53,7 +53,7 @@ const STATUS_SHEET_ID = '1ntgfO0PeVULOCA-Q1eLfoEJwW-izHlPpP1FvWvVk2UM';
 // STATUS OPTIONS - UPDATED WITH ARCHIVE
 // ============================================
 
-export type PageStatusType = 'not-started' | 'working' | 'issues' | 'completed' | 'archive-pending' | 'archived';
+export type PageStatusType = 'not-started' | 'working' | 'issues' | 'completed' | 'archive-pending' | 'archived' | '404';
 
 // Map between dashboard values and sheet values
 const STATUS_MAP_TO_SHEET: Record<PageStatusType, string> = {
@@ -62,7 +62,8 @@ const STATUS_MAP_TO_SHEET: Record<PageStatusType, string> = {
   'issues': 'Facing Issues',
   'completed': 'Completed',
   'archive-pending': 'Archive It',
-  'archived': 'Archived'
+  'archived': 'Archived',
+  '404': '404 - Not Found'
 };
 
 const STATUS_MAP_FROM_SHEET: Record<string, PageStatusType> = {
@@ -72,6 +73,7 @@ const STATUS_MAP_FROM_SHEET: Record<string, PageStatusType> = {
   'Completed': 'completed',
   'Archive It': 'archive-pending',
   'Archived': 'archived',
+  '404 - Not Found': '404',
   // Also handle lowercase variants
   'not started': 'not-started',
   'working on it': 'working',
@@ -79,6 +81,7 @@ const STATUS_MAP_FROM_SHEET: Record<string, PageStatusType> = {
   'completed': 'completed',
   'archive it': 'archive-pending',
   'archived': 'archived',
+  '404 - not found': '404',
 };
 
 export const STATUS_OPTIONS: { value: PageStatusType; label: string; color: string; bgColor: string }[] = [
@@ -88,6 +91,7 @@ export const STATUS_OPTIONS: { value: PageStatusType; label: string; color: stri
   { value: 'completed', label: 'Completed', color: 'text-green-600', bgColor: 'bg-green-100' },
   { value: 'archive-pending', label: 'Archive It', color: 'text-indigo-600', bgColor: 'bg-indigo-100' },
   { value: 'archived', label: 'Archived', color: 'text-red-600', bgColor: 'bg-red-100' },
+  { value: '404', label: '404 - Not Found', color: 'text-gray-600', bgColor: 'bg-gray-100' },
 ];
 
 // ============================================

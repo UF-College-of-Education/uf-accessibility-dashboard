@@ -11,6 +11,7 @@ import {
   Eye,
   ExternalLink,
   Zap,
+  Ban,
 } from "lucide-react";
 import {
   Tooltip,
@@ -81,6 +82,8 @@ function getStatusIcon(status: PageStatusType) {
       return <Circle className="w-4 h-4 text-indigo-400" style={{ fill: "currentColor" }} />;
     case "archived":
       return <Circle className="w-4 h-4 text-rose-400" style={{ fill: "currentColor" }} />;
+    case "404":
+      return <Ban className="w-4 h-4 text-gray-400" />;
     default:
       return <Circle className="w-4 h-4 text-white/20" />;
   }
@@ -98,6 +101,8 @@ function getStatusBgColor(status: PageStatusType) {
       return "bg-indigo-500/5 hover:bg-indigo-500/10";
     case "archived":
       return "bg-rose-500/5 hover:bg-rose-500/10";
+    case "404":
+      return "bg-gray-500/5 hover:bg-gray-500/10 opacity-60";
     default:
       return "hover:bg-white/[0.04]";
   }
@@ -123,10 +128,14 @@ export default function SiteCard({
   const [isExpanded, setIsExpanded] = useState(false);
   const [visibleCount, setVisibleCount] = useState(PAGES_PER_BATCH);
 
+  const nonFourOhFourPages = site.pages.filter(
+    (p) => pageStatuses[p.url]?.status !== "404"
+  );
   const completedInSite = site.pages.filter(
     (p) => pageStatuses[p.url]?.status === "completed"
   ).length;
-  const progress = site.pages.length > 0 ? (completedInSite / site.pages.length) * 100 : 0;
+  const fourOhFourInSite = site.pages.length - nonFourOhFourPages.length;
+  const progress = nonFourOhFourPages.length > 0 ? (completedInSite / nonFourOhFourPages.length) * 100 : 0;
   const priorityConfig = sitePriority ? PRIORITY_CONFIG[sitePriority] : null;
 
   // Count statuses
@@ -134,6 +143,7 @@ export default function SiteCard({
     completed: site.pages.filter((p) => pageStatuses[p.url]?.status === "completed").length,
     working: site.pages.filter((p) => pageStatuses[p.url]?.status === "working").length,
     issues: site.pages.filter((p) => pageStatuses[p.url]?.status === "issues").length,
+    notFound: fourOhFourInSite,
   };
 
   return (
@@ -200,6 +210,11 @@ export default function SiteCard({
                   {statusCounts.issues} issues
                 </span>
               )}
+              {statusCounts.notFound > 0 && (
+                <span className="text-[10px] font-mono font-medium px-1.5 py-0.5 rounded bg-gray-500/10 text-gray-400">
+                  {statusCounts.notFound} 404
+                </span>
+              )}
             </div>
 
             {/* Progress bar */}
@@ -217,7 +232,7 @@ export default function SiteCard({
                 />
               </div>
               <span className="text-xs text-muted-foreground font-mono w-12 text-right">
-                {completedInSite}/{site.pages.length}
+                {completedInSite}/{nonFourOhFourPages.length}
               </span>
             </div>
 
@@ -264,7 +279,7 @@ export default function SiteCard({
                   />
                 </div>
                 <span className="text-xs text-muted-foreground font-mono">
-                  {completedInSite}/{site.pages.length}
+                  {completedInSite}/{nonFourOhFourPages.length}
                 </span>
               </div>
             </div>
@@ -454,7 +469,7 @@ export default function SiteCard({
                     </button>
                   )}
                   <span className="text-[10px] text-muted-foreground font-mono">
-                    Showing {Math.min(visibleCount, site.pages.length)}/{site.pages.length} pages
+                    Showing {Math.min(visibleCount, site.pages.length)}/{site.pages.length} pages{fourOhFourInSite > 0 ? ` (${fourOhFourInSite} are 404)` : ''}
                   </span>
                 </div>
               )}
