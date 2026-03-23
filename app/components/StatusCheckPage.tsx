@@ -79,6 +79,9 @@ export default function StatusCheckPage({ sites }: Props) {
   const [lighthouseScores, setLighthouseScores] = useState<Record<string, { score: number | null }>>({});
   const [lighthousePageScores, setLighthousePageScores] = useState<Record<string, { score: number | null; status?: number }>>({});
 
+  // Theme data (Divi / Enfold)
+  const [themeData, setThemeData] = useState<Record<string, string | null>>({});
+
   // Dialog state (V0 style)
   const [notesDialog, setNotesDialog] = useState({
     isOpen: false,
@@ -129,6 +132,19 @@ export default function StatusCheckPage({ sites }: Props) {
             pageScores[url] = { score: info.score ?? null, status: info.status };
           }
           setLighthousePageScores(pageScores);
+        }
+      })
+      .catch(() => {});
+    // Load theme data (Divi / Enfold)
+    fetch('/theme-data.json?t=' + Date.now())
+      .then(r => r.ok ? r.json() : {})
+      .then((data: any) => {
+        if (data.themes) {
+          const mapped: Record<string, string | null> = {};
+          for (const [id, info] of Object.entries(data.themes) as [string, any][]) {
+            mapped[id] = info.theme ?? null;
+          }
+          setThemeData(mapped);
         }
       })
       .catch(() => {});
@@ -582,6 +598,7 @@ export default function StatusCheckPage({ sites }: Props) {
                   siteimproveData={siteimproveData}
                   lighthouseScore={lighthouseScores[site.id]?.score ?? null}
                   lighthousePages={lighthousePageScores}
+                  siteTheme={themeData[site.id] ?? null}
                 />
               </div>
             ))}

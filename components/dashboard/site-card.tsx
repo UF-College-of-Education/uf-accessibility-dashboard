@@ -37,6 +37,7 @@ interface SiteCardProps {
   siteimproveData?: SiteimproveData | null;
   lighthouseScore?: number | null;
   lighthousePages?: Record<string, { score: number | null; status?: number }>;
+  siteTheme?: string | null;
 }
 
 const PRIORITY_CONFIG = {
@@ -124,6 +125,7 @@ export default function SiteCard({
   siteimproveData,
   lighthouseScore,
   lighthousePages,
+  siteTheme,
 }: SiteCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [visibleCount, setVisibleCount] = useState(PAGES_PER_BATCH);
@@ -176,6 +178,16 @@ export default function SiteCard({
               {priorityConfig && (
                 <span className={`text-[10px] py-0.5 px-2 rounded-full font-medium border ${priorityConfig.badgeClass}`}>
                   {priorityConfig.label} {priorityConfig.full}
+                </span>
+              )}
+              {siteTheme === 'divi' && (
+                <span className="text-[10px] py-0.5 px-2 rounded-full font-medium border text-emerald-400 bg-emerald-500/10 border-emerald-500/20">
+                  Divi
+                </span>
+              )}
+              {siteTheme === 'enfold' && (
+                <span className="text-[10px] py-0.5 px-2 rounded-full font-medium border text-red-400 bg-red-500/10 border-red-500/20">
+                  Enfold
                 </span>
               )}
               {lighthouseScore != null && (
