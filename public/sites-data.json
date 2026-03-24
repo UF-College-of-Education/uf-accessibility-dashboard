@@ -936,19 +936,6 @@
       ]
     },
     {
-      "id": "education-ufl-edu-eltl",
-      "baseUrl": "https://education.ufl.edu/eltl/",
-      "title": "ELTL - UF College of Education",
-      "isLive": true,
-      "pages": [
-        {
-          "path": "/category/uncategorized/",
-          "title": "Uncategorized",
-          "url": "https://education.ufl.edu/eltl/category/uncategorized/"
-        }
-      ]
-    },
-    {
       "id": "education-ufl-edu-align",
       "baseUrl": "https://education.ufl.edu/align/",
       "title": "ALIGN - UF College of Education",
@@ -1011,19 +998,6 @@
           "path": "/volunteer/",
           "title": "Volunteer",
           "url": "https://education.ufl.edu/akwaaba-freedom-school/volunteer/"
-        }
-      ]
-    },
-    {
-      "id": "education-ufl-edu-aihardware",
-      "baseUrl": "https://education.ufl.edu/aihardware/",
-      "title": "AI Hardware - UF College of Education",
-      "isLive": true,
-      "pages": [
-        {
-          "path": "/category/uncategorized/",
-          "title": "Uncategorized",
-          "url": "https://education.ufl.edu/aihardware/category/uncategorized/"
         }
       ]
     },
