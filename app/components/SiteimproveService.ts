@@ -104,7 +104,10 @@ export async function syncAllSiteimproveData(
     throw new Error(sitesData.error || 'Failed to fetch Siteimprove sites');
   }
 
-  const sites = sitesData.sites as { id: number; name: string }[];
+  const sites = (sitesData.sites || []) as { id: number; name: string }[];
+  if (sites.length === 0) {
+    throw new Error('No sites returned from Siteimprove');
+  }
   onProgress?.(`Found ${sites.length} sites. Fetching A/AA/ARIA issues...`);
 
   // Fetch pages for all sites in parallel

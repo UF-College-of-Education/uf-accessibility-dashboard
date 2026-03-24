@@ -41,54 +41,6 @@
       ]
     },
     {
-      "id": "education-ufl-edu-verse",
-      "baseUrl": "https://education.ufl.edu/verse/",
-      "title": "VERSE - UF College of Education",
-      "isLive": true,
-      "pages": [
-        {
-          "path": "/",
-          "title": "VERSE Home",
-          "url": "https://education.ufl.edu/verse/"
-        },
-        {
-          "path": "/experience/",
-          "title": "Experience",
-          "url": "https://education.ufl.edu/verse/experience/"
-        },
-        {
-          "path": "/experience/restaurant/",
-          "title": "Restaurant",
-          "url": "https://education.ufl.edu/verse/experience/restaurant/"
-        },
-        {
-          "path": "/experience/museum/",
-          "title": "Museum",
-          "url": "https://education.ufl.edu/verse/experience/museum/"
-        },
-        {
-          "path": "/experience/butterfly-rainforest/",
-          "title": "Butterfly Rainforest",
-          "url": "https://education.ufl.edu/verse/experience/butterfly-rainforest/"
-        },
-        {
-          "path": "/experience/water-shapes-florida/",
-          "title": "Water Shapes Florida",
-          "url": "https://education.ufl.edu/verse/experience/water-shapes-florida/"
-        },
-        {
-          "path": "/about/",
-          "title": "About",
-          "url": "https://education.ufl.edu/verse/about/"
-        },
-        {
-          "path": "/contact/",
-          "title": "Contact",
-          "url": "https://education.ufl.edu/verse/contact/"
-        }
-      ]
-    },
-    {
       "id": "education-ufl-edu-sustain",
       "baseUrl": "https://education.ufl.edu/sustain/",
       "title": "SUSTAIN - UF College of Education",
@@ -131,44 +83,6 @@
           "path": "/",
           "title": "Stakeholders Day Home",
           "url": "https://education.ufl.edu/stakeholders-day/"
-        }
-      ]
-    },
-    {
-      "id": "education-ufl-edu-sharkai",
-      "baseUrl": "https://education.ufl.edu/sharkai/",
-      "title": "SharkAI - UF College of Education",
-      "isLive": true,
-      "pages": [
-        {
-          "path": "/",
-          "title": "SharkAI Home",
-          "url": "https://education.ufl.edu/sharkai/"
-        },
-        {
-          "path": "/curriculum/",
-          "title": "Curriculum",
-          "url": "https://education.ufl.edu/sharkai/curriculum/"
-        },
-        {
-          "path": "/research/",
-          "title": "Research",
-          "url": "https://education.ufl.edu/sharkai/research/"
-        },
-        {
-          "path": "/professional-development/",
-          "title": "Professional Development",
-          "url": "https://education.ufl.edu/sharkai/professional-development/"
-        },
-        {
-          "path": "/team/",
-          "title": "Team",
-          "url": "https://education.ufl.edu/sharkai/team/"
-        },
-        {
-          "path": "/contact/",
-          "title": "Contact",
-          "url": "https://education.ufl.edu/sharkai/contact/"
         }
       ]
     },
@@ -1009,89 +923,6 @@
       ]
     },
     {
-      "id": "education-ufl-edu-neural",
-      "baseUrl": "https://education.ufl.edu/neural/",
-      "title": "NEURAL Lab - UF College of Education",
-      "isLive": true,
-      "pages": [
-        {
-          "path": "/",
-          "title": "NEURAL Home",
-          "url": "https://education.ufl.edu/neural/"
-        },
-        {
-          "path": "/team/",
-          "title": "Team",
-          "url": "https://education.ufl.edu/neural/team/"
-        },
-        {
-          "path": "/projects/",
-          "title": "Projects",
-          "url": "https://education.ufl.edu/neural/projects/"
-        },
-        {
-          "path": "/research/",
-          "title": "Research",
-          "url": "https://education.ufl.edu/neural/research/"
-        },
-        {
-          "path": "/products/",
-          "title": "Products",
-          "url": "https://education.ufl.edu/neural/products/"
-        },
-        {
-          "path": "/contact/",
-          "title": "Contact",
-          "url": "https://education.ufl.edu/neural/contact/"
-        },
-        {
-          "path": "/2024/01/18/research-1/",
-          "title": "Research 1",
-          "url": "https://education.ufl.edu/neural/2024/01/18/research-1/"
-        },
-        {
-          "path": "/2024/01/18/research-2/",
-          "title": "Research 2",
-          "url": "https://education.ufl.edu/neural/2024/01/18/research-2/"
-        },
-        {
-          "path": "/2024/01/18/how-mobile-app-developers-conceive-of-dyslexia-and-what-it-means-for-mobile-app-users/",
-          "title": "Dyslexia Mobile Apps",
-          "url": "https://education.ufl.edu/neural/2024/01/18/how-mobile-app-developers-conceive-of-dyslexia-and-what-it-means-for-mobile-app-users/"
-        },
-        {
-          "path": "/category/all/",
-          "title": "All",
-          "url": "https://education.ufl.edu/neural/category/all/"
-        },
-        {
-          "path": "/category/curricula/",
-          "title": "Curricula",
-          "url": "https://education.ufl.edu/neural/category/curricula/"
-        },
-        {
-          "path": "/category/data/",
-          "title": "Data",
-          "url": "https://education.ufl.edu/neural/category/data/"
-        },
-        {
-          "path": "/category/dyslexia/",
-          "title": "Dyslexia",
-          "url": "https://education.ufl.edu/neural/category/dyslexia/"
-        },
-        {
-          "path": "/category/stimuli/",
-          "title": "Stimuli",
-          "url": "https://education.ufl.edu/neural/category/stimuli/"
-        },
-        {
-          "path": "/author/evejung/",
-          "title": "Author Eve Jung",
-          "url": "https://education.ufl.edu/neural/author/evejung/"
-        }
-      ]
-    },
-    {
       "id": "education-ufl-edu-innovations",
       "baseUrl": "https://education.ufl.edu/innovations/",
       "title": "Innovations - UF College of Education",
@@ -1110,66 +941,6 @@
       "title": "ELTL - UF College of Education",
       "isLive": true,
       "pages": [
-        {
-          "path": "/",
-          "title": "ELTL Home",
-          "url": "https://education.ufl.edu/eltl/"
-        },
-        {
-          "path": "/about/",
-          "title": "About",
-          "url": "https://education.ufl.edu/eltl/about/"
-        },
-        {
-          "path": "/team/",
-          "title": "Team",
-          "url": "https://education.ufl.edu/eltl/team/"
-        },
-        {
-          "path": "/research/",
-          "title": "Research",
-          "url": "https://education.ufl.edu/eltl/research/"
-        },
-        {
-          "path": "/our-work/",
-          "title": "Our Work",
-          "url": "https://education.ufl.edu/eltl/our-work/"
-        },
-        {
-          "path": "/connect/",
-          "title": "Connect",
-          "url": "https://education.ufl.edu/eltl/connect/"
-        },
-        {
-          "path": "/projects/",
-          "title": "Projects",
-          "url": "https://education.ufl.edu/eltl/projects/"
-        },
-        {
-          "path": "/ar-expeditions/",
-          "title": "AR Expeditions",
-          "url": "https://education.ufl.edu/eltl/ar-expeditions/"
-        },
-        {
-          "path": "/2024/10/23/call-for-submissions-ai-for-enabling-technologies/",
-          "title": "AI Submissions",
-          "url": "https://education.ufl.edu/eltl/2024/10/23/call-for-submissions-ai-for-enabling-technologies/"
-        },
-        {
-          "path": "/2022/05/11/miss-uf-and-family-visit-the-eltl/",
-          "title": "Miss UF Visit",
-          "url": "https://education.ufl.edu/eltl/2022/05/11/miss-uf-and-family-visit-the-eltl/"
-        },
-        {
-          "path": "/tech-club/",
-          "title": "Tech Club",
-          "url": "https://education.ufl.edu/eltl/tech-club/"
-        },
-        {
-          "path": "/author/ssarmiento/",
-          "title": "Author S Sarmiento",
-          "url": "https://education.ufl.edu/eltl/author/ssarmiento/"
-        },
         {
           "path": "/category/uncategorized/",
           "title": "Uncategorized",
@@ -1249,76 +1020,6 @@
       "title": "AI Hardware - UF College of Education",
       "isLive": true,
       "pages": [
-        {
-          "path": "/",
-          "title": "AI Hardware Home",
-          "url": "https://education.ufl.edu/aihardware/"
-        },
-        {
-          "path": "/curriculum/",
-          "title": "Curriculum",
-          "url": "https://education.ufl.edu/aihardware/curriculum/"
-        },
-        {
-          "path": "/research/",
-          "title": "Research",
-          "url": "https://education.ufl.edu/aihardware/research/"
-        },
-        {
-          "path": "/curriculum-implementations/",
-          "title": "Implementations",
-          "url": "https://education.ufl.edu/aihardware/curriculum-implementations/"
-        },
-        {
-          "path": "/team/",
-          "title": "Team",
-          "url": "https://education.ufl.edu/aihardware/team/"
-        },
-        {
-          "path": "/contact/",
-          "title": "Contact",
-          "url": "https://education.ufl.edu/aihardware/contact/"
-        },
-        {
-          "path": "/research/cultivating-hardware-engineering-interest-in-high-school-students-using-hands-on-learning/",
-          "title": "Hardware Engineering",
-          "url": "https://education.ufl.edu/aihardware/research/cultivating-hardware-engineering-interest-in-high-school-students-using-hands-on-learning/"
-        },
-        {
-          "path": "/exploring-ai-hardware-applications-in-experiential-learning-environments/",
-          "title": "AI Hardware Apps",
-          "url": "https://education.ufl.edu/aihardware/exploring-ai-hardware-applications-in-experiential-learning-environments/"
-        },
-        {
-          "path": "/engaging-undergraduate-and-high-school-students-in-hands-on-computer-hardware-fundamentals-using-fpga-board-games/",
-          "title": "FPGA Games",
-          "url": "https://education.ufl.edu/aihardware/engaging-undergraduate-and-high-school-students-in-hands-on-computer-hardware-fundamentals-using-fpga-board-games/"
-        },
-        {
-          "path": "/2024/05/07/fall-2023-undergraduate-course-at-uf/",
-          "title": "Fall 2023 Course",
-          "url": "https://education.ufl.edu/aihardware/2024/05/07/fall-2023-undergraduate-course-at-uf/"
-        },
-        {
-          "path": "/2024/05/07/summer-2023-honor-seminar-in-the-sstp-program-at-uf/",
-          "title": "Summer 2023 Seminar",
-          "url": "https://education.ufl.edu/aihardware/2024/05/07/summer-2023-honor-seminar-in-the-sstp-program-at-uf/"
-        },
-        {
-          "path": "/2024/05/07/summer-2023-summer-camp-at-university-of-kansas/",
-          "title": "Summer 2023 Camp",
-          "url": "https://education.ufl.edu/aihardware/2024/05/07/summer-2023-summer-camp-at-university-of-kansas/"
-        },
-        {
-          "path": "/2024/05/10/pilot-test-jan-2023-after-school-activity/",
-          "title": "Pilot Test 2023",
-          "url": "https://education.ufl.edu/aihardware/2024/05/10/pilot-test-jan-2023-after-school-activity/"
-        },
-        {
-          "path": "/author/evejung/",
-          "title": "Author Eve Jung",
-          "url": "https://education.ufl.edu/aihardware/author/evejung/"
-        },
         {
           "path": "/category/uncategorized/",
           "title": "Uncategorized",

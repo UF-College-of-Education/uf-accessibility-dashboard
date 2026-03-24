@@ -133,7 +133,7 @@ export default function SiteCard({
   const nonFourOhFourPages = site.pages.filter(
     (p) => pageStatuses[p.url]?.status !== "404"
   );
-  const completedInSite = site.pages.filter(
+  const completedInSite = nonFourOhFourPages.filter(
     (p) => pageStatuses[p.url]?.status === "completed"
   ).length;
   const fourOhFourInSite = site.pages.length - nonFourOhFourPages.length;

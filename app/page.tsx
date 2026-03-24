@@ -58,17 +58,17 @@ export default function Home() {
     setStatusMessage(`Starting Lighthouse audit for ${sites.length} site(s) and ${pageCount} page(s)...`);
     setProgress(0);
 
-    try {
-      const progressInterval = setInterval(() => {
-        setProgress(prev => {
-          if (prev >= 90) {
-            clearInterval(progressInterval);
-            return 90;
-          }
-          return prev + Math.random() * 20;
-        });
-      }, 500);
+    const progressInterval = setInterval(() => {
+      setProgress(prev => {
+        if (prev >= 90) {
+          clearInterval(progressInterval);
+          return 90;
+        }
+        return prev + Math.random() * 20;
+      });
+    }, 500);
 
+    try {
       const results: AuditPageResult[] = [];
       const totalPages = sites.reduce((sum, site) => sum + site.pages.length, 0);
       let completedPages = 0;
@@ -76,7 +76,7 @@ export default function Home() {
       for (const site of sites) {
         for (const page of site.pages) {
           setStatusMessage(`Auditing ${page.title}... (${completedPages + 1}/${totalPages})`);
-          
+
           let lighthouseData = null;
           try {
             console.log(`🔍 Calling Lighthouse API for: ${page.url}`);
@@ -98,7 +98,7 @@ export default function Home() {
 
           const lighthouseScores = lighthouseData?.scores || {
             performance: 0,
-            accessibility: lighthouseData?.accessibility || 0,
+            accessibility: 0,
             bestPractices: 0,
             seo: 0,
           };
@@ -124,7 +124,6 @@ export default function Home() {
       }
 
       await new Promise(resolve => setTimeout(resolve, 1000));
-      clearInterval(progressInterval);
       setProgress(100);
 
       const auditRun = auditManager.saveAuditRun(results, sites.length);
@@ -141,6 +140,8 @@ export default function Home() {
     } catch (error) {
       setAuditStatus('error');
       setStatusMessage(`❌ Error: ${error instanceof Error ? error.message : 'Unknown error occurred'}`);
+    } finally {
+      clearInterval(progressInterval);
     }
   }
 
