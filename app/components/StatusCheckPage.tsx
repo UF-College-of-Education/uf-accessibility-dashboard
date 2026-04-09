@@ -69,6 +69,8 @@ export default function StatusCheckPage({ sites }: Props) {
   const [exportSuccess, setExportSuccess] = useState(false);
   const [cloudStatus, setCloudStatus] = useState<'loading' | 'connected' | 'offline'>('loading');
   const [searchQuery, setSearchQuery] = useState('');
+  const [visibleSiteCount, setVisibleSiteCount] = useState(15);
+  const SITES_PER_BATCH = 15;
 
   // Siteimprove state
   const [siteimproveStatus, setSiteimproveStatus] = useState<'idle' | 'syncing' | 'done' | 'error'>('idle');
@@ -555,7 +557,7 @@ export default function StatusCheckPage({ sites }: Props) {
             searchQuery={searchQuery}
             onRefresh={handleRefresh}
             onExport={handleExport}
-            onSearchChange={setSearchQuery}
+            onSearchChange={(q: string) => { setSearchQuery(q); setVisibleSiteCount(SITES_PER_BATCH); }}
             siteimproveStatus={siteimproveStatus}
             siteimproveMessage={siteimproveMessage}
             onSiteimproveSync={handleSiteimproveSync}
@@ -580,7 +582,7 @@ export default function StatusCheckPage({ sites }: Props) {
               </div>
             )}
 
-            {sortedSites.map((site) => (
+            {sortedSites.slice(0, visibleSiteCount).map((site) => (
               <div
                 key={site.id}
               >
@@ -602,6 +604,19 @@ export default function StatusCheckPage({ sites }: Props) {
                 />
               </div>
             ))}
+
+            {/* Site-level pagination */}
+            {visibleSiteCount < sortedSites.length && (
+              <div className="flex items-center justify-center gap-3 mt-4">
+                <button
+                  type="button"
+                  onClick={() => setVisibleSiteCount((prev) => Math.min(prev + SITES_PER_BATCH, sortedSites.length))}
+                  className="px-5 py-2 text-sm font-medium text-blue-400 bg-blue-500/10 border border-blue-500/20 rounded-xl hover:bg-blue-500/20 transition-colors"
+                >
+                  Load More Sites ({Math.min(SITES_PER_BATCH, sortedSites.length - visibleSiteCount)} of {sortedSites.length - visibleSiteCount} remaining)
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Status Legend */}

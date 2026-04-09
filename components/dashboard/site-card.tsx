@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, memo } from "react";
 import {
   ChevronDown,
   CheckCircle2,
@@ -109,9 +109,9 @@ function getStatusBgColor(status: PageStatusType) {
   }
 }
 
-const PAGES_PER_BATCH = 30;
+const PAGES_PER_BATCH = 20;
 
-export default function SiteCard({
+function SiteCard({
   site,
   pageStatuses,
   sitePriority,
@@ -128,7 +128,23 @@ export default function SiteCard({
   siteTheme,
 }: SiteCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [visibleCount, setVisibleCount] = useState(PAGES_PER_BATCH);
+  // Window-style pagination: only show PAGES_PER_BATCH pages at a time
+  const [pageOffset, setPageOffset] = useState(0);
+  // Progressive rendering: show a small batch first, then fill in
+  const INITIAL_RENDER_COUNT = 10;
+  const [renderReady, setRenderReady] = useState(false);
+
+  useEffect(() => {
+    if (isExpanded) {
+      setRenderReady(false);
+      const id = requestAnimationFrame(() => {
+        setRenderReady(true);
+      });
+      return () => cancelAnimationFrame(id);
+    } else {
+      setRenderReady(false);
+    }
+  }, [isExpanded, pageOffset]);
 
   const nonFourOhFourPages = site.pages.filter(
     (p) => pageStatuses[p.url]?.status !== "404"
@@ -298,7 +314,7 @@ export default function SiteCard({
 
             <div className="p-3">
               <div className="space-y-0.5">
-                {site.pages.slice(0, visibleCount).map((page) => {
+                {site.pages.slice(pageOffset, renderReady ? pageOffset + PAGES_PER_BATCH : pageOffset + INITIAL_RENDER_COUNT).map((page) => {
                   const status = pageStatuses[page.url] || {
                     status: "not-started" as PageStatusType,
                     assignedTo: "",
@@ -459,29 +475,29 @@ export default function SiteCard({
                 })}
               </div>
 
-              {/* Load More / Show Less buttons for sites with many pages */}
+              {/* Previous / Next page navigation — only 20 pages in DOM at a time */}
               {site.pages.length > PAGES_PER_BATCH && (
                 <div className="flex items-center justify-center gap-3 mt-3 pt-3 border-t border-white/[0.06]">
-                  {visibleCount < site.pages.length && (
+                  {pageOffset > 0 && (
                     <button
                       type="button"
-                      onClick={() => setVisibleCount((prev) => Math.min(prev + PAGES_PER_BATCH, site.pages.length))}
-                      className="px-4 py-1.5 text-xs font-medium text-blue-400 bg-blue-500/10 border border-blue-500/20 rounded-lg hover:bg-blue-500/20 transition-colors"
-                    >
-                      Load More ({Math.min(PAGES_PER_BATCH, site.pages.length - visibleCount)} of {site.pages.length - visibleCount} remaining)
-                    </button>
-                  )}
-                  {visibleCount > PAGES_PER_BATCH && (
-                    <button
-                      type="button"
-                      onClick={() => setVisibleCount(PAGES_PER_BATCH)}
+                      onClick={() => setPageOffset((prev) => Math.max(prev - PAGES_PER_BATCH, 0))}
                       className="px-4 py-1.5 text-xs font-medium text-muted-foreground bg-white/[0.04] border border-white/[0.08] rounded-lg hover:bg-white/[0.08] transition-colors"
                     >
-                      Show Less
+                      ← Previous {PAGES_PER_BATCH}
+                    </button>
+                  )}
+                  {pageOffset + PAGES_PER_BATCH < site.pages.length && (
+                    <button
+                      type="button"
+                      onClick={() => setPageOffset((prev) => Math.min(prev + PAGES_PER_BATCH, site.pages.length - 1))}
+                      className="px-4 py-1.5 text-xs font-medium text-blue-400 bg-blue-500/10 border border-blue-500/20 rounded-lg hover:bg-blue-500/20 transition-colors"
+                    >
+                      Next {Math.min(PAGES_PER_BATCH, site.pages.length - pageOffset - PAGES_PER_BATCH)} →
                     </button>
                   )}
                   <span className="text-[10px] text-muted-foreground font-mono">
-                    Showing {Math.min(visibleCount, site.pages.length)}/{site.pages.length} pages{fourOhFourInSite > 0 ? ` (${fourOhFourInSite} are 404)` : ''}
+                    Showing {pageOffset + 1}–{Math.min(pageOffset + PAGES_PER_BATCH, site.pages.length)} of {site.pages.length} pages{fourOhFourInSite > 0 ? ` (${fourOhFourInSite} are 404)` : ''}
                   </span>
                 </div>
               )}
@@ -492,3 +508,30 @@ export default function SiteCard({
     </TooltipProvider>
   );
 }
+
+function arePropsEqual(prev: SiteCardProps, next: SiteCardProps) {
+  // Quick reference checks for stable props
+  if (
+    prev.site !== next.site ||
+    prev.sitePriority !== next.sitePriority ||
+    prev.teamMembers !== next.teamMembers ||
+    prev.onUpdateStatus !== next.onUpdateStatus ||
+    prev.onUpdateAssignment !== next.onUpdateAssignment ||
+    prev.onUpdatePriority !== next.onUpdatePriority ||
+    prev.onOpenNotes !== next.onOpenNotes ||
+    prev.onOpenReport !== next.onOpenReport ||
+    prev.getScanData !== next.getScanData ||
+    prev.siteimproveData !== next.siteimproveData ||
+    prev.lighthouseScore !== next.lighthouseScore ||
+    prev.lighthousePages !== next.lighthousePages ||
+    prev.siteTheme !== next.siteTheme
+  ) return false;
+
+  // Only compare statuses for THIS site's pages (not all 3000+)
+  for (const page of prev.site.pages) {
+    if (prev.pageStatuses[page.url] !== next.pageStatuses[page.url]) return false;
+  }
+  return true;
+}
+
+export default memo(SiteCard, arePropsEqual);
