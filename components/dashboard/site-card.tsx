@@ -393,6 +393,11 @@ function SiteCard({
                               LH: {lhScore}
                             </span>
                           ) : null}
+                          {siteTheme === 'enfold' && (
+                            <span className="inline-flex items-center gap-0.5 text-[10px] font-mono px-1.5 py-0.5 rounded-full border text-red-400 bg-red-500/10 border-red-500/20">
+                              Enfold
+                            </span>
+                          )}
                         </div>
                       </div>
 

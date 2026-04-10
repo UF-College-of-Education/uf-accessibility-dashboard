@@ -71,6 +71,7 @@ export default function StatusCheckPage({ sites }: Props) {
   const [searchQuery, setSearchQuery] = useState('');
   const [visibleSiteCount, setVisibleSiteCount] = useState(15);
   const SITES_PER_BATCH = 15;
+  const [themeFilter, setThemeFilter] = useState<'all' | 'divi' | 'enfold'>('all');
 
   // Siteimprove state
   const [siteimproveStatus, setSiteimproveStatus] = useState<'idle' | 'syncing' | 'done' | 'error'>('idle');
@@ -426,19 +427,29 @@ export default function StatusCheckPage({ sites }: Props) {
     const nonFourOhFourPages = site.pages.filter(p => pageStatuses[p.url]?.status !== '404');
     return nonFourOhFourPages.length > 0 && nonFourOhFourPages.every(p => pageStatuses[p.url]?.status === 'completed');
   }).length;
-  const archivedPages = Object.values(pageStatuses).filter(s => s.status === 'archived').length;
-  const archivePendingPages = Object.values(pageStatuses).filter(s => s.status === 'archive-pending').length;
-  const archivedSites = sites.filter(site =>
-    site.pages.length > 0 && site.pages.every(p => pageStatuses[p.url]?.status === 'archived')
-  ).length;
-  const archivePendingSites = sites.filter(site =>
-    site.pages.some(p => pageStatuses[p.url]?.status === 'archive-pending') &&
-    !site.pages.every(p => pageStatuses[p.url]?.status === 'archived')
-  ).length;
+  // Divi sites/pages stats
+  const diviSites = sites.filter(s => themeData[s.id] === 'divi');
+  const diviTotalSites = diviSites.length;
+  const diviCompletedSites = diviSites.filter(site => {
+    const nonFourOhFourPages = site.pages.filter(p => pageStatuses[p.url]?.status !== '404');
+    return nonFourOhFourPages.length > 0 && nonFourOhFourPages.every(p => pageStatuses[p.url]?.status === 'completed');
+  }).length;
+  const diviTotalPages = diviSites.reduce((sum, s) => sum + s.pages.filter(p => pageStatuses[p.url]?.status !== '404').length, 0);
+  const diviCompletedPages = diviSites.reduce((sum, s) => sum + s.pages.filter(p => pageStatuses[p.url]?.status === 'completed').length, 0);
+
+  // Enfold sites/pages stats
+  const enfoldSites = sites.filter(s => themeData[s.id] === 'enfold');
+  const enfoldTotalSites = enfoldSites.length;
+  const enfoldCompletedSites = enfoldSites.filter(site => {
+    const nonFourOhFourPages = site.pages.filter(p => pageStatuses[p.url]?.status !== '404');
+    return nonFourOhFourPages.length > 0 && nonFourOhFourPages.every(p => pageStatuses[p.url]?.status === 'completed');
+  }).length;
+  const enfoldTotalPages = enfoldSites.reduce((sum, s) => sum + s.pages.filter(p => pageStatuses[p.url]?.status !== '404').length, 0);
+  const enfoldCompletedPages = enfoldSites.reduce((sum, s) => sum + s.pages.filter(p => pageStatuses[p.url]?.status === 'completed').length, 0);
 
   // Sort + filter sites
   const sortedSites = useMemo(() => {
-    const filtered = searchQuery
+    let filtered = searchQuery
       ? sites.filter(
           s =>
             s.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -446,12 +457,17 @@ export default function StatusCheckPage({ sites }: Props) {
         )
       : sites;
 
+    // Apply theme filter
+    if (themeFilter !== 'all') {
+      filtered = filtered.filter(s => themeData[s.id] === themeFilter);
+    }
+
     return [...filtered].sort((a, b) => {
       const pa = sitePriorities[a.id] ?? 99;
       const pb = sitePriorities[b.id] ?? 99;
       return pa - pb;
     });
-  }, [sites, sitePriorities, searchQuery]);
+  }, [sites, sitePriorities, searchQuery, themeFilter, themeData]);
 
   // ============================================
   // LOADING STATE
@@ -514,10 +530,14 @@ export default function StatusCheckPage({ sites }: Props) {
             totalSites={totalSitesExcluding404}
             completedPages={completedPages}
             totalPages={totalPages}
-            archivedSites={archivedSites}
-            archivePendingSites={archivePendingSites}
-            archivedPages={archivedPages}
-            archivePendingPages={archivePendingPages}
+            diviCompletedSites={diviCompletedSites}
+            diviTotalSites={diviTotalSites}
+            diviCompletedPages={diviCompletedPages}
+            diviTotalPages={diviTotalPages}
+            enfoldCompletedSites={enfoldCompletedSites}
+            enfoldTotalSites={enfoldTotalSites}
+            enfoldCompletedPages={enfoldCompletedPages}
+            enfoldTotalPages={enfoldTotalPages}
           />
 
           {/* Team members */}
@@ -568,11 +588,46 @@ export default function StatusCheckPage({ sites }: Props) {
             <div className="flex items-center justify-between mb-1 animate-fade-in-up" style={{ animationDelay: '600ms' }}>
               <h2 className="text-sm font-semibold text-foreground flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
-                All Sites
+                {themeFilter === 'all' ? 'All Sites' : themeFilter === 'divi' ? 'Divi Sites' : 'Enfold Sites'}
                 <span className="text-xs font-mono text-muted-foreground bg-white/[0.06] px-2 py-0.5 rounded-full">
                   {sortedSites.length}
                 </span>
               </h2>
+              <div className="flex items-center gap-1.5">
+                <button
+                  type="button"
+                  onClick={() => { setThemeFilter('all'); setVisibleSiteCount(SITES_PER_BATCH); }}
+                  className={`px-3 py-1 text-xs font-medium rounded-lg border transition-colors ${
+                    themeFilter === 'all'
+                      ? 'text-blue-400 bg-blue-500/15 border-blue-500/30'
+                      : 'text-muted-foreground bg-white/[0.04] border-white/[0.08] hover:bg-white/[0.08]'
+                  }`}
+                >
+                  All
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { setThemeFilter('divi'); setVisibleSiteCount(SITES_PER_BATCH); }}
+                  className={`px-3 py-1 text-xs font-medium rounded-lg border transition-colors ${
+                    themeFilter === 'divi'
+                      ? 'text-emerald-400 bg-emerald-500/15 border-emerald-500/30'
+                      : 'text-muted-foreground bg-white/[0.04] border-white/[0.08] hover:bg-white/[0.08]'
+                  }`}
+                >
+                  Divi
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { setThemeFilter('enfold'); setVisibleSiteCount(SITES_PER_BATCH); }}
+                  className={`px-3 py-1 text-xs font-medium rounded-lg border transition-colors ${
+                    themeFilter === 'enfold'
+                      ? 'text-red-400 bg-red-500/15 border-red-500/30'
+                      : 'text-muted-foreground bg-white/[0.04] border-white/[0.08] hover:bg-white/[0.08]'
+                  }`}
+                >
+                  Enfold
+                </button>
+              </div>
             </div>
 
             {sortedSites.length === 0 && (

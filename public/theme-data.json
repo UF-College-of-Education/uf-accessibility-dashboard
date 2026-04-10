@@ -1,14 +1,16 @@
 {
-  "lastChecked": "2026-03-23T13:07:58.622Z",
+  "lastChecked": "2026-04-10T15:28:51.388Z",
   "totalSites": 79,
   "themes": {
     "education-ufl-edu-apps": {
       "url": "https://education.ufl.edu/apps/",
-      "theme": null
+      "theme": null,
+      "error": "HTTP 403"
     },
-    "education-ufl-edu": {
-      "url": "https://education.ufl.edu/",
-      "theme": "divi"
+    "education-ufl-edu-cognitive-behavioral-research-group": {
+      "url": "https://education.ufl.edu/cognitive-behavioral-research-group/",
+      "theme": null,
+      "error": "HTTP 404"
     },
     "education-ufl-edu-about": {
       "url": "https://education.ufl.edu/about/",
@@ -18,36 +20,36 @@
       "url": "https://education.ufl.edu/alumni/",
       "theme": "divi"
     },
-    "education-ufl-edu-administration": {
-      "url": "https://education.ufl.edu/administration/",
+    "education-ufl-edu-best-in-class": {
+      "url": "https://education.ufl.edu/best-in-class/",
+      "theme": "enfold"
+    },
+    "education-ufl-edu": {
+      "url": "https://education.ufl.edu/",
       "theme": "divi"
     },
-    "education-ufl-edu-ai": {
-      "url": "https://education.ufl.edu/ai/",
+    "education-ufl-edu-aihardware": {
+      "url": "https://education.ufl.edu/aihardware/",
       "theme": "divi"
     },
     "education-ufl-edu-coe-online": {
       "url": "https://education.ufl.edu/coe-online/",
       "theme": "divi"
     },
-    "education-ufl-edu-best-in-class": {
-      "url": "https://education.ufl.edu/best-in-class/",
-      "theme": "enfold"
+    "education-ufl-edu-ai": {
+      "url": "https://education.ufl.edu/ai/",
+      "theme": "divi"
     },
-    "education-ufl-edu-cognitive-behavioral-research-group": {
-      "url": "https://education.ufl.edu/cognitive-behavioral-research-group/",
-      "theme": "enfold"
-    },
-    "education-ufl-edu-aihardware": {
-      "url": "https://education.ufl.edu/aihardware/",
+    "education-ufl-edu-administration": {
+      "url": "https://education.ufl.edu/administration/",
       "theme": "divi"
     },
     "education-ufl-edu-connect": {
       "url": "https://education.ufl.edu/connect/",
       "theme": "divi"
     },
-    "education-ufl-edu-course-syllabi": {
-      "url": "https://education.ufl.edu/course-syllabi/",
+    "education-ufl-edu-current-edugators": {
+      "url": "https://education.ufl.edu/current-edugators/",
       "theme": "divi"
     },
     "education-ufl-edu-contact": {
@@ -58,33 +60,29 @@
       "url": "https://education.ufl.edu/committees/",
       "theme": "divi"
     },
-    "education-ufl-edu-current-edugators": {
-      "url": "https://education.ufl.edu/current-edugators/",
+    "education-ufl-edu-education-sciences": {
+      "url": "https://education.ufl.edu/education-sciences/",
       "theme": "divi"
     },
     "education-ufl-edu-early-childhood": {
       "url": "https://education.ufl.edu/early-childhood/",
       "theme": "divi"
     },
-    "education-ufl-edu-education-sciences": {
-      "url": "https://education.ufl.edu/education-sciences/",
-      "theme": "divi"
-    },
     "education-ufl-edu-counselor-education": {
       "url": "https://education.ufl.edu/counselor-education/",
-      "theme": "divi"
-    },
-    "education-ufl-edu-curriculum-teaching": {
-      "url": "https://education.ufl.edu/curriculum-teaching/",
       "theme": "divi"
     },
     "education-ufl-edu-computer-science-education": {
       "url": "https://education.ufl.edu/computer-science-education/",
       "theme": "divi"
     },
-    "education-ufl-edu-english-education": {
-      "url": "https://education.ufl.edu/english-education/",
-      "theme": "enfold"
+    "education-ufl-edu-curriculum-teaching": {
+      "url": "https://education.ufl.edu/curriculum-teaching/",
+      "theme": "divi"
+    },
+    "education-ufl-edu-course-syllabi": {
+      "url": "https://education.ufl.edu/course-syllabi/",
+      "theme": null
     },
     "education-ufl-edu-educator-quality": {
       "url": "https://education.ufl.edu/educator-quality/",
@@ -94,33 +92,42 @@
       "url": "https://education.ufl.edu/esol/",
       "theme": "enfold"
     },
-    "education-ufl-edu-eprc": {
-      "url": "https://education.ufl.edu/eprc/",
-      "theme": "divi"
-    },
     "education-ufl-edu-educational-research": {
       "url": "https://education.ufl.edu/educational-research/",
-      "theme": "divi"
-    },
-    "education-ufl-edu-elementary-education": {
-      "url": "https://education.ufl.edu/elementary-education/",
       "theme": "divi"
     },
     "education-ufl-edu-etc": {
       "url": "https://education.ufl.edu/etc/",
       "theme": "divi"
     },
-    "education-ufl-edu-educational-leadership": {
-      "url": "https://education.ufl.edu/educational-leadership/",
+    "education-ufl-edu-eprc": {
+      "url": "https://education.ufl.edu/eprc/",
+      "theme": "divi"
+    },
+    "education-ufl-edu-english-education": {
+      "url": "https://education.ufl.edu/english-education/",
+      "theme": "divi"
+    },
+    "education-ufl-edu-elementary-education": {
+      "url": "https://education.ufl.edu/elementary-education/",
+      "theme": "divi"
+    },
+    "education-ufl-edu-educational-technology": {
+      "url": "https://education.ufl.edu/educational-technology/",
       "theme": "divi"
     },
     "education-ufl-edu-eltl": {
       "url": "https://education.ufl.edu/eltl/",
       "theme": "divi"
     },
-    "education-ufl-edu-educational-technology": {
-      "url": "https://education.ufl.edu/educational-technology/",
+    "education-ufl-edu-educational-leadership": {
+      "url": "https://education.ufl.edu/educational-leadership/",
       "theme": "divi"
+    },
+    "education-ufl-edu-leite": {
+      "url": "https://education.ufl.edu/leite/",
+      "theme": null,
+      "error": "HTTP 404"
     },
     "education-ufl-edu-faculty": {
       "url": "https://education.ufl.edu/faculty/",
@@ -138,10 +145,6 @@
       "url": "https://education.ufl.edu/helpdesk/",
       "theme": "divi"
     },
-    "education-ufl-edu-impact": {
-      "url": "https://education.ufl.edu/impact/",
-      "theme": "divi"
-    },
     "education-ufl-edu-higher-education": {
       "url": "https://education.ufl.edu/higher-education/",
       "theme": "divi"
@@ -150,16 +153,20 @@
       "url": "https://education.ufl.edu/future-edugators/",
       "theme": "divi"
     },
+    "education-ufl-edu-impact": {
+      "url": "https://education.ufl.edu/impact/",
+      "theme": "divi"
+    },
     "education-ufl-edu-governance": {
       "url": "https://education.ufl.edu/governance/",
       "theme": "enfold"
     },
-    "education-ufl-edu-leite": {
-      "url": "https://education.ufl.edu/leite/",
-      "theme": null
-    },
     "education-ufl-edu-hdose": {
       "url": "https://education.ufl.edu/hdose/",
+      "theme": "enfold"
+    },
+    "education-ufl-edu-riel": {
+      "url": "https://education.ufl.edu/riel/",
       "theme": "enfold"
     },
     "education-ufl-edu-neural": {
@@ -182,60 +189,56 @@
       "url": "https://education.ufl.edu/reading-education/",
       "theme": "divi"
     },
-    "education-ufl-edu-riel": {
-      "url": "https://education.ufl.edu/riel/",
-      "theme": "enfold"
-    },
     "education-ufl-edu-research-evaluation-methods": {
       "url": "https://education.ufl.edu/research-evaluation-methods/",
-      "theme": "divi"
-    },
-    "education-ufl-edu-news": {
-      "url": "https://education.ufl.edu/news/",
       "theme": "divi"
     },
     "education-ufl-edu-program-directory": {
       "url": "https://education.ufl.edu/program-directory/",
       "theme": "divi"
     },
+    "education-ufl-edu-news": {
+      "url": "https://education.ufl.edu/news/",
+      "theme": "divi"
+    },
     "education-ufl-edu-norman-courtyard-revival": {
       "url": "https://education.ufl.edu/norman-courtyard-revival/",
-      "theme": "divi"
-    },
-    "education-ufl-edu-science-education": {
-      "url": "https://education.ufl.edu/science-education/",
-      "theme": "enfold"
-    },
-    "education-ufl-edu-study": {
-      "url": "https://education.ufl.edu/study/",
-      "theme": "divi"
-    },
-    "education-ufl-edu-sharkai": {
-      "url": "https://education.ufl.edu/sharkai/",
-      "theme": "divi"
-    },
-    "education-ufl-edu-social-studies-education": {
-      "url": "https://education.ufl.edu/social-studies-education/",
-      "theme": "divi"
-    },
-    "education-ufl-edu-school-teaching-learning": {
-      "url": "https://education.ufl.edu/school-teaching-learning/",
       "theme": "divi"
     },
     "education-ufl-edu-sespecs": {
       "url": "https://education.ufl.edu/sespecs/",
       "theme": "divi"
     },
-    "education-ufl-edu-special-education": {
-      "url": "https://education.ufl.edu/special-education/",
+    "education-ufl-edu-study": {
+      "url": "https://education.ufl.edu/study/",
       "theme": "divi"
     },
-    "education-ufl-edu-school-psychology": {
-      "url": "https://education.ufl.edu/school-psychology/",
+    "education-ufl-edu-school-teaching-learning": {
+      "url": "https://education.ufl.edu/school-teaching-learning/",
+      "theme": "divi"
+    },
+    "education-ufl-edu-social-studies-education": {
+      "url": "https://education.ufl.edu/social-studies-education/",
       "theme": "divi"
     },
     "education-ufl-edu-student-services": {
       "url": "https://education.ufl.edu/student-services/",
+      "theme": "divi"
+    },
+    "education-ufl-edu-science-education": {
+      "url": "https://education.ufl.edu/science-education/",
+      "theme": "divi"
+    },
+    "education-ufl-edu-special-education": {
+      "url": "https://education.ufl.edu/special-education/",
+      "theme": "divi"
+    },
+    "education-ufl-edu-sharkai": {
+      "url": "https://education.ufl.edu/sharkai/",
+      "theme": "divi"
+    },
+    "education-ufl-edu-school-psychology": {
+      "url": "https://education.ufl.edu/school-psychology/",
       "theme": "divi"
     },
     "education-ufl-edu-site": {
@@ -263,14 +266,6 @@
       "url": "https://education.ufl.edu/verse/",
       "theme": "divi"
     },
-    "education-ufl-edu-sustain": {
-      "url": "https://education.ufl.edu/sustain/",
-      "theme": "divi"
-    },
-    "education-ufl-edu-templates": {
-      "url": "https://education.ufl.edu/templates/",
-      "theme": "divi"
-    },
     "education-ufl-edu-submission": {
       "url": "https://education.ufl.edu/submission/",
       "theme": "divi"
@@ -279,29 +274,37 @@
       "url": "https://education.ufl.edu/stakeholders-day/",
       "theme": "divi"
     },
+    "education-ufl-edu-sustain": {
+      "url": "https://education.ufl.edu/sustain/",
+      "theme": "divi"
+    },
+    "education-ufl-edu-templates": {
+      "url": "https://education.ufl.edu/templates/",
+      "theme": "divi"
+    },
     "education-ufl-edu-uf-teach": {
       "url": "https://education.ufl.edu/uf-teach/",
       "theme": "divi"
+    },
+    "education-ufl-edu-patterson": {
+      "url": "https://education.ufl.edu/patterson/",
+      "theme": "enfold"
     },
     "education-ufl-edu-aaimse": {
       "url": "https://education.ufl.edu/aaimse/",
       "theme": null,
       "error": "HTTP 410"
     },
-    "education-ufl-edu-patterson": {
-      "url": "https://education.ufl.edu/patterson/",
-      "theme": "enfold"
-    },
     "education-ufl-edu-akwaaba-freedom-school": {
       "url": "https://education.ufl.edu/akwaaba-freedom-school/",
       "theme": "divi"
     },
-    "education-ufl-edu-reach": {
-      "url": "https://education.ufl.edu/reach/",
-      "theme": "divi"
-    },
     "education-ufl-edu-secondary-teacher-prep": {
       "url": "https://education.ufl.edu/secondary-teacher-prep/",
+      "theme": "divi"
+    },
+    "education-ufl-edu-reach": {
+      "url": "https://education.ufl.edu/reach/",
       "theme": "divi"
     },
     "education-ufl-edu-aect": {

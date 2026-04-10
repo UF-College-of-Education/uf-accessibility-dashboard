@@ -58,11 +58,19 @@ async function apiGet(path) {
   return res.json();
 }
 
+// Sites to exclude from pull (not part of CoE dashboard)
+const EXCLUDED_URLS = [
+  'citt.it.ufl.edu',
+  'ceecs.education.ufl.edu',
+];
+
 // ── Fetch all sites ──────────────────────────────────────────
 console.log('Fetching sites from Siteimprove...');
 const sitesData = await apiGet('/sites?page_size=100');
-const siSites = sitesData.items || [];
-console.log(`Found ${siSites.length} sites in Siteimprove account\n`);
+const allSiSites = sitesData.items || [];
+const siSites = allSiSites.filter(s => !EXCLUDED_URLS.some(ex => (s.url || '').includes(ex)));
+const skipped = allSiSites.length - siSites.length;
+console.log(`Found ${allSiSites.length} sites in Siteimprove account${skipped ? ` (skipping ${skipped} excluded)` : ''}\n`);
 
 // ── Fetch crawled pages for each site ────────────────────────
 async function fetchSitePages(siteId, siteName) {

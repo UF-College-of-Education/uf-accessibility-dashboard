@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Globe, FileCheck, Archive, FileArchive, TrendingUp } from "lucide-react";
+import { Palette, Layers, TrendingUp } from "lucide-react";
 
 interface StatCardProps {
   label: string;
@@ -89,10 +89,14 @@ interface StatCardsProps {
   totalSites: number;
   completedPages: number;
   totalPages: number;
-  archivedSites: number;
-  archivePendingSites: number;
-  archivedPages: number;
-  archivePendingPages: number;
+  diviCompletedSites: number;
+  diviTotalSites: number;
+  diviCompletedPages: number;
+  diviTotalPages: number;
+  enfoldCompletedSites: number;
+  enfoldTotalSites: number;
+  enfoldCompletedPages: number;
+  enfoldTotalPages: number;
 }
 
 export default function StatCards({
@@ -100,49 +104,56 @@ export default function StatCards({
   totalSites,
   completedPages,
   totalPages,
-  archivedSites,
-  archivePendingSites,
-  archivedPages,
-  archivePendingPages,
+  diviCompletedSites,
+  diviTotalSites,
+  diviCompletedPages,
+  diviTotalPages,
+  enfoldCompletedSites,
+  enfoldTotalSites,
+  enfoldCompletedPages,
+  enfoldTotalPages,
 }: StatCardsProps) {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      <StatCard
-        label="Sites Completed"
-        value={completedSites}
-        total={totalSites}
-        icon={<Globe className="w-5 h-5 text-white" />}
-        gradient="bg-gradient-to-br from-blue-500 to-blue-600"
-        glowClass="glow-blue"
-        delay={0}
-      />
-      <StatCard
-        label="Pages Completed"
-        value={completedPages}
-        total={totalPages}
-        icon={<FileCheck className="w-5 h-5 text-white" />}
-        gradient="bg-gradient-to-br from-emerald-500 to-emerald-600"
-        glowClass="glow-emerald"
-        delay={100}
-      />
-      <StatCard
-        label="Sites to Archive"
-        value={archivedSites}
-        total={archivePendingSites}
-        icon={<Archive className="w-5 h-5 text-white" />}
-        gradient="bg-gradient-to-br from-amber-500 to-orange-500"
-        glowClass="glow-amber"
-        delay={200}
-      />
-      <StatCard
-        label="Pages to Archive"
-        value={archivedPages}
-        total={archivePendingPages}
-        icon={<FileArchive className="w-5 h-5 text-white" />}
-        gradient="bg-gradient-to-br from-rose-500 to-pink-500"
-        glowClass="glow-rose"
-        delay={300}
-      />
+    <div className="space-y-4">
+      {/* Divi & Enfold */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <StatCard
+          label="Divi Sites Completed"
+          value={diviCompletedSites}
+          total={diviTotalSites}
+          icon={<Palette className="w-5 h-5 text-white" />}
+          gradient="bg-gradient-to-br from-emerald-500 to-teal-500"
+          glowClass="glow-emerald"
+          delay={200}
+        />
+        <StatCard
+          label="Divi Pages Completed"
+          value={diviCompletedPages}
+          total={diviTotalPages}
+          icon={<Palette className="w-5 h-5 text-white" />}
+          gradient="bg-gradient-to-br from-emerald-600 to-teal-600"
+          glowClass="glow-emerald"
+          delay={250}
+        />
+        <StatCard
+          label="Enfold Sites Completed"
+          value={enfoldCompletedSites}
+          total={enfoldTotalSites}
+          icon={<Layers className="w-5 h-5 text-white" />}
+          gradient="bg-gradient-to-br from-red-500 to-rose-500"
+          glowClass="glow-rose"
+          delay={300}
+        />
+        <StatCard
+          label="Enfold Pages Completed"
+          value={enfoldCompletedPages}
+          total={enfoldTotalPages}
+          icon={<Layers className="w-5 h-5 text-white" />}
+          gradient="bg-gradient-to-br from-red-600 to-rose-600"
+          glowClass="glow-rose"
+          delay={350}
+        />
+      </div>
     </div>
   );
 }

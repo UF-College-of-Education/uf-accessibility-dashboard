@@ -1,6 +1,6 @@
 {
   "description": "Custom sites to ADD to Noah's data. These are sites missing from the web mapper.",
-  "lastUpdated": "2026-03-24",
+  "lastUpdated": "2026-04-10",
   "subsites": [
     {
       "id": "education-ufl-edu",
@@ -4227,6 +4227,241 @@
           "path": "/notice-of-search-committee-1-20-22-900am-req-87559/",
           "title": "Notice of search committee 1-20-22 - 9:00AM (req #87559) - UF College of Education",
           "url": "https://education.ufl.edu/notice-of-search-committee-1-20-22-900am-req-87559/"
+        },
+        {
+          "path": "/notice-of-search-committee-meetings-march-25-26-requisition-538055/",
+          "title": "Notice of Search Committee Meetings – March 25 & 26 (Requisition 538055) - UF College of Education",
+          "url": "https://education.ufl.edu/notice-of-search-committee-meetings-march-25-26-requisition-538055/"
+        },
+        {
+          "path": "/notice-of-search-committee-meeting-march-27-requisition-537861/",
+          "title": "Notice of Search Committee Meeting – March 27 (Requisition 537861) - UF College of Education",
+          "url": "https://education.ufl.edu/notice-of-search-committee-meeting-march-27-requisition-537861/"
+        },
+        {
+          "path": "/notice-of-search-committee-meeting-march-31-april-1-requisition-537859/",
+          "title": "Notice of Search Committee Meeting – March 31 & April 1 (Requisition 537859) - UF College of Education",
+          "url": "https://education.ufl.edu/notice-of-search-committee-meeting-march-31-april-1-requisition-537859/"
+        },
+        {
+          "path": "/news/2026/04/07/unstoppable-uf-college-of-education-advances-to-no-2-in-the-nation/",
+          "title": "Unstoppable UF College of Education advances to No. 2 in the nation - News",
+          "url": "https://education.ufl.edu/news/2026/04/07/unstoppable-uf-college-of-education-advances-to-no-2-in-the-nation/"
+        },
+        {
+          "path": "/notice-of-search-committee-meeting-march-31-april-1-requisition-537859-2/",
+          "title": "Notice of Search Committee Meeting – Tuesday, April 7 - UF College of Education",
+          "url": "https://education.ufl.edu/notice-of-search-committee-meeting-march-31-april-1-requisition-537859-2/"
+        },
+        {
+          "path": "/student-services/2026/03/25/edugator-newsletter-march-25-2026/",
+          "title": "EduGator Newsletter |March 25, 2026 - Student Services",
+          "url": "https://education.ufl.edu/student-services/2026/03/25/edugator-newsletter-march-25-2026/"
+        },
+        {
+          "path": "/english-education/prospective-students/media-literacy-education/",
+          "title": "Media Literacy Education - English Education",
+          "url": "https://education.ufl.edu/english-education/prospective-students/media-literacy-education/"
+        },
+        {
+          "path": "/english-education/prospective-students/masters-degrees/",
+          "title": "Master's Degrees - English Education",
+          "url": "https://education.ufl.edu/english-education/prospective-students/masters-degrees/"
+        },
+        {
+          "path": "/science-education/prospective-students/master-of-arts/",
+          "title": "Hybrid M.A.E. - Science Education",
+          "url": "https://education.ufl.edu/science-education/prospective-students/master-of-arts/"
+        },
+        {
+          "path": "/english-education/prospective-students/specialist-degree/",
+          "title": "Specialist Degree - English Education",
+          "url": "https://education.ufl.edu/english-education/prospective-students/specialist-degree/"
+        },
+        {
+          "path": "/science-education/prospective-students/doctor-of-philosophy/",
+          "title": "On-Campus Ph.D. - Science Education",
+          "url": "https://education.ufl.edu/science-education/prospective-students/doctor-of-philosophy/"
+        },
+        {
+          "path": "/student-services/page/3/?et_blog",
+          "title": "Welcome to EduGator Central - Student Services",
+          "url": "https://education.ufl.edu/student-services/page/3/?et_blog"
+        },
+        {
+          "path": "/educational-research/2026/04/02/submitted-proposals-march-2026/",
+          "title": "Submitted Proposals – March 2026 - Office of Educational Research",
+          "url": "https://education.ufl.edu/educational-research/2026/04/02/submitted-proposals-march-2026/"
+        },
+        {
+          "path": "/educational-research/2026/04/02/newly-funded-awards-march-2026/",
+          "title": "Newly Funded Awards – March 2026 - Office of Educational Research",
+          "url": "https://education.ufl.edu/educational-research/2026/04/02/newly-funded-awards-march-2026/"
+        },
+        {
+          "path": "/educational-research/2026/04/02/reminder-oer-sponsored-spring-event/",
+          "title": "Reminder: OER-Sponsored Spring Event - Office of Educational Research",
+          "url": "https://education.ufl.edu/educational-research/2026/04/02/reminder-oer-sponsored-spring-event/"
+        },
+        {
+          "path": "/educational-research/2026/04/02/funding-opportunity-nsf-techaccess/",
+          "title": "Funding Opportunity: NSF TechAccess - Office of Educational Research",
+          "url": "https://education.ufl.edu/educational-research/2026/04/02/funding-opportunity-nsf-techaccess/"
+        },
+        {
+          "path": "/educational-research/2026/04/02/fulbright-awareness-week/",
+          "title": "Fulbright Awareness Week - Office of Educational Research",
+          "url": "https://education.ufl.edu/educational-research/2026/04/02/fulbright-awareness-week/"
+        },
+        {
+          "path": "/educational-research/2026/04/02/aligning-campus-stakeholders-for-effective-industry-engagement/",
+          "title": "Aligning Campus Stakeholders for Effective Industry Engagement - Office of Educational Research",
+          "url": "https://education.ufl.edu/educational-research/2026/04/02/aligning-campus-stakeholders-for-effective-industry-engagement/"
+        },
+        {
+          "path": "/educational-research/2026/04/02/nsf-career-workshop/",
+          "title": "NSF CAREER Workshop - Office of Educational Research",
+          "url": "https://education.ufl.edu/educational-research/2026/04/02/nsf-career-workshop/"
+        },
+        {
+          "path": "/educational-research/2026/04/02/research-strategy-lunch-and-learn-white-papers/",
+          "title": "Research Strategy Lunch and Learn: White Papers - Office of Educational Research",
+          "url": "https://education.ufl.edu/educational-research/2026/04/02/research-strategy-lunch-and-learn-white-papers/"
+        },
+        {
+          "path": "/educational-research/2026/04/02/grantsmanship-workshop-with-national-expert/",
+          "title": "Grantsmanship Workshop with National Expert - Office of Educational Research",
+          "url": "https://education.ufl.edu/educational-research/2026/04/02/grantsmanship-workshop-with-national-expert/"
+        },
+        {
+          "path": "/educational-research/2026/04/02/recording-available-secrets-of-a-1b-grant-writing-consultant/",
+          "title": "Recording Available: Secrets of a $1B Grant-Writing Consultant - Office of Educational Research",
+          "url": "https://education.ufl.edu/educational-research/2026/04/02/recording-available-secrets-of-a-1b-grant-writing-consultant/"
+        },
+        {
+          "path": "/educational-research/2026/04/02/funding-opportunity-ai-focused-teaching-and-research-2/",
+          "title": "Funding Opportunity: AI-Focused Teaching and Research - Office of Educational Research",
+          "url": "https://education.ufl.edu/educational-research/2026/04/02/funding-opportunity-ai-focused-teaching-and-research-2/"
+        },
+        {
+          "path": "/educational-research/2026/04/02/funding-opportunities-8/",
+          "title": "Funding Opportunities - Office of Educational Research",
+          "url": "https://education.ufl.edu/educational-research/2026/04/02/funding-opportunities-8/"
+        },
+        {
+          "path": "/english-education/prospective-students/",
+          "title": "Prospective Students - English Education",
+          "url": "https://education.ufl.edu/english-education/prospective-students/"
+        },
+        {
+          "path": "/english-education/program-faculty/",
+          "title": "Program Faculty - English Education",
+          "url": "https://education.ufl.edu/english-education/program-faculty/"
+        },
+        {
+          "path": "/english-education/prospective-students/on-campus-ph-d/",
+          "title": "On-Campus Ph.D. - English Education",
+          "url": "https://education.ufl.edu/english-education/prospective-students/on-campus-ph-d/"
+        },
+        {
+          "path": "/english-education/prospective-students/graduate-certificate/",
+          "title": "Graduate Certificate - English Education",
+          "url": "https://education.ufl.edu/english-education/prospective-students/graduate-certificate/"
+        },
+        {
+          "path": "/english-education/prospective-students/media-literacy-education/application-instructions/",
+          "title": "Application Instructions - Media Literacy Education - English Education",
+          "url": "https://education.ufl.edu/english-education/prospective-students/media-literacy-education/application-instructions/"
+        },
+        {
+          "path": "/science-education/prospective-students/",
+          "title": "Prospective Students - Science Education",
+          "url": "https://education.ufl.edu/science-education/prospective-students/"
+        },
+        {
+          "path": "/science-education/prospective-students/online-eds/",
+          "title": "Online Ed.S. - Science Education",
+          "url": "https://education.ufl.edu/science-education/prospective-students/online-eds/"
+        },
+        {
+          "path": "/science-education/2026/04/01/gayle-nelson-evans-awarded-teacher-of-the-year/",
+          "title": "Gayle Nelson Evans Awarded Teacher of the Year - Science Education",
+          "url": "https://education.ufl.edu/science-education/2026/04/01/gayle-nelson-evans-awarded-teacher-of-the-year/"
+        },
+        {
+          "path": "/science-education/author/noahpham/",
+          "title": "noahpham, Author at Science Education",
+          "url": "https://education.ufl.edu/science-education/author/noahpham/"
+        },
+        {
+          "path": "/science-education/category/uncategorized/",
+          "title": "Uncategorized Archives - Science Education",
+          "url": "https://education.ufl.edu/science-education/category/uncategorized/"
+        },
+        {
+          "path": "/science-education/2026/04/01/molly-staggs-selected/",
+          "title": "Molly Staggs Selected - Science Education",
+          "url": "https://education.ufl.edu/science-education/2026/04/01/molly-staggs-selected/"
+        },
+        {
+          "path": "/science-education/author/evejung/",
+          "title": "evekung, Author at Science Education",
+          "url": "https://education.ufl.edu/science-education/author/evejung/"
+        },
+        {
+          "path": "/science-education/category/faculty-recognition/",
+          "title": "Faculty Recognition Archives - Science Education",
+          "url": "https://education.ufl.edu/science-education/category/faculty-recognition/"
+        },
+        {
+          "path": "/english-education/prospective-students/masters-degrees/application-instructions/",
+          "title": "Application Instructions - Masters Degrees - English Education",
+          "url": "https://education.ufl.edu/english-education/prospective-students/masters-degrees/application-instructions/"
+        },
+        {
+          "path": "/english-education/prospective-students/specialist-degree/application-instructions/",
+          "title": "Application Instructions - Specialist degree - English Education",
+          "url": "https://education.ufl.edu/english-education/prospective-students/specialist-degree/application-instructions/"
+        },
+        {
+          "path": "/student-services/category/student-newsletter/page/2/",
+          "title": "Student Newsletter Archives - Page 2 of 2 - Student Services",
+          "url": "https://education.ufl.edu/student-services/category/student-newsletter/page/2/"
+        },
+        {
+          "path": "/personnel-affairs/2026/03/24/fpc-meeting-february-23-2026/",
+          "title": "FPC Meeting, February 23, 2026 - Personnel Affairs",
+          "url": "https://education.ufl.edu/personnel-affairs/2026/03/24/fpc-meeting-february-23-2026/"
+        },
+        {
+          "path": "/english-education/prospective-students/on-campus-ph-d/application-instructions/",
+          "title": "Application Instructions - On Campus PhD - English Education",
+          "url": "https://education.ufl.edu/english-education/prospective-students/on-campus-ph-d/application-instructions/"
+        },
+        {
+          "path": "/english-education/prospective-students/graduate-certificate/application-instructions/",
+          "title": "Application Instructions - Graduate Certificate - English Education",
+          "url": "https://education.ufl.edu/english-education/prospective-students/graduate-certificate/application-instructions/"
+        },
+        {
+          "path": "/student-services/2026/04/08/edugator-newsletter-april-8-2026/",
+          "title": "EduGator Newsletter |April 8, 2026 - Student Services",
+          "url": "https://education.ufl.edu/student-services/2026/04/08/edugator-newsletter-april-8-2026/"
+        },
+        {
+          "path": "/educational-research/author/piperlowinger/page/13/",
+          "title": "piperlowinger, Author at Office of Educational Research - Page 13 of 15",
+          "url": "https://education.ufl.edu/educational-research/author/piperlowinger/page/13/"
+        },
+        {
+          "path": "/educational-research/author/piperlowinger/page/14/",
+          "title": "piperlowinger, Author at Office of Educational Research - Page 14 of 15",
+          "url": "https://education.ufl.edu/educational-research/author/piperlowinger/page/14/"
+        },
+        {
+          "path": "/educational-research/author/piperlowinger/page/15/",
+          "title": "piperlowinger, Author at Office of Educational Research - Page 15 of 15",
+          "url": "https://education.ufl.edu/educational-research/author/piperlowinger/page/15/"
         }
       ]
     },

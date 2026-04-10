@@ -577,14 +577,24 @@ export function getAllPageStatusesLocal(): Record<string, {
 export function mergeSheetDataIntoLocal(sheetStatuses: Record<string, { status: PageStatusType; assignedTo: string; notes: string }>): void {
   if (typeof window === 'undefined') return;
 
-  // Start fresh from sheet data — Google Sheets is the source of truth
+  // Load existing local data to preserve updatedDate timestamps
+  const existing: Record<string, { status: PageStatusType; assignedTo: string; notes: string; updatedDate: string }> =
+    JSON.parse(localStorage.getItem(STORAGE_KEYS.PAGE_STATUSES) || '{}');
+
+  // Google Sheets is source of truth for status/assignedTo/notes,
+  // but preserve local updatedDate if the status hasn't changed.
+  // Only stamp a new date when the status actually changed or is brand new.
   const merged: Record<string, { status: PageStatusType; assignedTo: string; notes: string; updatedDate: string }> = {};
 
-  // Write all sheet data
   Object.keys(sheetStatuses).forEach(url => {
+    const sheet = sheetStatuses[url];
+    const local = existing[url];
+
+    const statusChanged = !local || local.status !== sheet.status || local.assignedTo !== sheet.assignedTo;
+
     merged[url] = {
-      ...sheetStatuses[url],
-      updatedDate: new Date().toISOString(),
+      ...sheet,
+      updatedDate: statusChanged ? new Date().toISOString() : (local?.updatedDate || new Date().toISOString()),
     };
   });
 
