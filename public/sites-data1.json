@@ -1,6 +1,6 @@
 {
   "description": "Custom sites to ADD to Noah's data. These are sites missing from the web mapper.",
-  "lastUpdated": "2026-04-10",
+  "lastUpdated": "2026-04-20",
   "subsites": [
     {
       "id": "education-ufl-edu",
@@ -4462,6 +4462,106 @@
           "path": "/educational-research/author/piperlowinger/page/15/",
           "title": "piperlowinger, Author at Office of Educational Research - Page 15 of 15",
           "url": "https://education.ufl.edu/educational-research/author/piperlowinger/page/15/"
+        },
+        {
+          "path": "/tlsi/faqs/",
+          "title": "Frequently Asked Questions - Teacher Leadership for School Improvement",
+          "url": "https://education.ufl.edu/tlsi/faqs/"
+        },
+        {
+          "path": "/tlsi/prospective-students/",
+          "title": "Prospective Students - Teacher Leadership for School Improvement",
+          "url": "https://education.ufl.edu/tlsi/prospective-students/"
+        },
+        {
+          "path": "/tlsi/program-highlights/",
+          "title": "Program Highlights - Teacher Leadership for School Improvement",
+          "url": "https://education.ufl.edu/tlsi/program-highlights/"
+        },
+        {
+          "path": "/tlsi/prospective-students/online-ed-s/",
+          "title": "Online Ed.S. - Teacher Leadership for School Improvement",
+          "url": "https://education.ufl.edu/tlsi/prospective-students/online-ed-s/"
+        },
+        {
+          "path": "/tlsi/prospective-students/online-m-ed/",
+          "title": "Online M.Ed. - Teacher Leadership for School Improvement",
+          "url": "https://education.ufl.edu/tlsi/prospective-students/online-m-ed/"
+        },
+        {
+          "path": "/tlsi/prospective-students/online-ed-s/application-instructions/",
+          "title": "Application Instructions - Online Ed.S - Teacher Leadership for School Improvement",
+          "url": "https://education.ufl.edu/tlsi/prospective-students/online-ed-s/application-instructions/"
+        },
+        {
+          "path": "/tlsi/prospective-students/online-m-ed/application-instructions/",
+          "title": "Application Instructions - Online M.Ed - Teacher Leadership for School Improvement",
+          "url": "https://education.ufl.edu/tlsi/prospective-students/online-m-ed/application-instructions/"
+        },
+        {
+          "path": "/hdose/resources/by-laws/",
+          "title": "By-laws for School of Human Development & Organizational Studies in Education College of Education, University of Florida - School of Human Development and Organizational Studies in Education (HDOSE)",
+          "url": "https://education.ufl.edu/hdose/resources/by-laws/"
+        },
+        {
+          "path": "/hdose/2026/04/15/hdose-recognizes-2026-graduate-student-excellence-award-recipients/",
+          "title": "HDOSE Recognizes 2026 Graduate Student Excellence Award Recipients - School of Human Development and Organizational Studies in Education (HDOSE)",
+          "url": "https://education.ufl.edu/hdose/2026/04/15/hdose-recognizes-2026-graduate-student-excellence-award-recipients/"
+        },
+        {
+          "path": "/hdose/2026/04/14/hdose-honors-2025-faculty-excellence-awardees/",
+          "title": "HDOSE Honors 2025 Faculty Excellence Awardees - School of Human Development and Organizational Studies in Education (HDOSE)",
+          "url": "https://education.ufl.edu/hdose/2026/04/14/hdose-honors-2025-faculty-excellence-awardees/"
+        },
+        {
+          "path": "/hdose/2026/04/15/educational-psychology-faculty-member-dr-helena-mawdsley-earns-national-recognition-for-research-on-effective-teaching/",
+          "title": "Educational Psychology Faculty Member, Dr. Helena Mawdsley, Earns National Recognition for Research on Effective Teaching - School of Human Development and Organizational Studies in Education (HDOSE)",
+          "url": "https://education.ufl.edu/hdose/2026/04/15/educational-psychology-faculty-member-dr-helena-mawdsley-earns-national-recognition-for-research-on-effective-teaching/"
+        },
+        {
+          "path": "/hdose/2026/04/15/uf-educational-leadership-and-policy-program-ranked-2-in-the-nation/",
+          "title": "UF Educational Leadership and Policy Program Ranked #2 in the Nation - School of Human Development and Organizational Studies in Education (HDOSE)",
+          "url": "https://education.ufl.edu/hdose/2026/04/15/uf-educational-leadership-and-policy-program-ranked-2-in-the-nation/"
+        },
+        {
+          "path": "/hdose/news/page/2/?et_blog",
+          "title": "News - School of Human Development and Organizational Studies in Education (HDOSE)",
+          "url": "https://education.ufl.edu/hdose/news/page/2/?et_blog"
+        },
+        {
+          "path": "/student-services/2026/04/15/edugator-newsletter-april-15-2026/",
+          "title": "EduGator Newsletter |April 15, 2026 - Student Services",
+          "url": "https://education.ufl.edu/student-services/2026/04/15/edugator-newsletter-april-15-2026/"
+        },
+        {
+          "path": "/hdose/category/uncategorized/",
+          "title": "Uncategorized Archives - School of Human Development and Organizational Studies in Education (HDOSE)",
+          "url": "https://education.ufl.edu/hdose/category/uncategorized/"
+        },
+        {
+          "path": "/hdose/news/page/3/?et_blog",
+          "title": "News - School of Human Development and Organizational Studies in Education (HDOSE)",
+          "url": "https://education.ufl.edu/hdose/news/page/3/?et_blog"
+        },
+        {
+          "path": "/hdose/news/?et_blog",
+          "title": "News - School of Human Development and Organizational Studies in Education (HDOSE)",
+          "url": "https://education.ufl.edu/hdose/news/?et_blog"
+        },
+        {
+          "path": "/personnel-affairs/2026/04/15/ccc-meeting-minutes-march-9-2026/",
+          "title": "CCC Meeting Minutes - March 9, 2026 - Personnel Affairs",
+          "url": "https://education.ufl.edu/personnel-affairs/2026/04/15/ccc-meeting-minutes-march-9-2026/"
+        },
+        {
+          "path": "/hdose/author/evejung/",
+          "title": "evekung, Author at School of Human Development and Organizational Studies in Education (HDOSE)",
+          "url": "https://education.ufl.edu/hdose/author/evejung/"
+        },
+        {
+          "path": "/hdose/author/evejung/page/2/",
+          "title": "evekung, Author at School of Human Development and Organizational Studies in Education (HDOSE) - Page 2 of 2",
+          "url": "https://education.ufl.edu/hdose/author/evejung/page/2/"
         }
       ]
     },

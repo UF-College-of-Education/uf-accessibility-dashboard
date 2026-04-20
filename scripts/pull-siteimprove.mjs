@@ -62,6 +62,7 @@ async function apiGet(path) {
 const EXCLUDED_URLS = [
   'citt.it.ufl.edu',
   'ceecs.education.ufl.edu',
+  'UFLI.education.ufl.edu',
 ];
 
 // ── Fetch all sites ──────────────────────────────────────────
